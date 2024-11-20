@@ -1,0 +1,9 @@
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    implementation project(':model')
+    implementation project(':jwt-model')
+    implementation project(':ports')
+    implementation project(':web-security')
+}
