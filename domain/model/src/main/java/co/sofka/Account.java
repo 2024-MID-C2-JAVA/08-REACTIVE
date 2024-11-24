@@ -87,4 +87,16 @@ public class Account {
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id='" + id + '\'' +
+                ", number=" + number +
+                ", amount=" + amount +
+                ", customerId='" + customerId + '\'' +
+                ", createdAt=" + createdAt +
+                ", isDeleted=" + isDeleted +
+                '}';
+    }
 }

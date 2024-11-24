@@ -35,6 +35,8 @@ public class MongoTransactionAdapter implements TransactionRepository {
 
                     userDocument.getCustomer().getAccount().getTransactions().add(transactionDocument);
 
+                    template.save(userDocument);
+
                     return template.save(userDocument).thenReturn(transaction);
                 });
     }

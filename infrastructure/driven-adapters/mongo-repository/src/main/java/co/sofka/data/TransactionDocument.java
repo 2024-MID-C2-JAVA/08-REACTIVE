@@ -58,4 +58,15 @@ public class TransactionDocument {
     public void setTimeStamp(Instant timeStamp) {
         this.timeStamp = timeStamp;
     }
+
+    @Override
+    public String toString() {
+        return "TransactionDocument{" +
+                "id='" + id + '\'' +
+                ", amount=" + amount +
+                ", amountCost=" + amountCost +
+                ", typeOfTransaction=" + typeOfTransaction +
+                ", timeStamp=" + timeStamp +
+                '}';
+    }
 }

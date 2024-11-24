@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,8 +25,7 @@ public class AppConfig {
                     if (userRequest == null) {
                         return Mono.error(new UsernameNotFoundException("User not found"));
                     }
-
-                    return Mono.just(org.springframework.security.core.userdetails.User.builder()
+                    return Mono.just(User.builder()
                             .username(userRequest.getEmail())
                             .password(userRequest.getPassword())
                             .roles(userRequest.getRole().toString())

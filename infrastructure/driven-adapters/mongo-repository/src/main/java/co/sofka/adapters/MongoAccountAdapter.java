@@ -42,11 +42,11 @@ public class MongoAccountAdapter implements AccountRepository {
 
     @Override
     public Mono<Account> deleteAccount(Account account) {
-        return template.findById(account.getId(), AccountDocument.class)
-                .flatMap(accountDocument -> {
-                    accountDocument.setDeleted(true);
+        return template.findById(account.getId(), UserDocument.class)
+                .flatMap(document -> {
+                    document.getCustomer().getAccount().setDeleted(true);
                     return template
-                            .save(accountDocument)
+                            .save(document)
                             .thenReturn(account);
                 }).switchIfEmpty(Mono.error(new RuntimeException("Account not found with ID: " + account.getCustomerId())));
     }

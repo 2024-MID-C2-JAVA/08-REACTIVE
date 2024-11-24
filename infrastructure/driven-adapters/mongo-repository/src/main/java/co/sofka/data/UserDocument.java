@@ -174,4 +174,17 @@ public class UserDocument implements UserDetails {
             return new UserDocument(id, firstName, lastName, email, password, role, customer);
         }
     }
+
+    @Override
+    public String toString() {
+        return "UserDocument{" +
+                "id='" + id + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", customer=" + customer +
+                '}';
+    }
 }

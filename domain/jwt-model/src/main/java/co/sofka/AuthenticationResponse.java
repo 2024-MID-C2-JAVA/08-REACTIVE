@@ -51,7 +51,6 @@ public class AuthenticationResponse {
         }
 
         public AuthenticationResponse build() {
-            // Llama al constructor que acepta Builder
             return new AuthenticationResponse(this);
         }
     }

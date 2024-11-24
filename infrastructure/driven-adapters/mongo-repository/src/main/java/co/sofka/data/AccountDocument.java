@@ -7,6 +7,7 @@ import reactor.core.publisher.Flux;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "bank_db")
@@ -23,6 +24,10 @@ public class AccountDocument {
     private List<TransactionDocument> transactions;
     @Field(name = "customer_id")
     private String customerId;
+
+    public AccountDocument() {
+        transactions = new ArrayList<>();
+    }
 
     public String getId() {
         return id;

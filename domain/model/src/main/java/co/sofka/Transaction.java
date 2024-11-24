@@ -82,4 +82,17 @@ public class Transaction {
     public void setPayRole(PayRole payRole) {
         this.payRole = payRole;
     }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id='" + id + '\'' +
+                ", amount=" + amount +
+                ", amountCost=" + amountCost +
+                ", type=" + type +
+                ", timestamp=" + timestamp +
+                ", accountId='" + accountId + '\'' +
+                ", payRole=" + payRole +
+                '}';
+    }
 }
