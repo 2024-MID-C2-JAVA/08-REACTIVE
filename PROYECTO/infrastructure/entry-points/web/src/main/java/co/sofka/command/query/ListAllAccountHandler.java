@@ -43,14 +43,14 @@ public class ListAllAccountHandler {
             try{
                 LlaveSimetrica = utils.decode(request.getDinHeader().getLlaveSimetrica());
             } catch (Exception e) {
-                throw new ErrorDecryptingDataException("Error al desencriptar la LlaveSimetrica.", request.getDinHeader(),1001);
+                throw new ErrorDecryptingDataException("Error al desencriptar la LlaveSimetrica.", 1001);
             }
 
             String vectorInicializacion = "";
             try{
                 vectorInicializacion = utils.decode(request.getDinHeader().getVectorInicializacion());
             } catch (Exception e) {
-                throw new ErrorDecryptingDataException("Error al desencriptar la vectorInicializacion.", request.getDinHeader(),1001);
+                throw new ErrorDecryptingDataException("Error al desencriptar la vectorInicializacion.", 1001);
             }
 
             account.setNumber(encryptionAndDescryption.encriptAes(account.getNumber(),vectorInicializacion,LlaveSimetrica));

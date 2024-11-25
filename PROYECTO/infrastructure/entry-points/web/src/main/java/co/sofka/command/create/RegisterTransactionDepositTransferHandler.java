@@ -1,31 +1,21 @@
 package co.sofka.command.create;
 
-import co.sofka.Account;
-import co.sofka.LogEvent;
 import co.sofka.Transaction;
 import co.sofka.TransactionAccountDetail;
-import co.sofka.command.dto.BankTransactionDepositTransfer;
-import co.sofka.command.dto.request.RequestMs;
-import co.sofka.command.dto.response.DinError;
-import co.sofka.command.dto.response.ResponseMs;
 import co.sofka.config.EncryptionAndDescryption;
 import co.sofka.config.TokenByDinHeaders;
-import co.sofka.gateway.ITransactionAccountDetailRepository;
-import co.sofka.middleware.AccountNotExistException;
-import co.sofka.middleware.AccountNotHaveBalanceException;
+import co.sofka.dto.BankTransactionDepositTransfer;
 import co.sofka.middleware.ErrorDecryptingDataException;
-import co.sofka.usecase.appBank.IGetAccountByNumberService;
-import co.sofka.usecase.appBank.ISaveAccountService;
-import co.sofka.usecase.appBank.ISaveTransactionService;
+import co.sofka.usecase.appBank.IGetCustomerByIdService;
+import co.sofka.usecase.appBank.ISaveCustomerService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Component
@@ -34,120 +24,105 @@ public class RegisterTransactionDepositTransferHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(RegisterTransactionDepositTransferHandler.class);
 
-    private final IGetAccountByNumberService service;
+    private final IGetCustomerByIdService getCustomerByIdService;
 
-    private final ISaveTransactionService saveTransactionService;
-
-    private final ISaveAccountService saveAccountService;
-
-    private final ITransactionAccountDetailRepository transactionAccountDetailRepository;
+    private final ISaveCustomerService saveCustomerService;
 
     private final TokenByDinHeaders utils;
 
     private EncryptionAndDescryption encryptionAndDescryption;
 
 
-    public Mono<ResponseMs<Transaction>> apply(RequestMs<BankTransactionDepositTransfer> request) {
-
-        ResponseMs<Transaction> responseMs = new ResponseMs<>();
-        responseMs.setDinHeader(request.getDinHeader());
-        DinError error = new DinError();
-        responseMs.setDinError(error);
+    public void apply(BankTransactionDepositTransfer request) {
 
         String LlaveSimetrica = "";
         try{
-            LlaveSimetrica = utils.decode(request.getDinHeader().getLlaveSimetrica());
+            LlaveSimetrica = utils.decode(request.getLlaveSimetrica());
         } catch (Exception e) {
-            throw new ErrorDecryptingDataException("Error al desencriptar la LlaveSimetrica.", request.getDinHeader(),1001);
+            throw new ErrorDecryptingDataException("Error al desencriptar la LlaveSimetrica.", 1001);
         }
 
         String vectorInicializacion = "";
         try{
-            vectorInicializacion = utils.decode(request.getDinHeader().getVectorInicializacion());
+            vectorInicializacion = utils.decode(request.getVectorInicializacion());
         } catch (Exception e) {
-            throw new ErrorDecryptingDataException("Error al desencriptar la vectorInicializacion.", request.getDinHeader(),1001);
+            throw new ErrorDecryptingDataException("Error al desencriptar la vectorInicializacion.", 1001);
         }
 
-        logger.info("Buscando Account por numero");
-        String decode = "";
-        try {
-            decode = encryptionAndDescryption.decryptAes(request.getDinBody().getAccountNumberSender(),vectorInicializacion,LlaveSimetrica);
-        } catch (Exception e) {
-            throw new AccountNotExistException("Error al desencriptar el numero de cuenta.", request.getDinHeader(),1001);
-        }
-        logger.info("Buscando Account por numero: "+decode);
+        final String sender = encryptionAndDescryption.decryptAes(request.getAccountNumberSender(),vectorInicializacion,LlaveSimetrica);
 
-        Account accountSend = service.findByNumber(decode).block();
+        logger.info("Account por numero: "+sender);
 
-        if (accountSend==null){
-            throw new AccountNotExistException("La cuenta Origen no existe", request.getDinHeader(),1002);
-        }
+        final String resiver = encryptionAndDescryption.decryptAes(request.getAccountNumberReceiver(),vectorInicializacion,LlaveSimetrica);
 
-        String decodeReciver = "";
-        try {
-            decodeReciver = encryptionAndDescryption.decryptAes(request.getDinBody().getAccountNumberReceiver(),vectorInicializacion,LlaveSimetrica);
-        } catch (Exception e) {
-            throw new AccountNotExistException("Error al desencriptar el numero de cuenta.", request.getDinHeader(),1001);
-        }
-        logger.info("Buscando Account por numero: "+decodeReciver);
-        Account accountReciver = service.findByNumber(decodeReciver).block();
+        logger.info("Buscando Account por numero: "+resiver);
 
-        if (accountReciver==null){
-            throw new AccountNotExistException("La cuenta Destino no existe", request.getDinHeader(),1002);
-        }
+        logger.info("Buscando Customer por id Sender {}  Reciver {}", request.getCustomerSenderId(),request.getCustomerReceiverId());
 
-        if (accountSend.getAmount().subtract(request.getDinBody().getAmount().add(new BigDecimal(1.5))).intValue() < 0) {
-            throw new AccountNotHaveBalanceException("No tiene saldo suficiente.", request.getDinHeader(),1003);
-        }
-
-//        logger.info("Guardando Transaccion {}",accountReciver.getCustomer().getId());
 
         Transaction transaction = new Transaction();
         transaction.setTransactionCost(new BigDecimal(1.5));
-        transaction.setAmountTransaction(request.getDinBody().getAmount());
+        transaction.setAmountTransaction(request.getAmount());
         transaction.setTimeStamp(LocalDateTime.now());
         transaction.setTypeTransaction("Transferencia");
 
-        //Transaction save = saveTransactionService.save(transaction);
+        getCustomerByIdService.findById(request.getCustomerSenderId())
+                .map(customer -> {
 
+                    logger.info("Guardando Transaction {}", customer.getAccounts().size());
 
-        TransactionAccountDetail transactionAccountDetail = new TransactionAccountDetail();
-        transactionAccountDetail.setAccount(accountSend);
-        transactionAccountDetail.setTransaction(transaction);
-        transactionAccountDetail.setTransactionRole("Payroll");
+                    customer.getAccounts().forEach(account -> {
+                        if (account.getNumber().equals(sender)) {
+                            TransactionAccountDetail transactionAccountDetail = new TransactionAccountDetail();
+                            transactionAccountDetail.setId(UUID.randomUUID().toString());
+                            transactionAccountDetail.setAccount(account);
+                            transactionAccountDetail.setTransaction(transaction);
+                            transactionAccountDetail.setTransactionRole("Payroll");
 
-        transactionAccountDetailRepository.save(transactionAccountDetail);
+                            logger.info("Guardando TransactionAccountDetail Sender");
+                            if (account.getTransactionAccountDetails() == null) {
+                                account.setTransactionAccountDetails(new ArrayList<>());
+                            }
+                            account.getTransactionAccountDetails().add(transactionAccountDetail);
+                            logger.info("Guardando Update Salda Account");
+                            account.setAmount(account.getAmount().subtract(request.getAmount().add(transaction.getTransactionCost())));
+                            saveCustomerService.apply(customer);
+                        }
+                    });
 
+                    return transaction;
 
-        TransactionAccountDetail transactionAccountDetailCredit = new TransactionAccountDetail();
-        transactionAccountDetailCredit.setAccount(accountReciver);
-        transactionAccountDetailCredit.setTransaction(transaction);
-        transactionAccountDetailCredit.setTransactionRole("Supplier");
+                })
+                .subscribe();
 
-        TransactionAccountDetail save =transactionAccountDetailRepository.save(transactionAccountDetailCredit).block();
+        getCustomerByIdService.findById(request.getCustomerReceiverId())
+                .map(customer -> {
 
-        LogEvent logEvent = new LogEvent();
-        logEvent.setId(UUID.randomUUID().toString());
-        logEvent.setMessage(utils.encode(save.getTransaction().toString()));
-        logEvent.setFecha(LocalDate.now().toString());
-        logEvent.setType(transaction.getTypeTransaction());
+                    logger.info("Guardando Transaction {}", customer.getAccounts().size());
 
-        try {
-//            saveLogTransactionDetailService.save(logEvent);
-        } catch (Exception e) {
-           logger.error("Error al guardar el log {}",e.getMessage());
-        }
+                    customer.getAccounts().forEach(account -> {
+                        if (account.getNumber().equals(resiver)) {
+                            TransactionAccountDetail transactionAccountDetail = new TransactionAccountDetail();
+                            transactionAccountDetail.setId(UUID.randomUUID().toString());
+                            transactionAccountDetail.setAccount(account);
+                            transactionAccountDetail.setTransaction(transaction);
+                            transactionAccountDetail.setTransactionRole("Supplier");
 
+                            logger.info("Guardando TransactionAccountDetail Receiver");
+                            if (account.getTransactionAccountDetails() == null) {
+                                account.setTransactionAccountDetails(new ArrayList<>());
+                            }
+                            account.getTransactionAccountDetails().add(transactionAccountDetail);
+                            logger.info("Guardando Update Salda Account");
+                            account.setAmount(account.getAmount().add(request.getAmount()));
+                            saveCustomerService.apply(customer);
+                        }
+                    });
 
-        accountReciver.setAmount(accountReciver.getAmount().add(request.getDinBody().getAmount()));
-        saveAccountService.save(accountReciver);
+                    return transaction;
 
-        accountSend.setAmount(accountSend.getAmount().subtract(request.getDinBody().getAmount().add(new BigDecimal(1.5))));
-        saveAccountService.save(accountSend);
+                })
+                .subscribe();
 
-
-        responseMs.setDinBody(transaction);
-
-        return Mono.just(responseMs);
     }
 }

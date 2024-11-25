@@ -59,6 +59,24 @@ public class RabbitConfig {
     private String routingTransactionDepositTransferenciaKey;
 
 
+    /* Transaction Retiro ATM*/
+
+    @Value("${general.config.rabbitmq.queueTransactionRetiroCajero}")
+    private String queueTransactionRetiroCajero;
+
+    @Value("${general.config.rabbitmq.routingTransactionRetiroCajeroKey}")
+    private String routingTransactionRetiroCajeroKey;
+
+
+    /* Transaction Compra*/
+
+    @Value("${general.config.rabbitmq.queueTransactionCompra}")
+    private String queueTransactionCompra;
+
+    @Value("${general.config.rabbitmq.routingTransactionCompraKey}")
+    private String routingTransactionCompraKey;
+
+
     @Bean
     public TopicExchange topicExchange() {
         return new TopicExchange(exchange);
@@ -108,6 +126,31 @@ public class RabbitConfig {
     @Bean
     public Binding bindingTransactionDepositTransferencia(Queue queueTransactionDepositTransferencia, TopicExchange topicExchange) {
         return BindingBuilder.bind(queueTransactionDepositTransferencia).to(topicExchange).with(routingTransactionDepositTransferenciaKey);
+    }
+
+
+    /* Transaction Retiro Cajero*/
+    @Bean
+    public Queue queueTransactionRetiroCajero() {
+        return new Queue(queueTransactionRetiroCajero);
+    }
+
+    @Bean
+    public Binding bindingTransactionRetiroCajero(Queue queueTransactionRetiroCajero, TopicExchange topicExchange) {
+        return BindingBuilder.bind(queueTransactionRetiroCajero).to(topicExchange).with(routingTransactionRetiroCajeroKey);
+    }
+
+
+
+    /* Transaction Compra*/
+    @Bean
+    public Queue queueTransactionCompra() {
+        return new Queue(queueTransactionCompra);
+    }
+
+    @Bean
+    public Binding bindingTransactionCompra(Queue queueTransactionCompra, TopicExchange topicExchange) {
+        return BindingBuilder.bind(queueTransactionCompra).to(topicExchange).with(routingTransactionCompraKey);
     }
 
 

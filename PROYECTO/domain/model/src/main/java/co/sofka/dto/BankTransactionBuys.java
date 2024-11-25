@@ -3,8 +3,9 @@ package co.sofka.dto;
 
 import java.math.BigDecimal;
 
-public class BankTransactionBuys {
+public class BankTransactionBuys extends ParameterSeguridad{
 
+    private String customerId;
 
     private String accountNumberClient;
 
@@ -15,6 +16,14 @@ public class BankTransactionBuys {
 
 
     public BankTransactionBuys() {
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     public String getAccountNumberClient() {

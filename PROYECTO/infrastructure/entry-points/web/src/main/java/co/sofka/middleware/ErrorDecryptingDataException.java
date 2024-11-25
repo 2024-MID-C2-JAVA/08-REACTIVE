@@ -6,13 +6,10 @@ import lombok.Data;
 @Data
 public class ErrorDecryptingDataException extends RuntimeException{
 
-    private final DinHeader dinHeader;
-
     private final int code;
 
-    public ErrorDecryptingDataException(String message, DinHeader dinHeader, int code) {
+    public ErrorDecryptingDataException(String message,int code) {
         super(message);
-        this.dinHeader = dinHeader;
         this.code = code;
     }
 

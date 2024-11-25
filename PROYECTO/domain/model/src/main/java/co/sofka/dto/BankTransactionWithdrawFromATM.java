@@ -3,11 +3,11 @@ package co.sofka.dto;
 
 import java.math.BigDecimal;
 
-public class BankTransactionWithdrawFromATM {
+public class BankTransactionWithdrawFromATM extends ParameterSeguridad{
 
+    private String customerId;
 
-    private String accountNumber;
-
+    private String accountNumberClient;
 
     private BigDecimal amount;
 
@@ -16,12 +16,20 @@ public class BankTransactionWithdrawFromATM {
     public BankTransactionWithdrawFromATM() {
     }
 
-    public String getAccountNumber() {
-        return accountNumber;
+    public String getCustomerId() {
+        return customerId;
     }
 
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getAccountNumberClient() {
+        return accountNumberClient;
+    }
+
+    public void setAccountNumberClient(String accountNumberClient) {
+        this.accountNumberClient = accountNumberClient;
     }
 
     public BigDecimal getAmount() {
@@ -31,6 +39,4 @@ public class BankTransactionWithdrawFromATM {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
-
-
 }

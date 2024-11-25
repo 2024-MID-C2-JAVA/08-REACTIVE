@@ -38,6 +38,14 @@ public class RouterRest {
                         POST("/api/v1/transaction/depositTransferencia"),
                         handler::SaveDepositarTransferenciaUseCase
                 )
+                .andRoute(
+                        POST("/api/v1/transaction/retiroATM"),
+                        handler::SaveRetiroCajeroUseCase
+                )
+                .andRoute(
+                        POST("/api/v1/transaction/compra"),
+                        handler::SaveCompraUseCase
+                )
                 ;
     }
 

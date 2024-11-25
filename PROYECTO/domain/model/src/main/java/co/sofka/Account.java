@@ -3,6 +3,7 @@ package co.sofka;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 public class Account {
 
@@ -18,6 +19,8 @@ public class Account {
 
     private Boolean isDeleted;
 
+    private List<TransactionAccountDetail> transactionAccountDetails;
+
     public Account() {
     }
 
@@ -28,6 +31,14 @@ public class Account {
         this.customer = customer;
         this.createdAt = createdAt;
         this.isDeleted = isDeleted;
+    }
+
+    public List<TransactionAccountDetail> getTransactionAccountDetails() {
+        return transactionAccountDetails;
+    }
+
+    public void setTransactionAccountDetails(List<TransactionAccountDetail> transactionAccountDetails) {
+        this.transactionAccountDetails = transactionAccountDetails;
     }
 
     public LocalDate getCreatedAt() {

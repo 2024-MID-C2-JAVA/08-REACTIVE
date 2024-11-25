@@ -2,7 +2,7 @@ package co.sofka.dto;
 
 import java.math.BigDecimal;
 
-public class BankTransactionDepositTransfer {
+public class BankTransactionDepositTransfer extends ParameterSeguridad{
 
     private String customerSenderId;
     private String accountNumberSender;

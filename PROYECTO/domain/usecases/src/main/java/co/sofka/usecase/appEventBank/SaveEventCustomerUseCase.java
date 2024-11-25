@@ -38,6 +38,7 @@ public class SaveEventCustomerUseCase implements ISaveEventCustomerService {
             customer.setId(UUID.randomUUID().toString());
             return List.of(customer);
         }).map(customer -> {
+            logger.info("Customer created: {}", customer);
             Event event = new Event();
             try {
                 event.setBody(ObjectToJsonConverter.convertObjectToJson(customer));

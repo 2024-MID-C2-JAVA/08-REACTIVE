@@ -34,7 +34,7 @@ public class SaveEventTransactionDepositSucursalUseCase implements ISaveEventTra
     public Flux<Event> apply(Mono<BankTransactionDepositSucursal> request) {
 
         return request.flatMapIterable(item -> {
-            logger.info("Customer created: {}", item);
+            logger.info("TransactionDepositSucursal created: {}", item);
             return List.of(item);
         }).map(item -> {
             Event event = new Event();

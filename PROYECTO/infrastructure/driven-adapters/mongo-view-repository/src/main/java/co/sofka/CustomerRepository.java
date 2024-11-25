@@ -5,6 +5,8 @@ package co.sofka;
 import co.sofka.config.JpaBanktransactionRepository;
 import co.sofka.data.entity.AccountEntity;
 import co.sofka.data.entity.CustomerEntity;
+import co.sofka.data.entity.TransactionAccountDetailEntity;
+import co.sofka.data.entity.TransactionEntity;
 import co.sofka.gateway.ICustomerRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -44,6 +46,22 @@ public class CustomerRepository implements ICustomerRepository {
                 accountEntity.setId(account.getId());
                 accountEntity.setNumber(account.getNumber());
                 accountEntity.setAmount(account.getAmount());
+
+               if (account.getTransactionAccountDetails()!=null) {
+                   accountEntity.setTransactionAccountDetailEntity(account.getTransactionAccountDetails().stream().map(transactionAccountDetail -> {
+                       TransactionAccountDetailEntity transactionAccountDetailEntity = new TransactionAccountDetailEntity();
+                       transactionAccountDetailEntity.setId(transactionAccountDetail.getId());
+                       transactionAccountDetailEntity.setTransactionRole(transactionAccountDetail.getTransactionRole());
+                       TransactionEntity transactionEntity = new TransactionEntity();
+                       transactionEntity.setId(transactionAccountDetail.getTransaction().getId());
+                       transactionEntity.setAmountTransaction(transactionAccountDetail.getTransaction().getAmountTransaction());
+                       transactionEntity.setTransactionCost(transactionAccountDetail.getTransaction().getTransactionCost());
+                       transactionEntity.setTypeTransaction(transactionAccountDetail.getTransaction().getTypeTransaction());
+                       transactionAccountDetailEntity.setTransaction(transactionEntity);
+                       return transactionAccountDetailEntity;
+                   }).collect(Collectors.toList()));
+               }
+
                 return accountEntity;
             }).collect(Collectors.toList()));
         }
@@ -63,7 +81,29 @@ public class CustomerRepository implements ICustomerRepository {
 
     @Override
     public Mono<Customer> findById(String id) {
-        return null;
+
+        logger.info("CustomerRepository: findById Repository");
+
+        return mongoTemplate.findById(id, CustomerEntity.class)
+                .map(item -> {
+                    logger.info("CustomerEntity: {}", item);
+                    Customer customer = new Customer();
+                    customer.setId(item.getId().toString());
+                    customer.setUsername(item.getUsername());
+                    customer.setPwd(item.getPwd());
+                    customer.setRol(item.getRol());
+                    customer.setAccounts(new ArrayList<>());
+                    if(item.getAccounts() != null){
+                        customer.setAccounts(item.getAccounts().stream().map(accountEntity -> {
+                            Account account = new Account();
+                            account.setId(accountEntity.getId());
+                            account.setNumber(accountEntity.getNumber());
+                            account.setAmount(accountEntity.getAmount());
+                            return account;
+                        }).collect(Collectors.toList()));
+                    }
+                    return customer;
+                });
     }
 
     @Override

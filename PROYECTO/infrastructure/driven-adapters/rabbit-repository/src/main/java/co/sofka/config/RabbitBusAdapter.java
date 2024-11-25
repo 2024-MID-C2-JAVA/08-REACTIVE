@@ -22,13 +22,48 @@ public class RabbitBusAdapter implements IRabbitBus {
     @Value("${general.config.rabbitmq.routingCustomerKey}")
     private String routingkey;
 
-    /* Transaction */
+
+
+    /* Transaction Deposito Sucursal*/
 
     @Value("${general.config.rabbitmq.queueTransactionDepositSucursal}")
     private String queueTransactionDepositSucursal;
 
     @Value("${general.config.rabbitmq.routingTransactionDepositSucursalKey}")
     private String routingTransactionDepositSucursalKey;
+
+    /* Transaction Deposito Cajeto*/
+    @Value("${general.config.rabbitmq.queueTransactionDepositCajero}")
+    private String queueTransactionDepositCajero;
+
+    @Value("${general.config.rabbitmq.routingTransactionDepositCajeroKey}")
+    private String routingTransactionDepositCajeroKey;
+
+    /* Transaction Deposito Transferencia*/
+
+    @Value("${general.config.rabbitmq.queueTransactionDepositTransferencia}")
+    private String queueTransactionDepositTransferencia;
+
+    @Value("${general.config.rabbitmq.routingTransactionDepositTransferenciaKey}")
+    private String routingTransactionDepositTransferenciaKey;
+
+
+    /* Transaction Retiro ATM*/
+
+    @Value("${general.config.rabbitmq.queueTransactionRetiroCajero}")
+    private String queueTransactionRetiroCajero;
+
+    @Value("${general.config.rabbitmq.routingTransactionRetiroCajeroKey}")
+    private String routingTransactionRetiroCajeroKey;
+
+
+    /* Transaction Compra*/
+
+    @Value("${general.config.rabbitmq.queueTransactionCompra}")
+    private String queueTransactionCompra;
+
+    @Value("${general.config.rabbitmq.routingTransactionCompraKey}")
+    private String routingTransactionCompraKey;
 
     private final RabbitTemplate rabbitTemplate;
 
@@ -40,13 +75,25 @@ public class RabbitBusAdapter implements IRabbitBus {
 
     @Override
     public void send(Notification notification) {
-        logger.info("Sending notification to RabbitMQ: {}", notification);
+        logger.info("Sending notification to RabbitMQ: {} {}",notification.getType(), notification);
         switch (notification.getType()) {
             case "Customer Created":
                 rabbitTemplate.convertAndSend(exchange, routingkey, notification);
                 break;
             case "TransactionDepositSucursal":
                 rabbitTemplate.convertAndSend(exchange, routingTransactionDepositSucursalKey, notification);
+                break;
+            case "TransactionDepositCajero":
+                rabbitTemplate.convertAndSend(exchange, routingTransactionDepositCajeroKey, notification);
+                break;
+            case "TransactionDepositTransferencia":
+                rabbitTemplate.convertAndSend(exchange, routingTransactionDepositTransferenciaKey, notification);
+                break;
+            case "TransactionRetiroCajero":
+                rabbitTemplate.convertAndSend(exchange, routingTransactionRetiroCajeroKey, notification);
+                break;
+            case "TransactionCompra":
+                rabbitTemplate.convertAndSend(exchange, routingTransactionCompraKey, notification);
                 break;
             default:
                 routingkey = "general";

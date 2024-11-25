@@ -2,8 +2,8 @@ package co.sofka.usecase.appEventBank;
 
 
 import co.sofka.Event;
-import co.sofka.dto.BankTransactionDepositSucursal;
-import co.sofka.dto.BankTransactionDepositTransfer;
+import co.sofka.dto.BankTransactionDepositCajero;
+import co.sofka.dto.BankTransactionWithdrawFromATM;
 import co.sofka.event.Notification;
 import co.sofka.gateway.IEventBankRepository;
 import co.sofka.gateway.IRabbitBus;
@@ -18,24 +18,24 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public class SaveEventTransactionDepositTransferenciaUseCase implements ISaveEventTransactionDepositTransferenciaService {
+public class SaveEventTransactionRetiroCajeroUseCase implements ISaveEventTransactionRetiroCajeroService {
 
-    private static final Logger logger = LoggerFactory.getLogger(SaveEventTransactionDepositTransferenciaUseCase.class);
+    private static final Logger logger = LoggerFactory.getLogger(SaveEventTransactionRetiroCajeroUseCase.class);
 
     private final IEventBankRepository repository;
 
     private final IRabbitBus rabbitBus;
 
-    public SaveEventTransactionDepositTransferenciaUseCase(IEventBankRepository repository, IRabbitBus rabbitBus) {
+    public SaveEventTransactionRetiroCajeroUseCase(IEventBankRepository repository, IRabbitBus rabbitBus) {
         this.repository = repository;
         this.rabbitBus = rabbitBus;
     }
 
 
-    public Flux<Event> apply(Mono<BankTransactionDepositTransfer> request) {
+    public Flux<Event> apply(Mono<BankTransactionWithdrawFromATM> request) {
 
         return request.flatMapIterable(item -> {
-            logger.info("TransactionDepositTransferencia created: {}", item);
+            logger.info("TransactionRetiroCajero created: {}", item);
             return List.of(item);
         }).map(item -> {
             Event event = new Event();
@@ -45,15 +45,15 @@ public class SaveEventTransactionDepositTransferenciaUseCase implements ISaveEve
                 throw new RuntimeException(e);
             }
             event.setFecha(LocalDateTime.now());
-            event.setType("TransactionDepositTransferencia");
-            event.setParentId(item.getCustomerReceiverId());
+            event.setType("TransactionRetiroCajero");
+            event.setParentId(item.getCustomerId());
             event.setId(UUID.randomUUID().toString());
 
 
             Notification notification = new Notification();
             notification.setMessage(event.getBody());
             notification.setWhen(Instant.now());
-            notification.setType("TransactionDepositTransferencia");
+            notification.setType("TransactionRetiroCajero");
             notification.setUuid(event.getParentId());
 
             rabbitBus.send(notification);

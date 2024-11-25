@@ -45,6 +45,7 @@ public class ListAllCustomerHandler {
             CustomerDTO customerDTO = new CustomerDTO();
             customerDTO.setUsername(customer.getUsername());
             customerDTO.setRol(customer.getRol());
+            customerDTO.setId(customer.getId());
 
             if (customer.getAccounts() != null && !customer.getAccounts().isEmpty()) {
                 List<AccountDTO> list = customer.getAccounts().stream().map(account1 -> {
@@ -55,16 +56,16 @@ public class ListAllCustomerHandler {
                     try {
                         LlaveSimetrica = utils.decode(request.getDinHeader().getLlaveSimetrica());
                     } catch (Exception e) {
-                        throw new ErrorDecryptingDataException("Error al desencriptar la LlaveSimetrica.", request.getDinHeader(), 1001);
+                        throw new ErrorDecryptingDataException("Error al desencriptar la LlaveSimetrica.",  1001);
                     }
 
                     String vectorInicializacion = "";
                     try {
                         vectorInicializacion = utils.decode(request.getDinHeader().getVectorInicializacion());
                     } catch (Exception e) {
-                        throw new ErrorDecryptingDataException("Error al desencriptar la vectorInicializacion.", request.getDinHeader(), 1001);
+                        throw new ErrorDecryptingDataException("Error al desencriptar la vectorInicializacion.",  1001);
                     }
-
+                    accountDTO.setId(account1.getId());
                     accountDTO.setNumber(encryptionAndDescryption.encriptAes(account1.getNumber(), vectorInicializacion, LlaveSimetrica));
                     accountDTO.setAmount(account1.getAmount());
                     return accountDTO;

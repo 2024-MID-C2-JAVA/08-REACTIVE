@@ -2,7 +2,7 @@ dependencies {
     implementation project(':use-cases')
     implementation project(':mongo-repository')
     implementation project(':web-event-persisten')
-    implementation project(':web-jwt')
+    implementation project(':security-jwt')
     implementation project(':rabbit-repository')
 
     implementation('org.springframework.boot:spring-boot-starter')

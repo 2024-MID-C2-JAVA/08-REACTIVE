@@ -3,14 +3,10 @@ package co.sofka.router;
 import co.sofka.Account;
 import co.sofka.Customer;
 import co.sofka.Event;
+import co.sofka.command.dto.DinHeader;
 import co.sofka.command.dto.request.RequestMs;
-import co.sofka.dto.BankTransactionDepositCajero;
-import co.sofka.dto.BankTransactionDepositSucursal;
-import co.sofka.dto.BankTransactionDepositTransfer;
-import co.sofka.usecase.appEventBank.ISaveEventTransactionDepositCajeroService;
-import co.sofka.usecase.appEventBank.ISaveEventTransactionDepositSucursalService;
-import co.sofka.usecase.appEventBank.ISaveEventTransactionDepositTransferenciaService;
-import co.sofka.usecase.appEventBank.SaveEventCustomerUseCase;
+import co.sofka.dto.*;
+import co.sofka.usecase.appEventBank.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +34,10 @@ public class Handler {
     private final ISaveEventTransactionDepositCajeroService saveEventTransactionDepositCajeroService;
 
     private final ISaveEventTransactionDepositTransferenciaService saveEventTransactionDepositTransferenciaService;
+
+    private final ISaveEventTransactionRetiroCajeroService saveEventTransactionRetiroCajeroUseCase;
+
+    private final SaveEventTransactionCompraUseCase saveEventTransactionCompraUseCase;
 
 
     public Mono<ServerResponse> SaveCustomerUseCase(ServerRequest serverRequest) {
@@ -80,6 +80,11 @@ public class Handler {
                     transaction.setAccountNumberClient(map.get("accountNumberClient").toString());
                     transaction.setAmount(BigDecimal.valueOf(Double.parseDouble(map.get("amount").toString())));
 
+                    DinHeader dinHeader = item.getDinHeader();
+                    logger.info("Handler - SaveCustomerUseCase - dinHeader {}", dinHeader);
+                    transaction.setLlaveSimetrica(dinHeader.getLlaveSimetrica());
+                    transaction.setVectorInicializacion(dinHeader.getVectorInicializacion());
+
                     return transaction;
                 })), Event.class));
     }
@@ -99,6 +104,11 @@ public class Handler {
                     transaction.setCustomerId( map.get("customerId").toString());
                     transaction.setAccountNumberClient(map.get("accountNumberClient").toString());
                     transaction.setAmount(BigDecimal.valueOf(Double.parseDouble(map.get("amount").toString())));
+
+                    DinHeader dinHeader = item.getDinHeader();
+                    logger.info("Handler - SaveCustomerUseCase - dinHeader {}", dinHeader);
+                    transaction.setLlaveSimetrica(dinHeader.getLlaveSimetrica());
+                    transaction.setVectorInicializacion(dinHeader.getVectorInicializacion());
 
 
                     return transaction;
@@ -125,10 +135,67 @@ public class Handler {
                     transaction.setCustomerReceiverId( map.get("customerReceiverId").toString());
                     transaction.setAccountNumberReceiver(map.get("accountNumberReceiver").toString());
 
+                    DinHeader dinHeader = item.getDinHeader();
+                    logger.info("Handler - SaveCustomerUseCase - dinHeader {}", dinHeader);
+                    transaction.setLlaveSimetrica(dinHeader.getLlaveSimetrica());
+                    transaction.setVectorInicializacion(dinHeader.getVectorInicializacion());
+
 
                     return transaction;
                 })), Event.class));
     }
+
+
+    public Mono<ServerResponse> SaveRetiroCajeroUseCase(ServerRequest serverRequest) {
+        logger.info("Handler - SaveRetiroCajeroUseCase");
+        Mono<RequestMs> responseMsMono = serverRequest.bodyToMono(RequestMs.class);
+
+
+        return ServerResponse.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromPublisher(saveEventTransactionRetiroCajeroUseCase.apply( responseMsMono.map(item->{
+                    Map<String, Object> map = (Map<String, Object>) item.getDinBody();
+                    logger.info("Handler - SaveRetiroCajeroUseCase - map {}", map);
+                    BankTransactionWithdrawFromATM transaction = new BankTransactionWithdrawFromATM();
+                    transaction.setCustomerId( map.get("customerId").toString());
+                    transaction.setAccountNumberClient(map.get("accountNumberClient").toString());
+                    transaction.setAmount(BigDecimal.valueOf(Double.parseDouble(map.get("amount").toString())));
+
+                    DinHeader dinHeader = item.getDinHeader();
+                    logger.info("Handler - SaveRetiroCajeroUseCase - dinHeader {}", dinHeader);
+                    transaction.setLlaveSimetrica(dinHeader.getLlaveSimetrica());
+                    transaction.setVectorInicializacion(dinHeader.getVectorInicializacion());
+
+                    return transaction;
+                })), Event.class));
+    }
+
+
+    public Mono<ServerResponse> SaveCompraUseCase(ServerRequest serverRequest) {
+        logger.info("Handler - SaveCompraUseCase");
+        Mono<RequestMs> responseMsMono = serverRequest.bodyToMono(RequestMs.class);
+
+
+        return ServerResponse.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromPublisher(saveEventTransactionCompraUseCase.apply( responseMsMono.map(item->{
+                    Map<String, Object> map = (Map<String, Object>) item.getDinBody();
+                    logger.info("Handler - SaveCompraUseCase - map {}", map);
+                    BankTransactionBuys transaction = new BankTransactionBuys();
+                    transaction.setCustomerId( map.get("customerId").toString());
+                    transaction.setAccountNumberClient(map.get("accountNumberClient").toString());
+                    transaction.setAmount(BigDecimal.valueOf(Double.parseDouble(map.get("amount").toString())));
+                    transaction.setTypeBuys(Integer.parseInt(map.get("typeBuys").toString()));
+
+                    DinHeader dinHeader = item.getDinHeader();
+                    logger.info("Handler - SaveCompraUseCase - dinHeader {}", dinHeader);
+                    transaction.setLlaveSimetrica(dinHeader.getLlaveSimetrica());
+                    transaction.setVectorInicializacion(dinHeader.getVectorInicializacion());
+
+                    return transaction;
+                })), Event.class));
+    }
+
 
 
 }

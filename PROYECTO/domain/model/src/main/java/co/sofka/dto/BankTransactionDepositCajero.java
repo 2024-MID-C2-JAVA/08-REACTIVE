@@ -3,7 +3,7 @@ package co.sofka.dto;
 
 import java.math.BigDecimal;
 
-public class BankTransactionDepositCajero {
+public class BankTransactionDepositCajero extends ParameterSeguridad{
 
     private String customerId;
 
