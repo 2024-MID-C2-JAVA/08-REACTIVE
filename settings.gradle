@@ -1,1 +1,29 @@
-rootProject.name = 'reactiveexample'
+rootProject.name = 'bankManagement'
+
+include ':model'
+include ':use-cases'
+include ':app-service'
+include ':query-service'
+include ':rabbitmq-messages'
+include ':reactive-mongo'
+include ':reactive-web'
+include ':reactive-web-security'
+include ':routes-query-service'
+include ':listener-event'
+include ':din'
+include ':aes-encryption'
+include ':jwt'
+
+findProject(':model').projectDir = file('./domain/model')
+findProject(':use-cases').projectDir = file('./domain/usecases')
+findProject(':app-service').projectDir = file('./applications/app-service')
+findProject(':query-service').projectDir = file('./applications/query-service')
+findProject(':rabbitmq-messages').projectDir = file('./infrastructure/driven-adapters/rabbitmq-messages')
+findProject(':reactive-mongo').projectDir = file('./infrastructure/driven-adapters/reactive-mongo')
+findProject(':reactive-web').projectDir = file('./infrastructure/entry-point/reactive-web')
+findProject(':routes-query-service').projectDir = file('./infrastructure/entry-point/routes-query-service')
+findProject(':reactive-web-security').projectDir = file('./infrastructure/entry-point/reactive-web-security')
+findProject(':listener-event').projectDir = file('./infrastructure/entry-point/listener-event')
+findProject(':din').projectDir = file('./infrastructure/entry-point/din')
+findProject(':aes-encryption').projectDir = file('./infrastructure/helper/aes-encryption')
+findProject(':jwt').projectDir = file('./infrastructure/helper/jwt')
