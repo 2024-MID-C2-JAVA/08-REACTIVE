@@ -1,0 +1,7 @@
+dependencies {
+    implementation project(':model')
+    implementation project(':jwt-model')
+    implementation project(':ports')
+
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+}
