@@ -61,27 +61,4 @@ public class MongoAccountAdapter implements AccountRepository {
                             .thenReturn(account);
                 }).switchIfEmpty(Mono.error(new RuntimeException("Account not found with ID: " + account.getCustomerId())));
     }
-
-    @Override
-    public Mono<Account> getAccount(Account account) {
-        Query query = new Query(Criteria.where("_id").is(account.getId()));
-
-        return template.findOne(query,UserDocument.class)
-                .flatMap(userDocument -> {
-
-                    if (userDocument.getCustomer() == null || userDocument.getCustomer().getAccount() == null) {
-                        return Mono.error(new RuntimeException("Account not found for the given user ID"));
-                    }
-
-                    Account userAccount1 = new Account(
-                            userDocument.getCustomer().getAccount().getId(),
-                            userDocument.getCustomer().getAccount().getNumber(),
-                            userDocument.getCustomer().getAccount().getAmount(),
-                            userDocument.getCustomer().getAccount().getCustomerId(),
-                            userDocument.getCustomer().getAccount().getCreatedAt()
-                    );
-
-                    return Mono.just(userAccount1);
-                }).switchIfEmpty(Mono.error(new RuntimeException("Account not found for the given ID")));
-    }
 }

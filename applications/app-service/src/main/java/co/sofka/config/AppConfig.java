@@ -3,7 +3,7 @@ package co.sofka.config;
 import co.sofka.AuthenticationRequest;
 import co.sofka.JwtAuthenticationManager;
 import co.sofka.JwtService;
-import co.sofka.adapters.MongoUserAdapter;
+import co.sofka.adapters.MongoUserViewAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
@@ -19,8 +19,8 @@ import reactor.core.publisher.Mono;
 public class AppConfig {
 
     @Bean
-    public ReactiveUserDetailsService userDetailsService(MongoUserAdapter mongoUserAdapter) {
-        return email -> mongoUserAdapter.getUserByEmail(new AuthenticationRequest(email))
+    public ReactiveUserDetailsService userDetailsService(MongoUserViewAdapter mongoUserViewAdapter) {
+        return email -> mongoUserViewAdapter.getUserByEmail(new AuthenticationRequest(email))
                 .flatMap(userRequest -> {
                     if (userRequest == null) {
                         return Mono.error(new UsernameNotFoundException("User not found"));

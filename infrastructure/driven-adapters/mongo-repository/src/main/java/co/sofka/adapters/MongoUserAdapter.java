@@ -81,25 +81,4 @@ public class MongoUserAdapter implements UserRepository {
                             .build());
                 });
     }
-
-    @Override
-    public Mono<UserRequest> getUserByEmail(AuthenticationRequest authenticationRequest) {
-        Query query = new Query(Criteria.where("email").is(authenticationRequest.getEmail()));
-
-        return template.findOne(query, UserDocument.class)
-                .flatMap(userDocument -> {
-
-                    if (userDocument == null) {
-                        return Mono.error(new RuntimeException("User not found"));
-                    }
-
-                    return Mono.just(new UserRequest.Builder()
-                            .id(userDocument.getId())
-                            .firstname(userDocument.getFirstName())
-                            .lastname(userDocument.getLastName())
-                            .email(userDocument.getEmail())
-                            .role(userDocument.getRole())
-                            .build());
-                });
-    }
 }

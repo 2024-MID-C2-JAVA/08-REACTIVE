@@ -35,37 +35,7 @@ public class MongoTransactionAdapter implements TransactionRepository {
 
                     userDocument.getCustomer().getAccount().getTransactions().add(transactionDocument);
 
-                    template.save(userDocument);
-
                     return template.save(userDocument).thenReturn(transaction);
                 });
     }
-
-    @Override
-    public Flux<Transaction> getAllTransactions(Transaction transaction) {
-        Query query = new Query(Criteria.where("_id").is(transaction.getId())
-                .and("customer.account_customer.is_deleted").is(false));
-
-        return template.findOne(query, UserDocument.class)
-                .flatMapMany(userDocument -> {
-                    List<Transaction> list = userDocument.getCustomer()
-                            .getAccount()
-                            .getTransactions()
-                            .stream()
-                            .map(transactionDocument -> {
-                                ZoneOffset zoneOffset = ZoneOffset.UTC;
-                                OffsetDateTime offsetDateTime = transactionDocument.getTimeStamp().atOffset(zoneOffset);
-
-                                return new Transaction(
-                                        transactionDocument.getId(),
-                                        transactionDocument.getAmount(),
-                                        transactionDocument.getAmountCost(),
-                                        transactionDocument.getTypeOfTransaction(),
-                                        offsetDateTime
-                                );
-                            }).toList();
-                    return Flux.fromIterable(list);
-                });
-    }
-
 }

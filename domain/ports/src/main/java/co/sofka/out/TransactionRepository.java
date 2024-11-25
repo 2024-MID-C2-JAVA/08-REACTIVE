@@ -6,5 +6,4 @@ import reactor.core.publisher.Mono;
 
 public interface TransactionRepository {
     Mono<Transaction>createTransaction(Transaction transaction);
-    Flux<Transaction>getAllTransactions(Transaction transaction);
 }

@@ -7,12 +7,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+    implementation('org.springframework.boot:spring-boot-starter-amqp:3.3.2')
 
     implementation project(':web-security')
     implementation project(':ports')
     implementation project(':usescases')
     implementation project(':mongo-repository')
+    implementation project(':mongo-views-repository')
     implementation project(':jwt-model')
     implementation project(':web')
     implementation project(':web-security-entry-point')
+    implementation project(':event-bus')
+    implementation project(':entry-point-event-listener')
 }

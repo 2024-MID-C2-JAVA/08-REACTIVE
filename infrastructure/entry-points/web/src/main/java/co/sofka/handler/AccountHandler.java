@@ -2,6 +2,8 @@ package co.sofka.handler;
 
 import co.sofka.Account;
 import co.sofka.RequestMs;
+import co.sofka.appservice.eventsUseCase.CreateAccountCommandUseCaseImpl;
+import co.sofka.commands.CreateAccountCommand;
 import co.sofka.data.account.AccountDto;
 import co.sofka.in.account.CreateAccountUseCase;
 import co.sofka.in.account.DeleteAccountUseCase;
@@ -17,65 +19,25 @@ import reactor.core.publisher.Mono;
 @Component
 public class AccountHandler {
 
-    private final CreateAccountUseCase createAccountUseCase;
-    private final GetAccountByIdUseCase getAccountByIdUseCase;
-    private final DeleteAccountUseCase deleteAccountUseCase;
+    private final CreateAccountCommandUseCaseImpl createAccountCommandUseCase;
 
-    public AccountHandler(CreateAccountUseCase createAccountUseCase, GetAccountByIdUseCase getAccountByIdUseCase, DeleteAccountUseCase deleteAccountUseCase) {
-        this.createAccountUseCase = createAccountUseCase;
-        this.getAccountByIdUseCase = getAccountByIdUseCase;
-        this.deleteAccountUseCase = deleteAccountUseCase;
+    public AccountHandler(CreateAccountCommandUseCaseImpl createAccountCommandUseCase) {
+        this.createAccountCommandUseCase = createAccountCommandUseCase;
     }
 
     public Mono<ServerResponse> createAccount(ServerRequest request) {
-        return request.bodyToMono(new ParameterizedTypeReference<RequestMs<Account>>() {
-                })
-                .flatMap(requestMs -> {
+        return request.bodyToMono(new ParameterizedTypeReference<RequestMs<Account>>() {})
+                .flatMap(requestMs->{
+                    CreateAccountCommand command= new CreateAccountCommand();
+                    command.setCustomerId(requestMs.getDinBody().getCustomerId());
+                    command.setAmount(requestMs.getDinBody().getAmount());
+                    command.setNumber(requestMs.getDinBody().getNumber());
 
-                    Account account = new Account();
-                    account.setNumber(requestMs.getDinBody().getNumber());
-                    account.setAmount(requestMs.getDinBody().getAmount());
-                    account.setCustomerId(requestMs.getDinBody().getCustomerId());
-
-                    return createAccountUseCase.apply(account)
-                            .flatMap(createdAccount -> ServerResponse
+                    return createAccountCommandUseCase.publish(Mono.just(command))
+                            .flatMap(accountCreated->ServerResponse
                                     .status(HttpStatus.CREATED)
                                     .contentType(MediaType.APPLICATION_JSON)
-                                    .bodyValue(createdAccount))
-                            .onErrorResume(error -> ServerResponse
-                                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                    .contentType(MediaType.APPLICATION_JSON)
-                                    .bodyValue("Error creating account: " + error.getMessage()));
-                });
-    }
-
-    public Mono<ServerResponse> deleteAccount(ServerRequest request) {
-        return request.bodyToMono(new ParameterizedTypeReference<RequestMs<AccountDto>>() {})
-                .flatMap(requestMs->{
-                    Account account = new Account();
-                    account.setId(requestMs.getDinBody().getId());
-                    return deleteAccountUseCase.apply(account)
-                            .flatMap(deletedAccount->ServerResponse
-                                    .status(HttpStatus.OK)
-                                    .contentType(MediaType.APPLICATION_JSON)
-                                    .bodyValue(deletedAccount));
-                });
-    }
-
-
-    public Mono<ServerResponse> getAccountById(ServerRequest request) {
-        return request.bodyToMono(new ParameterizedTypeReference<RequestMs<AccountDto>>() {})
-                .flatMap(requestMs->{
-                    Account account2 = new Account();
-                    account2.setId(requestMs.getDinBody().getId());
-                    account2.setAmount(requestMs.getDinBody().getAmount());
-                    account2.setCustomerId(requestMs.getDinBody().getId());
-                    account2.setCreatedAt(requestMs.getDinBody().getCreatedAt());
-                    return getAccountByIdUseCase.apply(account2)
-                            .flatMap(account -> ServerResponse
-                                    .status(HttpStatus.OK)
-                                    .contentType(MediaType.APPLICATION_JSON)
-                                    .bodyValue(account));
+                                    .bodyValue(accountCreated));
                 });
     }
 }
