@@ -13,7 +13,10 @@ import co.sofka.config.TokenByDinHeaders;
 import co.sofka.gateway.ITransactionAccountDetailRepository;
 import co.sofka.middleware.AccountNotExistException;
 import co.sofka.middleware.ErrorDecryptingDataException;
-import co.sofka.usecase.appBank.*;
+import co.sofka.usecase.appBank.IGetAccountByNumberService;
+import co.sofka.usecase.appBank.ISaveAccountService;
+import co.sofka.usecase.appBank.ISaveTransactionAccountDetailService;
+import co.sofka.usecase.appBank.ISaveTransactionService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +44,6 @@ public class RegisterTransactionDepositSucursalHandler {
 
     private final ISaveTransactionAccountDetailService saveTransactionAccountDetailService;
 
-    private final ISaveLogTransactionDetailService saveLogTransactionDetailService;
 
     private final TokenByDinHeaders utils;
 
@@ -110,7 +112,7 @@ public class RegisterTransactionDepositSucursalHandler {
         logEvent.setType(transaction.getTypeTransaction());
 
         try {
-            saveLogTransactionDetailService.save(logEvent);
+//            saveLogTransactionDetailService.save(logEvent);
         } catch (Exception e) {
             logger.error("Error al guardar el log {}",e.getMessage());
         }        //transactionAccountDetailRepository.save(transactionAccountDetail);

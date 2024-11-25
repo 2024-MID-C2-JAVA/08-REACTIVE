@@ -5,19 +5,16 @@ import co.sofka.Customer;
 import co.sofka.command.dto.AccountDTO;
 import co.sofka.command.dto.CustomerDTO;
 import co.sofka.command.dto.request.CustomerSaveDTO;
-import co.sofka.command.dto.request.RequestMs;
-import co.sofka.command.dto.response.DinError;
-import co.sofka.command.dto.response.ResponseMs;
 import co.sofka.config.EncryptionAndDescryption;
 import co.sofka.config.TokenByDinHeaders;
-import co.sofka.middleware.CustomerByUsernameExistException;
-import co.sofka.security.configuration.jwt.JwtUtils;
 import co.sofka.usecase.appBank.IGetAllCustomerService;
 import co.sofka.usecase.appBank.ISaveCustomerService;
+import co.sofka.usecase.appEventBank.ISaveEventCustomerService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
@@ -36,35 +33,21 @@ public class SaveCustumerHandler {
 
     private EncryptionAndDescryption encryptionAndDescryption;
 
-    private final JwtUtils jwtUtils;
 
     private final IGetAllCustomerService serviceAll;
 
 
-    public Mono<ResponseMs<CustomerDTO>> save(RequestMs<CustomerSaveDTO> request) {
+    public Flux<Customer> save(CustomerSaveDTO request) {
 
-        ResponseMs<CustomerDTO> responseMs = new ResponseMs<>();
-        responseMs.setDinHeader(request.getDinHeader());
-        DinError error = new DinError();
 
         Customer customer = new Customer();
-        customer.setUsername(request.getDinBody().getUsername());
-        customer.setPwd(jwtUtils.encryptionPassword(request.getDinBody().getPwd()));
+        customer.setUsername(request.getUsername());
+        customer.setPwd(request.getPwd());
+        customer.setId(request.getId());
 
-        CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setUsername(customer.getUsername());
-        customerDTO.setAccounts(new ArrayList<>());
 
-        serviceAll.getAll().collectList().block().forEach(customer1 -> {
-            if(customer1.getUsername().equals(customer.getUsername())){
-                throw new CustomerByUsernameExistException("Ya existe un Customer con el usuario proporcionado.",request.getDinHeader(),1006);
-            }
-        });
-
-        if (request.getDinBody().getAccounts() != null && !request.getDinBody().getAccounts().isEmpty()) {
-            List<AccountDTO> accounts = request.getDinBody().getAccounts();
-            customerDTO.setAccounts(accounts);
-
+        if (request.getAccounts() != null && !request.getAccounts().isEmpty()) {
+            List<AccountDTO> accounts = request.getAccounts();
             if (accounts != null && !accounts.isEmpty()) {
                 List<Account> accountsAll = new ArrayList<>();
                accounts.forEach(accountDTO -> {
@@ -78,19 +61,10 @@ public class SaveCustumerHandler {
                 customer.setAccounts(accountsAll);
             }
 
-
         }
 
+        logger.info("Customer to save: {}", customer);
 
-        service.save(customer);
-
-
-
-        responseMs.setDinBody(customerDTO);
-
-        responseMs.setDinError(error);
-
-
-        return Mono.just(responseMs);
+        return service.apply(customer);
     }
 }

@@ -8,9 +8,13 @@ import java.util.List;
 @Data
 public class CustomerSaveDTO {
 
+    private String id;
+
     private String username;
 
     private String pwd;
+
+    private String rol;
 
     private List<AccountDTO> accounts;
 

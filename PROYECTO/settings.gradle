@@ -6,9 +6,11 @@ include ':use-cases'
 include ':mongo-repository'
 include ':web'
 include ':web-jwt'
+include ':web-event-persisten'
 include ':utils'
 include ':security-jwt'
 include ':rabbit-repository'
+include ':mongo-view-repository'
 
 include ':app-service-rabbit'
 include ':web-test-rabbit'
@@ -17,7 +19,9 @@ findProject(':app-service').projectDir = file('./applications/app-service')
 findProject(':model').projectDir = file('./domain/model')
 findProject(':use-cases').projectDir = file('./domain/usecases')
 findProject(':web').projectDir = file('./infrastructure/entry-points/web')
+findProject(':web-event-persisten').projectDir = file('./infrastructure/entry-points/web-event-persisten')
 findProject(':mongo-repository').projectDir = file('./infrastructure/driven-adapters/mongo-repository')
+findProject(':mongo-view-repository').projectDir = file('./infrastructure/driven-adapters/mongo-view-repository')
 findProject(':utils').projectDir = file('./infrastructure/helper/utils')
 findProject(':security-jwt').projectDir = file('./infrastructure/helper/security-jwt')
 findProject(':web-jwt').projectDir = file('./infrastructure/entry-points/web-jwt')

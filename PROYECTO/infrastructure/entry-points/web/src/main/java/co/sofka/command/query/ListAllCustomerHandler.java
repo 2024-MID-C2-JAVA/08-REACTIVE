@@ -39,49 +39,51 @@ public class ListAllCustomerHandler {
         DinError error = new DinError();
 
 
+        Mono<List<CustomerDTO>> listMono = service.getAll().map(customer -> {
+            logger.info("Customer: " + customer.getUsername());
 
-            List<Customer> all = service.getAll().collectList().block();
+            CustomerDTO customerDTO = new CustomerDTO();
+            customerDTO.setUsername(customer.getUsername());
+            customerDTO.setRol(customer.getRol());
 
-            List<CustomerDTO> response=new ArrayList<>();
+            if (customer.getAccounts() != null && !customer.getAccounts().isEmpty()) {
+                List<AccountDTO> list = customer.getAccounts().stream().map(account1 -> {
+                    AccountDTO accountDTO = new AccountDTO();
+                    logger.info("Account number: " + account1.getNumber());
 
-            response=all.stream().map(account -> {
-                CustomerDTO customerDTO = new CustomerDTO();
-                customerDTO.setUsername(account.getUsername());
+                    String LlaveSimetrica = "";
+                    try {
+                        LlaveSimetrica = utils.decode(request.getDinHeader().getLlaveSimetrica());
+                    } catch (Exception e) {
+                        throw new ErrorDecryptingDataException("Error al desencriptar la LlaveSimetrica.", request.getDinHeader(), 1001);
+                    }
 
-                if(account.getAccounts()!=null && !account.getAccounts().isEmpty()){
-                    List<AccountDTO> list = account.getAccounts().stream().map(account1 -> {
-                        AccountDTO accountDTO = new AccountDTO();
-                        logger.info("Account number: "+account1.getNumber());
+                    String vectorInicializacion = "";
+                    try {
+                        vectorInicializacion = utils.decode(request.getDinHeader().getVectorInicializacion());
+                    } catch (Exception e) {
+                        throw new ErrorDecryptingDataException("Error al desencriptar la vectorInicializacion.", request.getDinHeader(), 1001);
+                    }
 
-                        String LlaveSimetrica = "";
-                        try{
-                            LlaveSimetrica = utils.decode(request.getDinHeader().getLlaveSimetrica());
-                        } catch (Exception e) {
-                            throw new ErrorDecryptingDataException("Error al desencriptar la LlaveSimetrica.", request.getDinHeader(),1001);
-                        }
-
-                        String vectorInicializacion = "";
-                        try{
-                            vectorInicializacion = utils.decode(request.getDinHeader().getVectorInicializacion());
-                        } catch (Exception e) {
-                            throw new ErrorDecryptingDataException("Error al desencriptar la vectorInicializacion.", request.getDinHeader(),1001);
-                        }
-
-                        accountDTO.setNumber(encryptionAndDescryption.encriptAes(account1.getNumber(),vectorInicializacion,LlaveSimetrica));
-                        accountDTO.setAmount(account1.getAmount());
-                        return accountDTO;
-                    }).toList();
-                    customerDTO.setAccounts(list);
-                }
-
-                return customerDTO;
-            }).toList();
-
-            responseMs.setDinBody(response);
-
-        responseMs.setDinError(error);
+                    accountDTO.setNumber(encryptionAndDescryption.encriptAes(account1.getNumber(), vectorInicializacion, LlaveSimetrica));
+                    accountDTO.setAmount(account1.getAmount());
+                    return accountDTO;
+                }).toList();
+                customerDTO.setAccounts(list);
+            }
 
 
-        return Mono.just(responseMs);
+            return customerDTO;
+        }).collectList();
+
+
+        Mono<ResponseMs<List<CustomerDTO>>> responseMsMono = listMono.flatMap(list -> {
+            responseMs.setDinBody(list);
+            return Mono.just(responseMs);
+        });
+
+
+
+        return responseMsMono;
     }
 }

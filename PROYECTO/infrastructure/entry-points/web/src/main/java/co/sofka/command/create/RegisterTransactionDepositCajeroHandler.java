@@ -15,7 +15,6 @@ import co.sofka.middleware.AccountNotExistException;
 import co.sofka.middleware.ErrorDecryptingDataException;
 import co.sofka.usecase.appBank.IGetAccountByNumberService;
 import co.sofka.usecase.appBank.ISaveAccountService;
-import co.sofka.usecase.appBank.ISaveLogTransactionDetailService;
 import co.sofka.usecase.appBank.ISaveTransactionService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -46,7 +45,6 @@ public class RegisterTransactionDepositCajeroHandler {
 
     private EncryptionAndDescryption encryptionAndDescryption;
 
-    private final ISaveLogTransactionDetailService saveLogTransactionDetailService;
 
     public Mono<ResponseMs<Transaction>> apply(RequestMs<BankTransactionDepositCajero> request) {
 
@@ -116,7 +114,7 @@ public class RegisterTransactionDepositCajeroHandler {
         logEvent.setType(transaction.getTypeTransaction());
 
         try {
-            saveLogTransactionDetailService.save(logEvent);
+//            saveLogTransactionDetailService.save(logEvent);
         } catch (Exception e) {
             logger.error("Error al guardar el log {}",e.getMessage());
         }

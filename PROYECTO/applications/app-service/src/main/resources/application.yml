@@ -77,7 +77,15 @@ general:
     rabbitmq:
       exchange: "bankExchange"
       queue: "bankQueue"
+      queueCustomer: "CustomerQueue"
+      queueTransactionDepositSucursal: "TransactionDepositSucursal"
+      queueTransactionDepositCajero: "TransactionDepositCajero"
+      queueTransactionDepositTransferencia: "TransactionDepositTransferencia"
       routingKey: "bankRoutingKey"
+      routingCustomerKey: "CustomerRoutingKey"
+      routingTransactionDepositSucursalKey: "TransactionDepositSucursalKey"
+      routingTransactionDepositCajeroKey: "TransactionDepositCajeroKey"
+      routingTransactionDepositTransferenciaKey: "TransactionDepositTransferenciaKey"
     constans:
       id: "bancoAPIJWT"
       authorities: "authorities"

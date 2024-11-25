@@ -1,7 +1,7 @@
 dependencies {
     implementation project(':use-cases')
     implementation project(':mongo-repository')
-    implementation project(':web')
+    implementation project(':web-event-persisten')
     implementation project(':web-jwt')
     implementation project(':rabbit-repository')
 
@@ -12,7 +12,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.6.0'
+//    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webflux-api', version: '2.6.0'
 
-//    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
 }

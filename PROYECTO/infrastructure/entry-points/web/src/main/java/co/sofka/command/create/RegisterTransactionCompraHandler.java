@@ -16,7 +16,6 @@ import co.sofka.middleware.AccountNotHaveBalanceException;
 import co.sofka.middleware.ErrorDecryptingDataException;
 import co.sofka.usecase.appBank.IGetAccountByNumberService;
 import co.sofka.usecase.appBank.ISaveAccountService;
-import co.sofka.usecase.appBank.ISaveLogTransactionDetailService;
 import co.sofka.usecase.appBank.ISaveTransactionService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -47,7 +46,6 @@ public class RegisterTransactionCompraHandler {
 
     private EncryptionAndDescryption encryptionAndDescryption;
 
-    private final ISaveLogTransactionDetailService saveLogTransactionDetailService;
 
 
 
@@ -125,7 +123,7 @@ public class RegisterTransactionCompraHandler {
         logEvent.setType(transaction.getTypeTransaction());
 
         try {
-            saveLogTransactionDetailService.save(logEvent);
+//            saveLogTransactionDetailService.save(logEvent);
         } catch (Exception e) {
             logger.error("Error al guardar el log {}",e.getMessage());
         }
