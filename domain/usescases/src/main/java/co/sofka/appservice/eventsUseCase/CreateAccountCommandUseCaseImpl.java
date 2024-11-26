@@ -4,16 +4,16 @@ import co.sofka.commands.CreateAccountCommand;
 import co.sofka.events.AccountCreatedEvent;
 import co.sofka.events.DomainEvent;
 import co.sofka.rabbitMq.CreateAccountEventUseCase;
-import co.sofka.rabbitMq.bus.AccountEventBus;
 import co.sofka.rabbitMq.EventRepository;
+import co.sofka.rabbitMq.bus.EventBus;
 import reactor.core.publisher.Mono;
 
 public class CreateAccountCommandUseCaseImpl implements CreateAccountEventUseCase {
 
-    private final AccountEventBus accountEventBus;
+    private final EventBus accountEventBus;
     private final EventRepository eventRepository;
 
-    public CreateAccountCommandUseCaseImpl(AccountEventBus accountEventBus, EventRepository eventRepository) {
+    public CreateAccountCommandUseCaseImpl(EventBus accountEventBus, EventRepository eventRepository) {
         this.accountEventBus = accountEventBus;
         this.eventRepository = eventRepository;
     }
@@ -33,7 +33,7 @@ public class CreateAccountCommandUseCaseImpl implements CreateAccountEventUseCas
             domainEvent.setBody(createAccountCommand.toString());
 
             return eventRepository.save(domainEvent)
-                    .flatMap(event-> accountEventBus.publishEvent(accountCreatedEvent)
+                    .flatMap(event-> accountEventBus.publishAccountEvent(accountCreatedEvent)
                             .thenReturn(event));
         });
     }

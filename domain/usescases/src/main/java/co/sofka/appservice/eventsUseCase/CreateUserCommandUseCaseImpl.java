@@ -5,15 +5,15 @@ import co.sofka.events.CreateUserEvent;
 import co.sofka.events.DomainEvent;
 import co.sofka.rabbitMq.CreateUserEventUseCase;
 import co.sofka.rabbitMq.EventRepository;
-import co.sofka.rabbitMq.bus.UserEventBus;
+import co.sofka.rabbitMq.bus.EventBus;
 import reactor.core.publisher.Mono;
 
 public class CreateUserCommandUseCaseImpl implements CreateUserEventUseCase {
 
-    private final UserEventBus userEventBus;
+    private final EventBus userEventBus;
     private final EventRepository eventRepository;
 
-    public CreateUserCommandUseCaseImpl(UserEventBus userEventBus, EventRepository eventRepository) {
+    public CreateUserCommandUseCaseImpl(EventBus userEventBus, EventRepository eventRepository) {
         this.userEventBus = userEventBus;
         this.eventRepository = eventRepository;
     }
@@ -36,7 +36,7 @@ public class CreateUserCommandUseCaseImpl implements CreateUserEventUseCase {
             domainEvent.setBody(command.toString());
 
             return eventRepository.save(domainEvent)
-                    .flatMap(event->userEventBus.publishEvent(createUserEvent)
+                    .flatMap(event->userEventBus.publishUserEvent(createUserEvent)
                             .thenReturn(createUserEvent));
         });
     }

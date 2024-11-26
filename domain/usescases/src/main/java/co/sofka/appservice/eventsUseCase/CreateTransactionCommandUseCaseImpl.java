@@ -5,15 +5,15 @@ import co.sofka.events.DomainEvent;
 import co.sofka.events.TransactionCreatedEvent;
 import co.sofka.rabbitMq.CreateTransactionEventUseCase;
 import co.sofka.rabbitMq.EventRepository;
-import co.sofka.rabbitMq.bus.TransactionEventBus;
+import co.sofka.rabbitMq.bus.EventBus;
 import reactor.core.publisher.Mono;
 
 public class CreateTransactionCommandUseCaseImpl implements CreateTransactionEventUseCase {
 
     private final EventRepository eventRepository;
-    private final TransactionEventBus transactionEventBus;
+    private final EventBus transactionEventBus;
 
-    public CreateTransactionCommandUseCaseImpl(EventRepository eventRepository, TransactionEventBus transactionEventBus) {
+    public CreateTransactionCommandUseCaseImpl(EventRepository eventRepository, EventBus transactionEventBus) {
         this.eventRepository = eventRepository;
         this.transactionEventBus = transactionEventBus;
     }
@@ -36,7 +36,7 @@ public class CreateTransactionCommandUseCaseImpl implements CreateTransactionEve
 
                     return eventRepository
                             .save(domainEvent)
-                            .flatMap(eventSaved->transactionEventBus.publishEvent(transactionCreatedEvent));
+                            .flatMap(eventSaved->transactionEventBus.publishTransactionEvent(transactionCreatedEvent));
                 });
     }
 }
