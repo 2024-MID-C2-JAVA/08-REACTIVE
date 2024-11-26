@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
-public class CreateBankAccountUseCase {
+public class UpdateViewAccountAddedUseCase {
 
     private final AccountRepository bankAccountRepository;
     private final CustomerRepository customerRepository;
 
-    public CreateBankAccountUseCase(AccountRepository bankAccountRepository, CustomerRepository customerRepository) {
+    public UpdateViewAccountAddedUseCase(AccountRepository bankAccountRepository, CustomerRepository customerRepository) {
         this.bankAccountRepository = bankAccountRepository;
         this.customerRepository = customerRepository;
     }

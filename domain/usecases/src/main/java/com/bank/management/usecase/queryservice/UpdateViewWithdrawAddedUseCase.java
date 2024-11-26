@@ -11,19 +11,18 @@ import com.bank.management.gateway.AccountRepository;
 import com.bank.management.gateway.CustomerRepository;
 import com.bank.management.gateway.TransactionRepository;
 import com.bank.management.transaction.Transaction;
-import com.bank.management.transaction.Withdrawal;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 
-public class ProcessWithdrawUseCase {
+public class UpdateViewWithdrawAddedUseCase {
 
 
     private final AccountRepository bankAccountRepository;
     private final CustomerRepository customerRepository;
     private final TransactionRepository transactionRepository;
 
-    public ProcessWithdrawUseCase(AccountRepository bankAccountRepository, CustomerRepository customerRepository, TransactionRepository transactionRepository) {
+    public UpdateViewWithdrawAddedUseCase(AccountRepository bankAccountRepository, CustomerRepository customerRepository, TransactionRepository transactionRepository) {
         this.bankAccountRepository = bankAccountRepository;
         this.customerRepository = customerRepository;
         this.transactionRepository = transactionRepository;

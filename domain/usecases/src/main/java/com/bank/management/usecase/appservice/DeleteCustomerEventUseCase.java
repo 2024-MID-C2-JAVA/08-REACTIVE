@@ -28,7 +28,7 @@ public class DeleteCustomerEventUseCase {
     public Mono<DomainEvent>apply(DeleteCustomerCommand command) {
         return serializeCommand(command)
                 .map(serializedCommand -> {
-                    DomainEvent event = new DomainEvent("DeleteCreatedEvent", serializedCommand);
+                    DomainEvent event = new DomainEvent("DeleteCustomerEvent", serializedCommand);
                     event.setAggregateRootId(command.getAggregateRootId());
                     return event;
                 })

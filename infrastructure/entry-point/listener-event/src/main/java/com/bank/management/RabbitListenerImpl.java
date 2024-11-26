@@ -14,23 +14,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class RabbitListenerImpl implements EventBusListener {
 
-    private final CreateUserUseCase createUserUseCase;
-    private final CreateBankAccountUseCase createBankAccountUseCase;
-    private final DeleteBankAccountUseCase deleteBankAccountUseCase;
-    private final CreateCustomerUseCase createCustomerUseCase;
-    private final DeleteCustomerUseCase deleteCustomerUseCase;
-    private final ProcessDepositUseCase processDepositUseCase;
-    private final ProcessPurchaseWithCardUseCase processPurchaseCommand;
-    private final ProcessWithdrawUseCase processWithdrawalCommand;
+    private final UpdateViewUserAddedUseCase updateViewUserAddedUseCase;
+    private final UpdateViewAccountAddedUseCase updateViewAccountAddedUseCase;
+    private final UpdateViewAccountDeletedUseCase updateViewAccountDeletedUseCase;
+    private final UpdateViewCustomerAddedUseCase updateViewCustomerAddedUseCase;
+    private final UpdateViewCustomerDeletedUseCase updateViewCustomerDeletedUseCase;
+    private final UpdateViewDepositAddedUseCase updateViewDepositAddedUseCase;
+    private final UpdateViewPurchaseAddedWithCardUseCase processPurchaseCommand;
+    private final UpdateViewWithdrawAddedUseCase processWithdrawalCommand;
     private final ObjectMapper objectMapper;
 
-    public RabbitListenerImpl(CreateUserUseCase createUserUseCase, CreateBankAccountUseCase createBankAccountUseCase, DeleteBankAccountUseCase deleteBankAccountUseCase, CreateCustomerUseCase createCustomerUseCase, DeleteCustomerUseCase deleteCustomerUseCase, ProcessDepositUseCase processDepositUseCase, ProcessPurchaseWithCardUseCase processPurchaseCommand, ProcessWithdrawUseCase processWithdrawalCommand, ObjectMapper objectMapper) {
-        this.createUserUseCase = createUserUseCase;
-        this.createBankAccountUseCase = createBankAccountUseCase;
-        this.deleteBankAccountUseCase = deleteBankAccountUseCase;
-        this.createCustomerUseCase = createCustomerUseCase;
-        this.deleteCustomerUseCase = deleteCustomerUseCase;
-        this.processDepositUseCase = processDepositUseCase;
+    public RabbitListenerImpl(UpdateViewUserAddedUseCase updateViewUserAddedUseCase, UpdateViewAccountAddedUseCase updateViewAccountAddedUseCase, UpdateViewAccountDeletedUseCase updateViewAccountDeletedUseCase, UpdateViewCustomerAddedUseCase updateViewCustomerAddedUseCase, UpdateViewCustomerDeletedUseCase updateViewCustomerDeletedUseCase, UpdateViewDepositAddedUseCase updateViewDepositAddedUseCase, UpdateViewPurchaseAddedWithCardUseCase processPurchaseCommand, UpdateViewWithdrawAddedUseCase processWithdrawalCommand, ObjectMapper objectMapper) {
+        this.updateViewUserAddedUseCase = updateViewUserAddedUseCase;
+        this.updateViewAccountAddedUseCase = updateViewAccountAddedUseCase;
+        this.updateViewAccountDeletedUseCase = updateViewAccountDeletedUseCase;
+        this.updateViewCustomerAddedUseCase = updateViewCustomerAddedUseCase;
+        this.updateViewCustomerDeletedUseCase = updateViewCustomerDeletedUseCase;
+        this.updateViewDepositAddedUseCase = updateViewDepositAddedUseCase;
         this.processPurchaseCommand = processPurchaseCommand;
         this.processWithdrawalCommand = processWithdrawalCommand;
         this.objectMapper = objectMapper;
@@ -42,7 +42,7 @@ public class RabbitListenerImpl implements EventBusListener {
         try {
             CreateUserCommand command = objectMapper.readValue(event.body(), CreateUserCommand.class);
 
-            createUserUseCase.apply(command).subscribe();
+            updateViewUserAddedUseCase.apply(command).subscribe();
 
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException("Invalid event format", e);
@@ -59,7 +59,7 @@ public class RabbitListenerImpl implements EventBusListener {
             Customer customer = new Customer.Builder().id(event.aggregateRootId()).build();
             Account account = new Account.Builder().amount(command.getAmount()).build();
 
-            createBankAccountUseCase.apply(account, customer).subscribe();
+            updateViewAccountAddedUseCase.apply(account, customer).subscribe();
 
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException("Invalid event format", e);
@@ -73,7 +73,7 @@ public class RabbitListenerImpl implements EventBusListener {
     public void deleteBankAccountEvent(DomainEvent event) {
         try {
             DeleteBankAccountCommand command = objectMapper.readValue(event.body(),DeleteBankAccountCommand.class);
-            deleteBankAccountUseCase.apply(command.getAggregateRootId()).subscribe();
+            updateViewAccountDeletedUseCase.apply(command.getAggregateRootId()).subscribe();
 
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException("Invalid event format", e);
@@ -87,7 +87,7 @@ public class RabbitListenerImpl implements EventBusListener {
     public void deleteCustomerEvent(DomainEvent event) {
         try {
             DeleteCustomerCommand command = objectMapper.readValue(event.body(), DeleteCustomerCommand.class);
-            deleteCustomerUseCase.apply(command.getAggregateRootId()).subscribe();
+            updateViewCustomerDeletedUseCase.apply(command.getAggregateRootId()).subscribe();
 
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException("Invalid event format", e);
@@ -108,7 +108,7 @@ public class RabbitListenerImpl implements EventBusListener {
                                     .name(command.getName())
                                             .build();
 
-            createCustomerUseCase.apply(customer).subscribe();
+            updateViewCustomerAddedUseCase.apply(customer).subscribe();
 
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException("Invalid event format", e);
@@ -122,7 +122,7 @@ public class RabbitListenerImpl implements EventBusListener {
     public void deposit(DomainEvent event) {
         try {
             ProcessDepositCommand command = objectMapper.readValue(event.body(), ProcessDepositCommand.class);
-            processDepositUseCase.processDeposit(command).subscribe();
+            updateViewDepositAddedUseCase.processDeposit(command).subscribe();
 
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException("Invalid event format", e);

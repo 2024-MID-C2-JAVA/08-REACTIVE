@@ -76,12 +76,12 @@ public class RabbitAdapter implements EventBus {
 
     @Override
     public void deleteAccountEvent(DomainEvent event) {
-        rabbitTemplate.convertAndSend(exchangeName, routingKeyDeleteAccount);
+        rabbitTemplate.convertAndSend(exchangeName, routingKeyDeleteAccount, event);
     }
 
     @Override
     public void deleteCustomerEvent(DomainEvent event) {
-        rabbitTemplate.convertAndSend(exchangeName, routingKeyDeleteCustomer);
+        rabbitTemplate.convertAndSend(exchangeName, routingKeyDeleteCustomer, event);
     }
 
     @Override

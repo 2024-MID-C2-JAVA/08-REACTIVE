@@ -3,7 +3,6 @@ package com.bank.management.usecase.queryservice;
 import com.bank.management.command.ProcessPurchaseCommand;
 import com.bank.management.customer.Account;
 import com.bank.management.customer.Customer;
-import com.bank.management.transaction.Purchase;
 import com.bank.management.transaction.Transaction;
 import com.bank.management.enums.PurchaseType;
 import com.bank.management.exception.BankAccountNotFoundException;
@@ -17,13 +16,13 @@ import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 
-public class ProcessPurchaseWithCardUseCase {
+public class UpdateViewPurchaseAddedWithCardUseCase {
 
     private final AccountRepository bankAccountRepository;
     private final TransactionRepository transactionRepository;
     private final CustomerRepository customerRepository;
 
-    public ProcessPurchaseWithCardUseCase(AccountRepository bankAccountRepository, TransactionRepository transactionRepository, CustomerRepository customerRepository) {
+    public UpdateViewPurchaseAddedWithCardUseCase(AccountRepository bankAccountRepository, TransactionRepository transactionRepository, CustomerRepository customerRepository) {
         this.bankAccountRepository = bankAccountRepository;
         this.transactionRepository = transactionRepository;
         this.customerRepository = customerRepository;

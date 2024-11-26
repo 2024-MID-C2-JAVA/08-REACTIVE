@@ -16,13 +16,13 @@ import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 
-public class ProcessDepositUseCase {
+public class UpdateViewDepositAddedUseCase {
 
     private final AccountRepository bankAccountRepository;
     private final CustomerRepository customerRepository;
     private final TransactionRepository transactionRepository;
 
-    public ProcessDepositUseCase(AccountRepository bankAccountRepository, CustomerRepository customerRepository, TransactionRepository transactionRepository) {
+    public UpdateViewDepositAddedUseCase(AccountRepository bankAccountRepository, CustomerRepository customerRepository, TransactionRepository transactionRepository) {
         this.bankAccountRepository = bankAccountRepository;
         this.customerRepository = customerRepository;
         this.transactionRepository = transactionRepository;

@@ -4,11 +4,11 @@ import com.bank.management.exception.CustomerNotFoundException;
 import com.bank.management.gateway.CustomerRepository;
 import reactor.core.publisher.Mono;
 
-public class DeleteCustomerUseCase {
+public class UpdateViewCustomerDeletedUseCase {
 
     private final CustomerRepository customerRepository;
 
-    public DeleteCustomerUseCase(CustomerRepository customerRepository) {
+    public UpdateViewCustomerDeletedUseCase(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 

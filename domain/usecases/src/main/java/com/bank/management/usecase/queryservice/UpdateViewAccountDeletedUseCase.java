@@ -5,11 +5,11 @@ import com.bank.management.gateway.AccountRepository;
 import reactor.core.publisher.Mono;
 
 
-public class DeleteBankAccountUseCase {
+public class UpdateViewAccountDeletedUseCase {
 
     private final AccountRepository accountRepository;
 
-    public DeleteBankAccountUseCase(AccountRepository bankAccountRepository) {
+    public UpdateViewAccountDeletedUseCase(AccountRepository bankAccountRepository) {
         this.accountRepository = bankAccountRepository;
     }
 

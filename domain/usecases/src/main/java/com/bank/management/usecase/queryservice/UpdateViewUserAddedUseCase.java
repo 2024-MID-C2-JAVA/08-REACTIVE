@@ -6,12 +6,12 @@ import com.bank.management.customer.User;
 import com.bank.management.gateway.UserRepository;
 import reactor.core.publisher.Mono;
 
-public class CreateUserUseCase {
+public class UpdateViewUserAddedUseCase {
 
     private final UserRepository userRepository;
 
 
-    public CreateUserUseCase(UserRepository userRepository) {
+    public UpdateViewUserAddedUseCase(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

@@ -6,10 +6,10 @@ import java.util.Objects;
 
 public class CreateCustomerCommand extends Command {
 
-    private final String aggregateRootId;
-    private final String username;
-    private final String name;
-    private final String lastname;
+    private String aggregateRootId;
+    private String username;
+    private String name;
+    private String lastname;
 
     public CreateCustomerCommand(String aggregateRootId, String username, String name, String lastname) {
         this.aggregateRootId = Objects.requireNonNull(aggregateRootId, "AggregateRootId cannot be null");
@@ -18,6 +18,8 @@ public class CreateCustomerCommand extends Command {
         this.lastname = Objects.requireNonNull(lastname, "Lastname cannot be null");
     }
 
+    public CreateCustomerCommand() {
+    }
     public String getAggregateRootId() {
         return aggregateRootId;
     }
