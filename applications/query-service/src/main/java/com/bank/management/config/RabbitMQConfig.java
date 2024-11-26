@@ -18,6 +18,15 @@ public class RabbitMQConfig {
     @Value("${rabbitmq.queue.name.createAccount}")
     private String queueNameCreateAccount;
 
+    @Value("${rabbitmq.queue.name.deleteAccount}")
+    private String queueNameDeleteAccount;
+
+    @Value("${rabbitmq.queue.name.createCustomer}")
+    private String queueNameCreateCustomer;
+
+    @Value("${rabbitmq.queue.name.deleteCustomer}")
+    private String queueNameDeleteCustomer;
+
     @Value("${rabbitmq.queue.name.deposit}")
     private String queueNameDeposit;
 
@@ -27,7 +36,6 @@ public class RabbitMQConfig {
     @Value("${rabbitmq.queue.name.purchase}")
     private String queueNamePurchase;
 
-
     @Bean
     public String queueNameCreateUser() {
         return queueNameCreateUser;
@@ -36,6 +44,21 @@ public class RabbitMQConfig {
     @Bean
     public String queueNameCreateAccount() {
         return queueNameCreateAccount;
+    }
+
+    @Bean
+    public String queueNameDeleteCustomer() {
+        return queueNameDeleteCustomer;
+    }
+
+    @Bean
+    public String queueNameCreateCustomer() {
+        return queueNameCreateCustomer;
+    }
+
+    @Bean
+    public String queueNameDeleteAccount() {
+        return queueNameDeleteAccount;
     }
 
     @Bean

@@ -1,4 +1,4 @@
-package com.bank.management.usecase.appservice;
+package com.bank.management.usecase.queryservice;
 
 import com.bank.management.customer.Customer;
 import com.bank.management.exception.CustomerNotFoundException;

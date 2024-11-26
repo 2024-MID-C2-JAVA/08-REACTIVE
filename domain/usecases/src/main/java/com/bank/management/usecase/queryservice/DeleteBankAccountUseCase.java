@@ -1,4 +1,4 @@
-package com.bank.management.usecase.appservice;
+package com.bank.management.usecase.queryservice;
 
 import com.bank.management.exception.BankAccountNotFoundException;
 import com.bank.management.gateway.AccountRepository;

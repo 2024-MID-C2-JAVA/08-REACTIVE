@@ -1,10 +1,10 @@
-package com.bank.management.usecase.appservice;
+package com.bank.management.usecase.queryservice;
 
 import com.bank.management.exception.CustomerNotFoundException;
 import com.bank.management.gateway.CustomerRepository;
 import reactor.core.publisher.Mono;
 
-public class DeleteCustomerUseCase{
+public class DeleteCustomerUseCase {
 
     private final CustomerRepository customerRepository;
 

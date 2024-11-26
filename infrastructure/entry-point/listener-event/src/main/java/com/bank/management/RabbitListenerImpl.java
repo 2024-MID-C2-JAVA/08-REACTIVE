@@ -16,14 +16,20 @@ public class RabbitListenerImpl implements EventBusListener {
 
     private final CreateUserUseCase createUserUseCase;
     private final CreateBankAccountUseCase createBankAccountUseCase;
+    private final DeleteBankAccountUseCase deleteBankAccountUseCase;
+    private final CreateCustomerUseCase createCustomerUseCase;
+    private final DeleteCustomerUseCase deleteCustomerUseCase;
     private final ProcessDepositUseCase processDepositUseCase;
     private final ProcessPurchaseWithCardUseCase processPurchaseCommand;
     private final ProcessWithdrawUseCase processWithdrawalCommand;
     private final ObjectMapper objectMapper;
 
-    public RabbitListenerImpl(CreateUserUseCase createUserUseCase, CreateBankAccountUseCase createBankAccountUseCase, ProcessDepositUseCase processDepositUseCase, ProcessPurchaseWithCardUseCase processPurchaseCommand, ProcessWithdrawUseCase processWithdrawalCommand, ObjectMapper objectMapper) {
+    public RabbitListenerImpl(CreateUserUseCase createUserUseCase, CreateBankAccountUseCase createBankAccountUseCase, DeleteBankAccountUseCase deleteBankAccountUseCase, CreateCustomerUseCase createCustomerUseCase, DeleteCustomerUseCase deleteCustomerUseCase, ProcessDepositUseCase processDepositUseCase, ProcessPurchaseWithCardUseCase processPurchaseCommand, ProcessWithdrawUseCase processWithdrawalCommand, ObjectMapper objectMapper) {
         this.createUserUseCase = createUserUseCase;
         this.createBankAccountUseCase = createBankAccountUseCase;
+        this.deleteBankAccountUseCase = deleteBankAccountUseCase;
+        this.createCustomerUseCase = createCustomerUseCase;
+        this.deleteCustomerUseCase = deleteCustomerUseCase;
         this.processDepositUseCase = processDepositUseCase;
         this.processPurchaseCommand = processPurchaseCommand;
         this.processWithdrawalCommand = processWithdrawalCommand;
@@ -54,6 +60,55 @@ public class RabbitListenerImpl implements EventBusListener {
             Account account = new Account.Builder().amount(command.getAmount()).build();
 
             createBankAccountUseCase.apply(account, customer).subscribe();
+
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException("Invalid event format", e);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
+    }
+
+    @Override
+    @RabbitListener(queues = "#{@queueNameDeleteAccount}")
+    public void deleteBankAccountEvent(DomainEvent event) {
+        try {
+            DeleteBankAccountCommand command = objectMapper.readValue(event.body(),DeleteBankAccountCommand.class);
+            deleteBankAccountUseCase.apply(command.getAggregateRootId()).subscribe();
+
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException("Invalid event format", e);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
+    }
+
+    @Override
+    @RabbitListener(queues = "#{@queueNameDeleteCustomer}")
+    public void deleteCustomerEvent(DomainEvent event) {
+        try {
+            DeleteCustomerCommand command = objectMapper.readValue(event.body(), DeleteCustomerCommand.class);
+            deleteCustomerUseCase.apply(command.getAggregateRootId()).subscribe();
+
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException("Invalid event format", e);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
+    }
+
+    @Override
+    @RabbitListener(queues = "#{@queueNameCreateCustomer}")
+    public void createCustomerEvent(DomainEvent event) {
+        try {
+            CreateCustomerCommand command = objectMapper.readValue(event.body(), CreateCustomerCommand.class);
+
+            Customer customer = new Customer.Builder()
+                    .username(command.getUsername())
+                            .lastname(command.getLastname())
+                                    .name(command.getName())
+                                            .build();
+
+            createCustomerUseCase.apply(customer).subscribe();
 
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException("Invalid event format", e);

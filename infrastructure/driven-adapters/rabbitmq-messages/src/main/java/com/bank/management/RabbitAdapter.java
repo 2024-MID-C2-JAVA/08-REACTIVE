@@ -15,9 +15,17 @@ public class RabbitAdapter implements EventBus {
     @Value("${rabbitmq.routing.key.createUser}")
     private String routingKeyCreateUser;
 
-
     @Value("${rabbitmq.routing.key.createAccount}")
     private String routingKeyCreateAccount;
+
+    @Value("${rabbitmq.routing.key.deleteAccount}")
+    private String routingKeyDeleteAccount;
+
+    @Value("${rabbitmq.routing.key.createCustomer}")
+    private String routingKeyCreateCustomer;
+
+    @Value("${rabbitmq.routing.key.deleteCustomer}")
+    private String routingKeyDeleteCustomer;
 
     @Value("${rabbitmq.routing.key.deposit}")
     private String routingKeyDeposit;
@@ -64,6 +72,21 @@ public class RabbitAdapter implements EventBus {
     @Override
     public void purchaseEvent(DomainEvent event) {
         rabbitTemplate.convertAndSend(exchangeName, routingKeyPurchase, event);
+    }
+
+    @Override
+    public void deleteAccountEvent(DomainEvent event) {
+        rabbitTemplate.convertAndSend(exchangeName, routingKeyDeleteAccount);
+    }
+
+    @Override
+    public void deleteCustomerEvent(DomainEvent event) {
+        rabbitTemplate.convertAndSend(exchangeName, routingKeyDeleteCustomer);
+    }
+
+    @Override
+    public void createCustomerEvent(DomainEvent event) {
+        rabbitTemplate.convertAndSend(exchangeName, routingKeyCreateCustomer, event);
     }
 
 

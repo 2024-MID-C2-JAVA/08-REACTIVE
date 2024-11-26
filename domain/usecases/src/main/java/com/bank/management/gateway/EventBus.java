@@ -8,4 +8,7 @@ public interface EventBus {
     void depositEvent(DomainEvent event);
     void withdrawEvent(DomainEvent event);
     void purchaseEvent(DomainEvent event);;
+    void deleteAccountEvent(DomainEvent event);
+    void deleteCustomerEvent(DomainEvent event);
+    void createCustomerEvent(DomainEvent event);
 }

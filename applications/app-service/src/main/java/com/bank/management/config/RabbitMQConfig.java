@@ -27,6 +27,21 @@ public class RabbitMQConfig {
     @Value("${rabbitmq.routing.key.createAccount}")
     private String routingKeyCreateAccount;
 
+    @Value("${rabbitmq.queue.name.deleteAccount}")
+    private String queueNameDeleteAccount;
+    @Value("${rabbitmq.routing.key.deleteAccount}")
+    private String routingKeyDeleteAccount;
+
+    @Value("${rabbitmq.queue.name.createCustomer}")
+    private String queueNameCreateCustomer;
+    @Value("${rabbitmq.routing.key.createCustomer}")
+    private String routingKeyCreateCustomer;
+
+    @Value("${rabbitmq.queue.name.deleteCustomer}")
+    private String queueNameDeleteCustomer;
+    @Value("${rabbitmq.routing.key.deleteCustomer}")
+    private String routingKeyDeleteCustomer;
+
     @Value("${rabbitmq.queue.name.deposit}")
     private String queueNameDeposit;
     @Value("${rabbitmq.routing.key.deposit}")
@@ -50,6 +65,21 @@ public class RabbitMQConfig {
     @Bean
     public Queue createAccountQueue() {
         return new Queue(queueNameCreateAccount, true);
+    }
+
+    @Bean
+    public Queue deleteAccountQueue() {
+        return new Queue(queueNameDeleteAccount, true);
+    }
+
+    @Bean
+    public Queue deleteCustomerQueue() {
+        return new Queue(queueNameDeleteCustomer, true);
+    }
+
+    @Bean
+    public Queue createCustomerQueue() {
+        return new Queue(queueNameCreateCustomer, true);
     }
 
     @Bean
@@ -80,6 +110,21 @@ public class RabbitMQConfig {
     @Bean
     public Binding createAccountBinding(Queue createAccountQueue, TopicExchange exchange) {
         return BindingBuilder.bind(createAccountQueue).to(exchange).with(routingKeyCreateAccount);
+    }
+
+    @Bean
+    public Binding deleteAccountBinding(Queue deleteAccountQueue, TopicExchange exchange) {
+        return BindingBuilder.bind(deleteAccountQueue).to(exchange).with(routingKeyDeleteAccount);
+    }
+
+    @Bean
+    public Binding deleteCustomerBinding(Queue deleteCustomerQueue, TopicExchange exchange) {
+        return BindingBuilder.bind(deleteCustomerQueue).to(exchange).with(routingKeyDeleteCustomer);
+    }
+
+    @Bean
+    public Binding createCustomerBinding(Queue createCustomerQueue, TopicExchange exchange) {
+        return BindingBuilder.bind(createCustomerQueue).to(exchange).with(routingKeyCreateCustomer);
     }
 
     @Bean
