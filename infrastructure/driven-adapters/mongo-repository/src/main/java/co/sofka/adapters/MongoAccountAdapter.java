@@ -4,6 +4,7 @@ import co.sofka.Account;
 import co.sofka.data.AccountDocument;
 import co.sofka.data.UserDocument;
 import co.sofka.out.AccountRepository;
+import co.sofka.out.AccountViewsRepository;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Repository
-public class MongoAccountAdapter implements AccountRepository {
+public class MongoAccountAdapter implements AccountRepository, AccountViewsRepository {
 
     private final ReactiveMongoTemplate template;
 
@@ -60,5 +61,10 @@ public class MongoAccountAdapter implements AccountRepository {
                     return template.save(userDocument)
                             .thenReturn(account);
                 }).switchIfEmpty(Mono.error(new RuntimeException("Account not found with ID: " + account.getCustomerId())));
+    }
+
+    @Override
+    public Mono<Account> getAccount(Account account) {
+        return null;
     }
 }

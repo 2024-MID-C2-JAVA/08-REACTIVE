@@ -2,7 +2,6 @@ package co.sofka.appservice.eventsUseCase;
 
 import co.sofka.commands.CreateUserCommand;
 import co.sofka.events.CreateUserEvent;
-import co.sofka.events.DomainEvent;
 import co.sofka.rabbitMq.CreateUserEventUseCase;
 import co.sofka.rabbitMq.EventRepository;
 import co.sofka.rabbitMq.bus.EventBus;
@@ -29,11 +28,12 @@ public class CreateUserCommandUseCaseImpl implements CreateUserEventUseCase {
             createUserEvent.setRole(command.getRole());
 
 
-            DomainEvent domainEvent=new CreateUserEvent();
+            CreateUserEvent domainEvent=new CreateUserEvent();
             domainEvent.setAggregate(createUserEvent.getAggregate());
             domainEvent.setAggregateRootId(command.getEmail());
             domainEvent.setVersionType(0L);
-            domainEvent.setBody(command.toString());
+            domainEvent.setBody("hola cree usuario");
+
 
             return eventRepository.save(domainEvent)
                     .flatMap(event->userEventBus.publishUserEvent(createUserEvent)

@@ -2,9 +2,8 @@ package co.sofka.handler;
 
 import co.sofka.Account;
 import co.sofka.RequestMs;
-import co.sofka.appservice.account.GetAccountByIdUseCaseView;
+import co.sofka.appservice.account.GetAccountByIdUseCaseImpl;
 import co.sofka.data.account.AccountDto;
-import co.sofka.in.account.GetAccountByIdUseCase;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,10 +15,10 @@ import reactor.core.publisher.Mono;
 @Component
 public class AccountViewsHandler {
 
-    private final GetAccountByIdUseCaseView getAccountByIdUseCase;
+    private final GetAccountByIdUseCaseImpl getAccountByIdUseCaseImpl;
 
-    public AccountViewsHandler(GetAccountByIdUseCaseView getAccountByIdUseCase) {
-        this.getAccountByIdUseCase = getAccountByIdUseCase;
+    public AccountViewsHandler(GetAccountByIdUseCaseImpl getAccountByIdUseCaseImpl) {
+        this.getAccountByIdUseCaseImpl = getAccountByIdUseCaseImpl;
     }
 
     public Mono<ServerResponse> getAccountById(ServerRequest request) {
@@ -30,7 +29,7 @@ public class AccountViewsHandler {
                     account2.setAmount(requestMs.getDinBody().getAmount());
                     account2.setCustomerId(requestMs.getDinBody().getId());
                     account2.setCreatedAt(requestMs.getDinBody().getCreatedAt());
-                    return getAccountByIdUseCase.apply(account2)
+                    return getAccountByIdUseCaseImpl.apply(account2)
                             .flatMap(account -> ServerResponse
                                     .status(HttpStatus.OK)
                                     .contentType(MediaType.APPLICATION_JSON)

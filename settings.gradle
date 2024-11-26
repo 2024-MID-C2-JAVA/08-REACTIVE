@@ -15,7 +15,6 @@ include ':entry-point-event-listener'
 include ':app-views'
 include ':mongo-views-repository'
 include ':web-query'
-include ':entry-point-event-log-listener'
 
 findProject(':model').projectDir=file('./domain/model')
 findProject(':jwt-model').projectDir=file('./domain/jwt-model')
@@ -32,4 +31,3 @@ findProject(':entry-point-event-listener').projectDir=file('./infrastructure/ent
 findProject(':app-views').projectDir=file('./applications/app-views')
 findProject(':mongo-views-repository').projectDir=file('./infrastructure/driven-adapters/mongo-views-repository')
 findProject(':web-query').projectDir=file('./infrastructure/entry-points/web-query')
-findProject(':entry-point-event-log-listener').projectDir=file('./infrastructure/entry-points/entry-point-event-log-listener')

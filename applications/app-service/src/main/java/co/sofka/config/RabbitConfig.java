@@ -5,9 +5,12 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.amqp.support.converter.SimpleMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 
 @Configuration
 @EnableRabbit
@@ -29,34 +32,43 @@ public class RabbitConfig {
     private String TRANSACTION_QUEUE;
 
     @Bean
+    public MessageConverter messageConverter() {
+        return new Jackson2JsonMessageConverter();
+    }
+
+    @Bean
     public TopicExchange exchange(){return new TopicExchange(EXCHANGE_NAME);}
 
+    @Bean
     public Queue queueUser(){return new Queue(USER_QUEUE,true);}
+
     @Bean
     public Queue queueAccount(){return new Queue(ACCOUNT_QUEUE,true);}
 
+    @Bean
     public Queue queueTransaction(){return new Queue(TRANSACTION_QUEUE,true);}
 
     @Bean
-    public Binding userBinding(Queue queue, TopicExchange exchange){
+    public Binding userBinding(Queue queueUser, TopicExchange exchange){
         return BindingBuilder
-                .bind(queue)
+                .bind(queueUser)
                 .to(exchange)
                 .with(USER_ROUTING_KEY);
     }
 
+
     @Bean
-    public Binding accountBinding(Queue queue, TopicExchange exchange){
+    public Binding accountBinding(Queue queueAccount, TopicExchange exchange){
         return BindingBuilder
-                .bind(queue)
+                .bind(queueAccount)
                 .to(exchange)
                 .with(ACCOUNT_ROUTING_KEY);
     }
 
     @Bean
-    public Binding transactionBinding(Queue queue, TopicExchange exchange){
+    public Binding transactionBinding(Queue queueTransaction, TopicExchange exchange){
         return BindingBuilder
-                .bind(queue)
+                .bind(queueTransaction)
                 .to(exchange)
                 .with(TRANSACTION_ROUTING_KEY);
     }

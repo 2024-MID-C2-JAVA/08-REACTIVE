@@ -1,29 +1,28 @@
 package co.sofka.handler;
 
 import co.sofka.Account;
-import co.sofka.RequestMs;
 import co.sofka.Transaction;
+import co.sofka.appservice.account.GetAccountByIdUseCaseImpl;
+import co.sofka.appservice.account.UpdateAccountUseCaseImpl;
+import co.sofka.appservice.transaction.CreateTransactionUseCaseImpl;
 import co.sofka.in.account.GetAccountByIdUseCase;
 import co.sofka.in.account.UpdateAccountUseCase;
 import co.sofka.in.transaction.CreateTransactionUseCase;
-import co.sofka.in.transaction.GetTransactionsUseCase;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 @Component
-public class TransactionHandler {
+public class TransactionListenerHandler {
 
-    private final CreateTransactionUseCase transactionUseCase;
-    private final UpdateAccountUseCase updateAccountUseCase;
-    private final GetAccountByIdUseCase getAccountByIdUseCase;
+    private final CreateTransactionUseCaseImpl transactionUseCase;
+    private final UpdateAccountUseCaseImpl updateAccountUseCase;
+    private final GetAccountByIdUseCaseImpl getAccountByIdUseCase;
 
 
-    public TransactionHandler(CreateTransactionUseCase transactionUseCase, UpdateAccountUseCase updateAccountUseCase, GetAccountByIdUseCase getAccountByIdUseCase) {
+    public TransactionListenerHandler(CreateTransactionUseCaseImpl transactionUseCase, UpdateAccountUseCaseImpl updateAccountUseCase, GetAccountByIdUseCaseImpl getAccountByIdUseCase) {
         this.transactionUseCase = transactionUseCase;
         this.updateAccountUseCase = updateAccountUseCase;
         this.getAccountByIdUseCase = getAccountByIdUseCase;

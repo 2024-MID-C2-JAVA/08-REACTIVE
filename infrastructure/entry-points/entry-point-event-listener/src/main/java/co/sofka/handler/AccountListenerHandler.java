@@ -1,25 +1,20 @@
 package co.sofka.handler;
 
 import co.sofka.Account;
-import co.sofka.RequestMs;
-import co.sofka.data.account.AccountDto;
+import co.sofka.appservice.account.CreateAccountUseCaseImpl;
 import co.sofka.in.account.CreateAccountUseCase;
-import co.sofka.in.account.DeleteAccountUseCase;
-import co.sofka.in.account.GetAccountByIdUseCase;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 @Component
-public class AccountHandler {
+public class AccountListenerHandler {
 
-    private final CreateAccountUseCase createAccountUseCase;
+    private final CreateAccountUseCaseImpl createAccountUseCase;
 
-    public AccountHandler(CreateAccountUseCase createAccountUseCase) {
+    public AccountListenerHandler(CreateAccountUseCaseImpl createAccountUseCase) {
         this.createAccountUseCase = createAccountUseCase;
     }
 

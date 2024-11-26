@@ -55,4 +55,16 @@ public class CreateUserEvent extends DomainEvent {
     public void setRole(Role role) {
         this.role = role;
     }
+
+
+    @Override
+    public String toString() {
+        return "CreateUserEvent{" +
+                "firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }
