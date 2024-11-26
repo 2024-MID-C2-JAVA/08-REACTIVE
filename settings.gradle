@@ -1,1 +1,46 @@
-rootProject.name = 'reactiveexample'
+rootProject.name = 'cuentaflex'
+
+include ":accounts-service"
+project(":accounts-service").projectDir = file("apps/accounts-service")
+
+include ":accounts-views-service"
+project(":accounts-views-service").projectDir = file("apps/accounts-views-service")
+
+include(":domain.model")
+project(":domain.model").projectDir = file("libs/domain/model")
+
+include(":domain.use-cases")
+project(":domain.use-cases").projectDir = file("libs/domain/use-cases")
+
+include(":domain.ports")
+project(":domain.ports").projectDir = file("libs/domain/ports")
+
+include(":infrastructure.driven-adapters.mongo-events-repository")
+project(":infrastructure.driven-adapters.mongo-events-repository").projectDir = file("libs/infrastructure/driven-adapters/mongo-events-repository")
+
+include(":infrastructure.entry-points.accounts-webservice")
+project(":infrastructure.entry-points.accounts-webservice").projectDir = file("libs/infrastructure/entry-points/accounts-webservice")
+
+include(":infrastructure.entry-points.accounts-views-webservice")
+project(":infrastructure.entry-points.accounts-views-webservice").projectDir = file("libs/infrastructure/entry-points/accounts-views-webservice")
+
+include(":infrastructure.entry-points.din")
+project(":infrastructure.entry-points.din").projectDir = file("libs/infrastructure/entry-points/din")
+
+include(":infrastructure.utils.encryption")
+project(":infrastructure.utils.encryption").projectDir = file("libs/infrastructure/utils/encryption")
+
+include(":infrastructure.utils.serializer")
+project(":infrastructure.utils.serializer").projectDir = file("libs/infrastructure/utils/serializer")
+
+include(":infrastructure.driven-adapters.properties-fee-provider")
+project(":infrastructure.driven-adapters.properties-fee-provider").projectDir = file("libs/infrastructure/driven-adapters/properties-fee-provider")
+
+include(":infrastructure.driven-adapters.rabbitmq-event-bus")
+project(":infrastructure.driven-adapters.rabbitmq-event-bus").projectDir = file("libs/infrastructure/driven-adapters/rabbitmq-event-bus")
+
+include(":infrastructure.entry-points.mq-view-listener")
+project(":infrastructure.entry-points.mq-view-listener").projectDir = file("libs/infrastructure/entry-points/mq-view-listener")
+
+include(":infrastructure.driven-adapters.mongo-views-repository")
+project(":infrastructure.driven-adapters.mongo-views-repository").projectDir = file("libs/infrastructure/driven-adapters/mongo-views-repository")

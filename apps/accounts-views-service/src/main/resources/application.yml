@@ -1,0 +1,26 @@
+spring:
+    application:
+        name: accounts-views-service
+
+    webflux:
+      base-path: /api
+
+    data:
+      mongodb:
+        uri: mongodb://localhost:27017
+        database: accounts-views
+
+    rabbitmq:
+      host: localhost
+      virtual-host: /
+      port: 5672
+      username: guest
+      password: guest
+
+event-bus:
+  encryption:
+    symmetric-key: PTivgtCBtJoj5S0eVSQSO1dht05HRPrl
+  queue:
+    exchange: events.exchange
+    name: events.queue
+    routing-key: events.routing-key
