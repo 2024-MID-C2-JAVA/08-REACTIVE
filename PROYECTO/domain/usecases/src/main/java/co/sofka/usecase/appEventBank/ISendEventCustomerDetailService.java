@@ -1,14 +1,11 @@
 package co.sofka.usecase.appEventBank;
 
 
-
-
-import co.sofka.LogEvent;
-import co.sofka.event.Notification;
+import co.sofka.Event;
 
 @FunctionalInterface
 public interface ISendEventCustomerDetailService {
-    void save(Notification item);
+    void save(Event item);
 
 
 }

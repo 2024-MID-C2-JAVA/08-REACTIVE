@@ -1,9 +1,7 @@
 package co.sofka.usecase.appEventBank;
 
 
-
-import co.sofka.LogEvent;
-import co.sofka.event.Notification;
+import co.sofka.Event;
 import co.sofka.gateway.IRabbitBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +18,7 @@ public class ISendEventCustomerlUseCase implements ISendEventCustomerDetailServi
     }
 
 
-    public void save(Notification item) {
+    public void save(Event item) {
         rabbitBus.send(item);
     }
 
