@@ -10,21 +10,25 @@ import java.time.Instant;
 public class EventDocument {
     private String id;
     private String type;
+    private String aggregateRootId;
+    private String aggregateName;
     private String body;
     private Instant occurredOn;
 
     public EventDocument() {
     }
 
-    public EventDocument(String id, String type, String body, Instant occurredOn) {
+    public EventDocument(String id, String type, String aggregateRootId, String aggregateName, String body, Instant occurredOn) {
         this.id = id;
         this.type = type;
+        this.aggregateRootId = aggregateRootId;
+        this.aggregateName = aggregateName;
         this.body = body;
         this.occurredOn = occurredOn;
     }
 
     public String getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(String id) {
@@ -32,15 +36,31 @@ public class EventDocument {
     }
 
     public String getType() {
-        return this.type;
+        return type;
     }
 
     public void setType(String type) {
         this.type = type;
     }
 
+    public String getAggregateRootId() {
+        return aggregateRootId;
+    }
+
+    public void setAggregateRootId(String aggregateRootId) {
+        this.aggregateRootId = aggregateRootId;
+    }
+
+    public String getAggregateName() {
+        return aggregateName;
+    }
+
+    public void setAggregateName(String aggregateName) {
+        this.aggregateName = aggregateName;
+    }
+
     public String getBody() {
-        return this.body;
+        return body;
     }
 
     public void setBody(String body) {
@@ -48,7 +68,7 @@ public class EventDocument {
     }
 
     public Instant getOccurredOn() {
-        return this.occurredOn;
+        return occurredOn;
     }
 
     public void setOccurredOn(Instant occurredOn) {

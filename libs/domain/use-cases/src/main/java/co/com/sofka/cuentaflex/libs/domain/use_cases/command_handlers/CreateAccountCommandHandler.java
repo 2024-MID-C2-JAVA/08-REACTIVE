@@ -1,5 +1,6 @@
 package co.com.sofka.cuentaflex.libs.domain.use_cases.command_handlers;
 
+import co.com.sofka.cuentaflex.libs.domain.model.accounts.Balance;
 import co.com.sofka.cuentaflex.libs.domain.model.accounts.Customer;
 import co.com.sofka.cuentaflex.libs.domain.model.accounts.commands.CreateAccountCommand;
 import co.com.sofka.cuentaflex.libs.domain.model.accounts.events.AccountCreatedEvent;
@@ -9,11 +10,11 @@ import co.com.sofka.cuentaflex.libs.domain.use_cases.ReactiveCommandHandler;
 import co.com.sofka.cuentaflex.libs.domain.use_cases.exceptions.CustomerDoesNotExistsException;
 import reactor.core.publisher.Mono;
 
-public class CreateReactiveAccountCommandHandler implements ReactiveCommandHandler<CreateAccountCommand> {
+public final class CreateAccountCommandHandler implements ReactiveCommandHandler<CreateAccountCommand> {
     private final EventRepositoryPort eventRepositoryPort;
     private final EventBus eventBus;
 
-    public CreateReactiveAccountCommandHandler(EventRepositoryPort eventRepositoryPort, EventBus eventBus) {
+    public CreateAccountCommandHandler(EventRepositoryPort eventRepositoryPort, EventBus eventBus) {
         this.eventRepositoryPort = eventRepositoryPort;
         this.eventBus = eventBus;
     }

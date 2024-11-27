@@ -1,6 +1,7 @@
 package co.com.sofka.cuentaflex.libs.infrastructure.entry_points.accounts_webservice;
 
 import co.com.sofka.cuentaflex.libs.infrastructure.entry_points.accounts_webservice.constants.CustomerEndpointsConstants;
+import co.com.sofka.cuentaflex.libs.infrastructure.entry_points.accounts_webservice.handlers.CreateAccountHandler;
 import co.com.sofka.cuentaflex.libs.infrastructure.entry_points.accounts_webservice.handlers.CreateCustomerHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,10 +14,16 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 @Configuration
 public class RouterRest {
     @Bean
-    public RouterFunction<ServerResponse> commandsRouter(CreateCustomerHandler createCustomerHandler) {
+    public RouterFunction<ServerResponse> commandsRouter(
+            CreateCustomerHandler createCustomerHandler,
+            CreateAccountHandler createAccountHandler
+    ) {
         return route(
                 PUT(CustomerEndpointsConstants.CREATE_CUSTOMER_ENDPOINT),
                 createCustomerHandler::handle
+        ).andRoute(
+                PUT(CustomerEndpointsConstants.CREATE_CUSTOMER_ACCOUNT_ENDPOINT),
+                createAccountHandler::handle
         );
     }
 }

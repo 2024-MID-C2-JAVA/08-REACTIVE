@@ -46,6 +46,16 @@ public final class DinError {
         this.detail = detail;
     }
 
+    public DinError(String type, String source, String code, String providerErrorCode, String message, String detail) {
+        this.date = LocalDateTime.now();
+        this.type = type;
+        this.source = source;
+        this.code = code;
+        this.providerErrorCode = providerErrorCode;
+        this.message = message;
+        this.detail = detail;
+    }
+
     public DinError(LocalDateTime date, String type, String source, String code, String providerErrorCode, String message, String detail) {
         this.type = type;
         this.source = source;

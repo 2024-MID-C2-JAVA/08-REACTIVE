@@ -9,11 +9,11 @@ import co.com.sofka.cuentaflex.libs.domain.use_cases.ReactiveCommandHandler;
 import co.com.sofka.cuentaflex.libs.domain.use_cases.exceptions.CustomerAlreadyExistsException;
 import reactor.core.publisher.Mono;
 
-public class CreateCustomerReactiveCommandHandler implements ReactiveCommandHandler<CreateCustomerCommand> {
+public final class CreateCustomerCommandHandler implements ReactiveCommandHandler<CreateCustomerCommand> {
     private final EventRepositoryPort eventRepositoryPort;
     private final EventBus eventBus;
 
-    public CreateCustomerReactiveCommandHandler(EventRepositoryPort eventRepositoryPort, EventBus eventBus) {
+    public CreateCustomerCommandHandler(EventRepositoryPort eventRepositoryPort, EventBus eventBus) {
         this.eventRepositoryPort = eventRepositoryPort;
         this.eventBus = eventBus;
     }

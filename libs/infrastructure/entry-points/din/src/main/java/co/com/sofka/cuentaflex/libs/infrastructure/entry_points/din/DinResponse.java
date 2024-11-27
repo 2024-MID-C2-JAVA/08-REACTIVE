@@ -11,8 +11,7 @@ public final class DinResponse<BodyType> {
     public DinResponse(DinHeader dinHeader, BodyType dinBody) {
         this.dinHeader = dinHeader;
         this.dinBody = dinBody;
-        //this.dinError = DinError.getDefaultDinError();
-        this.dinError = null;
+        this.dinError = DinError.getDefaultDinError();
     }
 
     public DinResponse(DinHeader dinHeader, DinError dinError) {
