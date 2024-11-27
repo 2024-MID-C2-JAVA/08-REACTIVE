@@ -1,7 +1,8 @@
 package co.sofka.gateway;
 
+import co.sofka.Event;
 import co.sofka.event.Notification;
 
 public interface IRabbitBus {
-    void send(Notification notification);
+    void send(Event event);
 }

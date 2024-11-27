@@ -114,29 +114,57 @@ public class CustomerRepository implements ICustomerRepository {
 
 //        all = all.map().filter(item->item.getUsername().equals(username)).collect(Collectors.toList());
 
-        if(listMono.block().size() == 0){
-            return null;
-        }
-        CustomerEntity item = listMono.block().get(0);
-        Customer customer = new Customer();
-        customer.setId(item.getId().toString());
-        customer.setUsername(item.getUsername());
-        customer.setPwd(item.getPwd());
-        customer.setRol(item.getRol());
-        customer.setAccounts(new ArrayList<>());
-        if(item.getAccounts() != null){
-            customer.setAccounts(item.getAccounts().stream().map(accountEntity -> {
-                Account account = new Account();
-                account.setId(accountEntity.getId());
-                account.setNumber(accountEntity.getNumber());
-                account.setAmount(accountEntity.getAmount());
-                account.setCustomer(customer);
-                return account;
-            }).collect(Collectors.toList()));
-        }
-        logger.info("Customer: {}", customer);
-        return Mono.just(customer);
+        Flux<Customer> map = listMono.flatMapIterable(item -> item)
+                .map(item -> {
+                    logger.info("Item: {}", item);
 
+                    Customer customer = new Customer();
+                    customer.setId(item.getId().toString());
+                    customer.setUsername(item.getUsername());
+                    customer.setPwd(item.getPwd());
+                    customer.setRol(item.getRol());
+                    customer.setAccounts(new ArrayList<>());
+                    if (item.getAccounts() != null) {
+                        customer.setAccounts(item.getAccounts().stream().map(accountEntity -> {
+                            Account account = new Account();
+                            account.setId(accountEntity.getId());
+                            account.setNumber(accountEntity.getNumber());
+                            account.setAmount(accountEntity.getAmount());
+                            account.setCustomer(customer);
+                            return account;
+                        }).collect(Collectors.toList()));
+                    }
+
+                    return customer;
+                }).map(item -> {
+                    logger.info("Item: {}", item);
+                    return item;
+                });
+
+//        if(listMono.block().size() == 0){
+//            return null;
+//        }
+//        CustomerEntity item = listMono.block().get(0);
+//        Customer customer = new Customer();
+//        customer.setId(item.getId().toString());
+//        customer.setUsername(item.getUsername());
+//        customer.setPwd(item.getPwd());
+//        customer.setRol(item.getRol());
+//        customer.setAccounts(new ArrayList<>());
+//        if(item.getAccounts() != null){
+//            customer.setAccounts(item.getAccounts().stream().map(accountEntity -> {
+//                Account account = new Account();
+//                account.setId(accountEntity.getId());
+//                account.setNumber(accountEntity.getNumber());
+//                account.setAmount(accountEntity.getAmount());
+//                account.setCustomer(customer);
+//                return account;
+//            }).collect(Collectors.toList()));
+//        }
+//        logger.info("Customer: {}", customer);
+//        return Mono.just(customer);
+
+        return map.next();
     }
 
     @Override

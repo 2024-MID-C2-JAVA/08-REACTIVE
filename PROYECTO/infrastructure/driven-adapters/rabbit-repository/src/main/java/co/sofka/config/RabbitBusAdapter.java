@@ -1,6 +1,7 @@
 package co.sofka.config;
 
 
+import co.sofka.Event;
 import co.sofka.LogEvent;
 import co.sofka.event.Notification;
 import co.sofka.gateway.IRabbitBus;
@@ -9,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.time.Instant;
 
 @Component
 public class RabbitBusAdapter implements IRabbitBus {
@@ -74,7 +77,14 @@ public class RabbitBusAdapter implements IRabbitBus {
     }
 
     @Override
-    public void send(Notification notification) {
+    public void send(Event event) {
+
+        Notification notification = new Notification();
+        notification.setMessage(event.getBody());
+        notification.setWhen(Instant.now());
+        notification.setType(event.getType());
+        notification.setUuid(event.getParentId());
+
         logger.info("Sending notification to RabbitMQ: {} {}",notification.getType(), notification);
         switch (notification.getType()) {
             case "Customer Created":
@@ -96,7 +106,7 @@ public class RabbitBusAdapter implements IRabbitBus {
                 rabbitTemplate.convertAndSend(exchange, routingTransactionCompraKey, notification);
                 break;
             default:
-                routingkey = "general";
+                logger.info("No se ha encontrado el tipo de evento");
                 break;
         }
 

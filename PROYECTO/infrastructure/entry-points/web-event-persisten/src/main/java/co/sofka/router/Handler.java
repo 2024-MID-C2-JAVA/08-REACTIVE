@@ -7,7 +7,9 @@ import co.sofka.command.dto.DinHeader;
 import co.sofka.command.dto.request.RequestMs;
 import co.sofka.dto.*;
 import co.sofka.usecase.appEventBank.*;
+import co.sofka.utils.WebClient;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -39,10 +41,17 @@ public class Handler {
 
     private final SaveEventTransactionCompraUseCase saveEventTransactionCompraUseCase;
 
+    private final WebClient webClient;
 
+
+    @SneakyThrows
     public Mono<ServerResponse> SaveCustomerUseCase(ServerRequest serverRequest) {
         logger.info("Handler - SaveCustomerUseCase");
         Mono<RequestMs> responseMsMono = serverRequest.bodyToMono(RequestMs.class);
+
+        String username = webClient.post("http://localhost:8088", "username", List.of());
+
+        logger.info("Service {}",username);
 
 
         return ServerResponse.ok()

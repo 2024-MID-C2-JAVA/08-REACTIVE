@@ -48,14 +48,7 @@ public class SaveEventTransactionDepositSucursalUseCase implements ISaveEventTra
             event.setParentId(item.getCustomerId());
             event.setId(UUID.randomUUID().toString());
 
-
-            Notification notification = new Notification();
-            notification.setMessage(event.getBody());
-            notification.setWhen(Instant.now());
-            notification.setType("TransactionDepositSucursal");
-            notification.setUuid(event.getParentId());
-
-            rabbitBus.send(notification);
+            rabbitBus.send(event);
 
             return event;
         }).flatMap(event -> {

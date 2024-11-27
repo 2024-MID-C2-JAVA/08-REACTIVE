@@ -50,14 +50,7 @@ public class SaveEventCustomerUseCase implements ISaveEventCustomerService {
             event.setParentId(customer.getId());
             event.setId(UUID.randomUUID().toString());
 
-
-            Notification notification = new Notification();
-            notification.setMessage(event.getBody());
-            notification.setWhen(Instant.now());
-            notification.setType("Customer Created");
-            notification.setUuid(event.getParentId());
-
-            rabbitBus.send(notification);
+            rabbitBus.send(event);
 
             return event;
         }).flatMap(event -> {

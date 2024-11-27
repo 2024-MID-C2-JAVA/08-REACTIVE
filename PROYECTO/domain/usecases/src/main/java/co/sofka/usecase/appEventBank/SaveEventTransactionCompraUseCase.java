@@ -50,13 +50,7 @@ public class SaveEventTransactionCompraUseCase implements ISaveEventTransactionC
             event.setId(UUID.randomUUID().toString());
 
 
-            Notification notification = new Notification();
-            notification.setMessage(event.getBody());
-            notification.setWhen(Instant.now());
-            notification.setType("TransactionCompra");
-            notification.setUuid(event.getParentId());
-
-            rabbitBus.send(notification);
+            rabbitBus.send(event);
 
             return event;
         }).flatMap(event -> {

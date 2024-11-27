@@ -41,49 +41,92 @@ public class CustomerByUserNameHandler {
         DinError error = new DinError();
 
 
-        Customer byUsername = getCustomerByUserNameService.findByUsername(request.getDinBody().getUsername()).block();
+        Mono<Customer> byUsername = getCustomerByUserNameService.findByUsername(request.getDinBody().getUsername());
 
-        if (byUsername == null) {
-            throw new CustomerNotExistException("Customer no definido para estos parametros.", request.getDinHeader(), 1004);
-        }
+        Mono<ResponseMs<CustomerDTO>> responseMsMono = byUsername.map(customer -> {
+                    logger.info("Customer: " + customer.getUsername());
 
-        CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setUsername(byUsername.getUsername());
-        customerDTO.setRol(byUsername.getRol());
+                    CustomerDTO customerDTO = new CustomerDTO();
+                    customerDTO.setUsername(customer.getUsername());
+                    customerDTO.setRol(customer.getRol());
+                    customerDTO.setId(customer.getId());
 
+                    if (customer.getAccounts() != null && !customer.getAccounts().isEmpty()) {
+                        List<AccountDTO> list = customer.getAccounts().stream().map(account1 -> {
+                            AccountDTO accountDTO = new AccountDTO();
+                            logger.info("Account number: " + account1.getNumber());
 
-        if (byUsername.getAccounts() != null && !byUsername.getAccounts().isEmpty()) {
-            List<AccountDTO> list = byUsername.getAccounts().stream().map(account1 -> {
-                AccountDTO accountDTO = new AccountDTO();
-                logger.info("Account number: " + account1.getNumber());
+                            String LlaveSimetrica = "";
+                            try {
+                                LlaveSimetrica = utils.decode(request.getDinHeader().getLlaveSimetrica());
+                            } catch (Exception e) {
+                                throw new ErrorDecryptingDataException("Error al desencriptar la LlaveSimetrica.", 1001);
+                            }
 
-                String LlaveSimetrica = "";
-                try {
-                    LlaveSimetrica = utils.decode(request.getDinHeader().getLlaveSimetrica());
-                } catch (Exception e) {
-                    throw new ErrorDecryptingDataException("Error al desencriptar la LlaveSimetrica.", 1001);
-                }
-
-                String vectorInicializacion = "";
-                try {
-                    vectorInicializacion = utils.decode(request.getDinHeader().getVectorInicializacion());
-                } catch (Exception e) {
-                    throw new ErrorDecryptingDataException("Error al desencriptar la vectorInicializacion.",  1001);
-                }
-
-                accountDTO.setNumber(encryptionAndDescryption.encriptAes(account1.getNumber(), vectorInicializacion, LlaveSimetrica));
-                accountDTO.setAmount(account1.getAmount());
-                return accountDTO;
-            }).toList();
-            customerDTO.setAccounts(list);
-        }
-
-            responseMs.setDinBody(customerDTO);
-
-            responseMs.setDinError(error);
+                            String vectorInicializacion = "";
+                            try {
+                                vectorInicializacion = utils.decode(request.getDinHeader().getVectorInicializacion());
+                            } catch (Exception e) {
+                                throw new ErrorDecryptingDataException("Error al desencriptar la vectorInicializacion.", 1001);
+                            }
+                            accountDTO.setId(account1.getId());
+                            accountDTO.setNumber(encryptionAndDescryption.encriptAes(account1.getNumber(), vectorInicializacion, LlaveSimetrica));
+                            accountDTO.setAmount(account1.getAmount());
+                            return accountDTO;
+                        }).toList();
+                        customerDTO.setAccounts(list);
+                    }
 
 
-            return Mono.just(responseMs);
+                    return customerDTO;
+                })
+                .flatMap(item -> {
+                    responseMs.setDinBody(item);
+                    return Mono.just(responseMs);
+                });
+
+
+//        if (byUsername == null) {
+//            throw new CustomerNotExistException("Customer no definido para estos parametros.", request.getDinHeader(), 1004);
+//        }
+//
+//        CustomerDTO customerDTO = new CustomerDTO();
+//        customerDTO.setUsername(byUsername.getUsername());
+//        customerDTO.setRol(byUsername.getRol());
+//
+//
+//        if (byUsername.getAccounts() != null && !byUsername.getAccounts().isEmpty()) {
+//            List<AccountDTO> list = byUsername.getAccounts().stream().map(account1 -> {
+//                AccountDTO accountDTO = new AccountDTO();
+//                logger.info("Account number: " + account1.getNumber());
+//
+//                String LlaveSimetrica = "";
+//                try {
+//                    LlaveSimetrica = utils.decode(request.getDinHeader().getLlaveSimetrica());
+//                } catch (Exception e) {
+//                    throw new ErrorDecryptingDataException("Error al desencriptar la LlaveSimetrica.", 1001);
+//                }
+//
+//                String vectorInicializacion = "";
+//                try {
+//                    vectorInicializacion = utils.decode(request.getDinHeader().getVectorInicializacion());
+//                } catch (Exception e) {
+//                    throw new ErrorDecryptingDataException("Error al desencriptar la vectorInicializacion.",  1001);
+//                }
+//
+//                accountDTO.setNumber(encryptionAndDescryption.encriptAes(account1.getNumber(), vectorInicializacion, LlaveSimetrica));
+//                accountDTO.setAmount(account1.getAmount());
+//                return accountDTO;
+//            }).toList();
+//            customerDTO.setAccounts(list);
+//        }
+
+//            responseMs.setDinBody(map.block());
+//
+//            responseMs.setDinError(error);
+
+
+            return responseMsMono;
         }
     }
 

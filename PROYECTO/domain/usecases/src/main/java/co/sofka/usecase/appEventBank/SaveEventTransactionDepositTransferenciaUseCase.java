@@ -49,14 +49,7 @@ public class SaveEventTransactionDepositTransferenciaUseCase implements ISaveEve
             event.setParentId(item.getCustomerReceiverId());
             event.setId(UUID.randomUUID().toString());
 
-
-            Notification notification = new Notification();
-            notification.setMessage(event.getBody());
-            notification.setWhen(Instant.now());
-            notification.setType("TransactionDepositTransferencia");
-            notification.setUuid(event.getParentId());
-
-            rabbitBus.send(notification);
+            rabbitBus.send(event);
 
             return event;
         }).flatMap(event -> {
