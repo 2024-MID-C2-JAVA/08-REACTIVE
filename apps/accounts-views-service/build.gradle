@@ -1,0 +1,13 @@
+dependencies {
+    implementation project(":domain.use-cases")
+
+    implementation project(":infrastructure.utils.encryption")
+    implementation project(":infrastructure.utils.serializer")
+
+    implementation project(":infrastructure.driven-adapters.mongo-views-repository")
+    implementation project(":infrastructure.entry-points.accounts-views-webservice")
+    implementation project(":infrastructure.entry-points.mq-view-listener")
+
+    implementation 'org.springframework.boot:spring-boot-starter:3.3.5'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp:3.3.5'
+}

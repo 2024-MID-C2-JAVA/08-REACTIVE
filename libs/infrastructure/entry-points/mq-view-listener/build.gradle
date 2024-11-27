@@ -1,0 +1,7 @@
+dependencies {
+    implementation project(":domain.model")
+    implementation project(":domain.use-cases")
+    implementation project(":domain.ports")
+
+    implementation 'org.springframework.boot:spring-boot-starter-amqp:3.3.5'
+}
