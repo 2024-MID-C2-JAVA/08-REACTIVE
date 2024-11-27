@@ -10,6 +10,9 @@ import co.com.sofka.cuentaflex.libs.domain.use_cases.ReactiveCommandHandler;
 import co.com.sofka.cuentaflex.libs.domain.use_cases.exceptions.CustomerDoesNotExistsException;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 public final class CreateAccountCommandHandler implements ReactiveCommandHandler<CreateAccountCommand> {
     private final EventRepositoryPort eventRepositoryPort;
     private final EventBus eventBus;
@@ -27,7 +30,7 @@ public final class CreateAccountCommandHandler implements ReactiveCommandHandler
                         ? Mono.just(createAccountCommand)
                         : Mono.error(new CustomerDoesNotExistsException(createAccountCommand.getCustomerId()))
                 )
-                .map(command -> new AccountCreatedEvent(command.getAccountId(), command.getCustomerId(), command.getInitialBalance()))
+                .map(command -> new AccountCreatedEvent(command.getAccountId(), command.getCustomerId(), command.getAccountNumber(), command.getInitialBalance()))
                 .map(event -> {
                     this.eventBus.publish(event);
                     return event;

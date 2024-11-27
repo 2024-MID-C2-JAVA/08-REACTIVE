@@ -1,8 +1,8 @@
 package co.com.sofka.cuentaflex.libs.infrastructure.driven_adapters.properties_fee_provider;
 
 import co.com.sofka.cuentaflex.libs.domain.model.accounts.Fee;
-import co.com.sofka.cuentaflex.libs.domain.model.accounts.FeeProvider;
 import co.com.sofka.cuentaflex.libs.domain.model.accounts.TransactionType;
+import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.FeeProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

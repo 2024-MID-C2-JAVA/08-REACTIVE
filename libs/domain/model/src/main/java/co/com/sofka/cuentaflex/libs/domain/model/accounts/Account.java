@@ -25,6 +25,10 @@ public final class Account extends BaseAuditableModel implements SoftDeletable {
         return balance;
     }
 
+    public void setBalance(Balance balance) {
+        this.balance = balance;
+    }
+
     public void debit(Amount amount) {
         Objects.requireNonNull(amount, "The amount to debit cannot be null");
 

@@ -1,33 +1,41 @@
 package co.com.sofka.cuentaflex.libs.infrastructure.entry_points.mq_view_listener;
 
 import co.com.sofka.cuentaflex.libs.domain.model.DomainEvent;
-import co.com.sofka.cuentaflex.libs.domain.model.accounts.events.AccountCreatedEvent;
-import co.com.sofka.cuentaflex.libs.domain.model.accounts.events.CustomerCreatedEvent;
-import co.com.sofka.cuentaflex.libs.domain.use_cases.event_handlers.AccountCreatedEventHandler;
-import co.com.sofka.cuentaflex.libs.domain.use_cases.event_handlers.CustomerCreatedEventHandler;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts.events.*;
+import co.com.sofka.cuentaflex.libs.domain.use_cases.ReactiveEventHandler;
+import co.com.sofka.cuentaflex.libs.domain.use_cases.event_handlers.*;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
+
 @Component
 public class EventHandlerDispatcher {
-    private final CustomerCreatedEventHandler customerCreatedEventHandler;
-    private final AccountCreatedEventHandler accountCreatedEventHandler;
+
+    private final Map<Class<? extends DomainEvent>, ReactiveEventHandler<? extends DomainEvent>> eventHandlers;
 
     public EventHandlerDispatcher(
             CustomerCreatedEventHandler customerCreatedEventHandler,
-            AccountCreatedEventHandler accountCreatedEventHandler
+            AccountCreatedEventHandler accountCreatedEventHandler,
+            UnidirectionalTransactionPerformedEventHandler unidirectionalTransactionPerformedEventHandler,
+            FundsCreditedInDepositBetweenAccountsEventHandler fundsCreditedInDepositBetweenAccountsEventHandler,
+            FundsDebitedInDepositBetweenAccountsEventHandler fundsDebitedInDepositBetweenAccountsEventHandler
     ) {
-        this.customerCreatedEventHandler = customerCreatedEventHandler;
-        this.accountCreatedEventHandler = accountCreatedEventHandler;
+        this.eventHandlers = Map.of(
+                CustomerCreatedEvent.class, customerCreatedEventHandler,
+                AccountCreatedEvent.class, accountCreatedEventHandler,
+                UnidirectionalTransactionPerformedEvent.class, unidirectionalTransactionPerformedEventHandler,
+                FundsCreditedInDepositBetweenAccountsEvent.class, fundsCreditedInDepositBetweenAccountsEventHandler,
+                FundsDebitedInDepositBetweenAccountsEvent.class, fundsDebitedInDepositBetweenAccountsEventHandler
+        );
     }
 
+    @SuppressWarnings("unchecked")
     public Mono<Void> handle(DomainEvent event) {
-        if(event instanceof CustomerCreatedEvent) {
-            return customerCreatedEventHandler.apply((CustomerCreatedEvent) event);
-        }
+        ReactiveEventHandler<DomainEvent> eventHandler = (ReactiveEventHandler<DomainEvent>) eventHandlers.get(event.getClass());
 
-        if (event instanceof AccountCreatedEvent) {
-            return accountCreatedEventHandler.apply((AccountCreatedEvent) event);
+        if (eventHandler != null) {
+            return eventHandler.apply(event);
         }
 
         return Mono.empty();

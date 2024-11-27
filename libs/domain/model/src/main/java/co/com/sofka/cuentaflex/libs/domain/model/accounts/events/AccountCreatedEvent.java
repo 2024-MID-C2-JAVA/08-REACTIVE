@@ -1,14 +1,13 @@
 package co.com.sofka.cuentaflex.libs.domain.model.accounts.events;
 
 import co.com.sofka.cuentaflex.libs.domain.model.DomainEvent;
-import co.com.sofka.cuentaflex.libs.domain.model.accounts.Balance;
 import co.com.sofka.cuentaflex.libs.domain.model.accounts.Customer;
 
 import java.math.BigDecimal;
 
 public final class AccountCreatedEvent extends DomainEvent {
     private String accountId;
-    private String customerId;
+    private int accountNumber;
     private BigDecimal initialBalance;
 
     public AccountCreatedEvent() {
@@ -18,15 +17,15 @@ public final class AccountCreatedEvent extends DomainEvent {
         );
     }
 
-    public AccountCreatedEvent(String accountId, String customerId, BigDecimal initialBalance) {
+    public AccountCreatedEvent(String accountId, String customerId, int accountNumber, BigDecimal initialBalance) {
         super(
                 AccountCreatedEvent.class.getName(),
-                accountId,
+                customerId,
                 Customer.class.getName()
         );
 
         this.accountId = accountId;
-        this.customerId = customerId;
+        this.accountNumber = accountNumber;
         this.initialBalance = initialBalance;
     }
 
@@ -38,12 +37,12 @@ public final class AccountCreatedEvent extends DomainEvent {
         this.accountId = accountId;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public int getAccountNumber() {
+        return accountNumber;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setAccountNumber(int accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
     public BigDecimal getInitialBalance() {

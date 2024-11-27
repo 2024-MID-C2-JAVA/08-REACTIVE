@@ -7,11 +7,13 @@ import java.math.BigDecimal;
 public final class CreateAccountCommand extends Command {
     private final String accountId;
     private final String customerId;
+    private final int accountNumber;
     private final BigDecimal initialBalance;
 
-    public CreateAccountCommand(String accountId, String customerId, BigDecimal initialBalance) {
+    public CreateAccountCommand(String accountId, String customerId, int accountNumber, BigDecimal initialBalance) {
         this.accountId = accountId;
         this.customerId = customerId;
+        this.accountNumber = accountNumber;
         this.initialBalance = initialBalance;
     }
 
@@ -21,6 +23,10 @@ public final class CreateAccountCommand extends Command {
 
     public String getCustomerId() {
         return this.customerId;
+    }
+
+    public int getAccountNumber() {
+        return this.accountNumber;
     }
 
     public BigDecimal getInitialBalance() {

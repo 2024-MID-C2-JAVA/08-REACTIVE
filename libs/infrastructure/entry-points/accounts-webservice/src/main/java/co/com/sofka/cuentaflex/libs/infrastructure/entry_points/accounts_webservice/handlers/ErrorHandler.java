@@ -11,7 +11,7 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-public class ErrorHandler {
+public final class ErrorHandler {
     public static Mono<ServerResponse> handle(
             ServerRequest serverRequest,
             Throwable throwable,

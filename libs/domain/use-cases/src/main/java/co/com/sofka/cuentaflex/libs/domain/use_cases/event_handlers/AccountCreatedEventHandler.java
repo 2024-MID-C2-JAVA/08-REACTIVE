@@ -26,16 +26,12 @@ public final class AccountCreatedEventHandler implements ReactiveEventHandler<Ac
         return Mono.just(accountCreatedEvent)
                 .map(_ -> new AccountView(
                         accountCreatedEvent.getAccountId(),
-                        generateAccountNumberWithEpoch(),
+                        accountCreatedEvent.getAccountNumber(),
                         accountCreatedEvent.getInitialBalance(),
                         false,
                         LocalDateTime.now(),
                         List.of()
                 ))
-                .flatMap(account -> viewRepositoryPort.saveAccountToCustomerView(accountCreatedEvent.getCustomerId(), account));
-    }
-
-    private int generateAccountNumberWithEpoch() {
-        return (int) (LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) * 1000) % Integer.MAX_VALUE;
+                .flatMap(account -> viewRepositoryPort.saveAccountToCustomerView(accountCreatedEvent.getAggregateRootId(), account));
     }
 }
