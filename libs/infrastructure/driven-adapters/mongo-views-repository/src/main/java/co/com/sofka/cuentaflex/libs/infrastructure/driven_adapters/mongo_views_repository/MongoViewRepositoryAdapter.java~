@@ -77,7 +77,7 @@ public class MongoViewRepositoryAdapter implements ViewRepositoryPort {
     @Override
     public Mono<CustomerView> getCustomerView(String customerId) {
         Query query = Query.query(Criteria.where("customerId").is(customerId));
-        query.fields().exclude("accounts.transactions");
+        //query.fields().exclude("accounts.transactions");
 
         return reactiveMongoTemplate.findOne(query, CustomerView.class, CUSTOMER_VIEW_COLLECTION);
     }

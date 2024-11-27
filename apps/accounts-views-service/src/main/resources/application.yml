@@ -1,21 +1,23 @@
+
+
 spring:
-    application:
-        name: accounts-views-service
+  application:
+    name: accounts-views-service
 
-    webflux:
-      base-path: /api
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: accounts-views
 
-    data:
-      mongodb:
-        uri: mongodb://localhost:27017
-        database: accounts-views
+  rabbitmq:
+    host: localhost
+    virtual-host: /
+    port: 5672
+    username: guest
+    password: guest
 
-    rabbitmq:
-      host: localhost
-      virtual-host: /
-      port: 5672
-      username: guest
-      password: guest
+  webflux:
+    base-path: /api
 
 event-bus:
   encryption:

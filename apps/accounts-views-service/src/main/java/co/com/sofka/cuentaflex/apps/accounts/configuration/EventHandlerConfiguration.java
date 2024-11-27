@@ -1,6 +1,6 @@
-package co.com.sofka.cuentaflex.apps.accounts;
+package co.com.sofka.cuentaflex.apps.accounts.configuration;
 
-import co.com.sofka.cuentaflex.libs.domain.use_cases.QueryHandler;
+import co.com.sofka.cuentaflex.libs.domain.use_cases.ReactiveEventHandler;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
@@ -9,8 +9,8 @@ import org.springframework.context.annotation.FilterType;
 @ComponentScan(
         basePackages = "co.com.sofka",
         includeFilters = {
-                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = {QueryHandler.class})
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = ReactiveEventHandler.class)
         }
 )
-public class QueryHandlerConfiguration {
+public class EventHandlerConfiguration {
 }

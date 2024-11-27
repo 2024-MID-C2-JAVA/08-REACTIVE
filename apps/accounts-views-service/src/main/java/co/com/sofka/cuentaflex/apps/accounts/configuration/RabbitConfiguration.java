@@ -1,4 +1,4 @@
-package co.com.sofka.cuentaflex.apps.accounts;
+package co.com.sofka.cuentaflex.apps.accounts.configuration;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

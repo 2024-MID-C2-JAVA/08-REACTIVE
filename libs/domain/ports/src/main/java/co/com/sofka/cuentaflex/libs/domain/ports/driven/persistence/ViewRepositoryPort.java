@@ -13,4 +13,6 @@ public interface ViewRepositoryPort {
     Mono<Void> saveAccountTransactionToAccountView(String customerId, String accountId, AccountTransactionView accountTransactionView);
     Mono<Void> updateAccountBalance(String customerId, String accountId, BigDecimal balance);
     Mono<AccountView> getAccountView(String customerId, String accountId);
+
+    Mono<CustomerView> getCustomerView(String customerId);
 }

@@ -2,10 +2,10 @@ spring:
   application:
     name: accounts-service
 
-    data:
-      mongodb:
-        uri: mongodb://localhost:27017
-        database: accounts-events
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: accounts-events
 
   webflux:
     base-path: /api
