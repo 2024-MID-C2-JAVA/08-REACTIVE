@@ -17,7 +17,7 @@ public class UserRouter {
     public RouterFunction<ServerResponse>userRoute(UserHandler userHandler) {
         return RouterFunctions.route(POST("/api/auth/register")
                 .and(accept(MediaType.APPLICATION_JSON)),userHandler::register)
-                .andRoute(POST("/api/user/authenticate")
+                .andRoute(POST("/api/auth/authenticate")
                         .and(accept(MediaType.APPLICATION_JSON)),userHandler::authenticate);
     }
 }

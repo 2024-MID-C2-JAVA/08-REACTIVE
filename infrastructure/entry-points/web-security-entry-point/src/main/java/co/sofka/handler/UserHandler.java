@@ -1,9 +1,7 @@
 package co.sofka.handler;
 
 
-import co.sofka.AuthenticationRequest;
-import co.sofka.RequestMs;
-import co.sofka.UserRequest;
+import co.sofka.*;
 import co.sofka.appservice.eventsUseCase.CreateAccountCommandUseCaseImpl;
 import co.sofka.appservice.eventsUseCase.CreateUserCommandUseCaseImpl;
 import co.sofka.appservice.user.AuthenticateUseCaseImpl;
@@ -31,19 +29,25 @@ public class UserHandler {
     }
 
     public Mono<ServerResponse> authenticate(ServerRequest request) {
-        return request.bodyToMono(new ParameterizedTypeReference<RequestMs<AuthenticationRequest>>() {})
-                .flatMap(user->{
-                    return authenticateUseCase.apply(user.getDinBody())
-                            .flatMap(userAuthenticated->ServerResponse.status(HttpStatus.OK)
+        return request.bodyToMono(new ParameterizedTypeReference<RequestMs<AuthenticationRequest>>() {
+                })
+                .flatMap(user -> authenticateUseCase.apply(user.getDinBody())
+                        .flatMap(userAuthenticated -> {
+                            ResponseMs<AuthenticationResponse> din = new ResponseMs<>();
+                            din.setDinHeader(user.getDinHeader());
+                            din.setDinBody(userAuthenticated);
+                            din.setDinError(new DinError(DinErrorEnum.SUCCESS));
+                            return ServerResponse.status(HttpStatus.OK)
                                     .contentType(MediaType.APPLICATION_JSON)
-                                    .bodyValue(user));
-                });
+                                    .bodyValue(din);
+                        }));
     }
 
     public Mono<ServerResponse> register(ServerRequest request) {
-        return request.bodyToMono(new ParameterizedTypeReference<RequestMs<UserRequest>>(){})
-                .flatMap(user->{
-                    CreateUserCommand command=new CreateUserCommand();
+        return request.bodyToMono(new ParameterizedTypeReference<RequestMs<UserRequest>>() {
+                })
+                .flatMap(user -> {
+                    CreateUserCommand command = new CreateUserCommand();
 
                     command.setFirstname(user.getDinBody().getFirstname());
                     command.setLastname(user.getDinBody().getLastname());
@@ -52,7 +56,7 @@ public class UserHandler {
                     command.setRole(user.getDinBody().getRole());
 
                     return createAccountEventUseCase.publish(Mono.just(command))
-                            .flatMap(userRegistered->ServerResponse
+                            .flatMap(userRegistered -> ServerResponse
                                     .status(HttpStatus.OK)
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .bodyValue(userRegistered));

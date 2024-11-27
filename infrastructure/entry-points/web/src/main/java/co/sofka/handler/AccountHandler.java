@@ -26,12 +26,12 @@ public class AccountHandler {
     }
 
     public Mono<ServerResponse> createAccount(ServerRequest request) {
-        return request.bodyToMono(new ParameterizedTypeReference<RequestMs<Account>>() {})
+        return request.bodyToMono(new ParameterizedTypeReference<RequestMs<AccountDto>>() {})
                 .flatMap(requestMs->{
                     CreateAccountCommand command= new CreateAccountCommand();
                     command.setCustomerId(requestMs.getDinBody().getCustomerId());
                     command.setAmount(requestMs.getDinBody().getAmount());
-                    command.setNumber(requestMs.getDinBody().getNumber());
+                    command.setNumber(Integer.parseInt(requestMs.getDinBody().getNumber()));
 
                     return createAccountCommandUseCase.publish(Mono.just(command))
                             .flatMap(accountCreated->ServerResponse

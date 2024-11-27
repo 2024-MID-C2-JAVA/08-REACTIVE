@@ -59,6 +59,7 @@ public class EventBusAdapter implements EventBus {
     public Mono<DomainEvent> publishAccountEvent(AccountCreatedEvent accountCreatedEvent) {
         try {
             String json=objectMapper.writeValueAsString(accountCreatedEvent);
+            System.out.println("JSON DEL ACCOUNT: "+json);
             template.convertAndSend(EXCHANGE_NAME,ACCOUNT_ROUTING_KEY,json);
             return Mono.just(accountCreatedEvent);
         } catch (JsonProcessingException e) {

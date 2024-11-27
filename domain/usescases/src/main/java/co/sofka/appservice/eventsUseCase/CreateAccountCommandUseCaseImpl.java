@@ -36,6 +36,8 @@ public class CreateAccountCommandUseCaseImpl implements CreateAccountEventUseCas
                 domainEvent.setAggregateRootId(accountCreatedEvent.getAggregateRootId());
                 domainEvent.setAggregate(objectMapper.writeValueAsString(command));
 
+                System.out.println("Estoy en el caso de uso");
+
                 return eventRepository.save(domainEvent)
                         .flatMap(event-> accountEventBus.publishAccountEvent(accountCreatedEvent)
                                 .thenReturn(event));

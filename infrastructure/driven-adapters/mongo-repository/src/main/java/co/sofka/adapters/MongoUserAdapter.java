@@ -74,6 +74,8 @@ public class MongoUserAdapter implements UserRepository {
                     String jwtToken = jwtService.generateToken(userDocument,
                             Map.of("roles", String.join(",", roles)));
 
+                    System.out.println("Genero token: "+jwtToken);
+
                     return Mono.just(new AuthenticationResponse
                             .Builder()
                             .token(jwtToken)

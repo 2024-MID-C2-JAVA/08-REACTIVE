@@ -10,5 +10,4 @@ public interface EventBus {
     Mono<TransactionCreatedEvent> publishTransactionEvent(TransactionCreatedEvent event);
     Mono<DomainEvent>publishUserEvent(CreateUserEvent createUserEvent);
     Mono<DomainEvent> publishAccountEvent(AccountCreatedEvent accountCreatedEvent);
-
 }
