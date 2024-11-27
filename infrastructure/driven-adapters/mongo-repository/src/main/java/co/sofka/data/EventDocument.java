@@ -6,21 +6,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.Instant;
 import java.util.UUID;
 
-@Document(collection = "EventsLog")
-public class EventLogDocument {
+@Document(collection = "Events")
+public class EventDocument {
     @Id
-    public final UUID uuid;
-    public final Instant when;
-    public final String type;
+    public  UUID uuid;
+    public  Instant when;
+    public  String type;
     private String aggregateRootId;
     private String aggregate;
     private Long versionType;
     private String body;
 
-    public EventLogDocument(Instant when, UUID uuid, String type) {
+    public EventDocument() {
         this.when = Instant.now();
-        this.uuid = UUID.randomUUID();
-        this.type = type;
     }
 
     public UUID getUuid() {
@@ -65,5 +63,17 @@ public class EventLogDocument {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setWhen(Instant when) {
+        this.when = when;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

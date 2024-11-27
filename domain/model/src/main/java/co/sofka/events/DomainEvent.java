@@ -12,7 +12,6 @@ public abstract class DomainEvent implements Serializable {
     private String aggregateRootId;
     private String aggregate;
     private Long versionType;
-    private String body;
 
     protected DomainEvent(String aggregate, String type) {
         this.when = Instant.now();
@@ -63,11 +62,6 @@ public abstract class DomainEvent implements Serializable {
         this.versionType = versionType;
     }
 
-    public String getBody() {
-        return body;
-    }
 
-    public void setBody(String body) {
-        this.body = body;
-    }
+
 }

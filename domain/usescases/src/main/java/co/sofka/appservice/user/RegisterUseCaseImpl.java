@@ -9,11 +9,9 @@ import reactor.core.publisher.Mono;
 public class RegisterUseCaseImpl {
 
     private final UserRepository userRepository;
-    private final CreateUserEventUseCase event;
 
-    public RegisterUseCaseImpl(UserRepository userRepository, CreateUserEventUseCase event) {
+    public RegisterUseCaseImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.event = event;
     }
 
     public Mono<AuthenticationResponse> apply(UserRequest userRequest) {
