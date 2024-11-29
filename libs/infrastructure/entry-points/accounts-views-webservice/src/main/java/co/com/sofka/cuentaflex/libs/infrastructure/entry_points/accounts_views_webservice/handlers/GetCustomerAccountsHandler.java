@@ -1,9 +1,9 @@
 package co.com.sofka.cuentaflex.libs.infrastructure.entry_points.accounts_views_webservice.handlers;
 
-import co.com.sofka.cuentaflex.libs.domain.use_cases.queries.GetCustomerAccountsQuery;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts_views.queries.GetCustomerAccountsQuery;
 import co.com.sofka.cuentaflex.libs.domain.use_cases.query_handlers.GetCustomerAccountsQueryHandler;
-import co.com.sofka.cuentaflex.libs.infrastructure.entry_points.din.DinRequest;
-import co.com.sofka.cuentaflex.libs.infrastructure.entry_points.din.DinResponse;
+import co.com.sofka.cuentaflex.libs.infrastructure.utils.din.DinRequest;
+import co.com.sofka.cuentaflex.libs.infrastructure.utils.din.DinResponse;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;

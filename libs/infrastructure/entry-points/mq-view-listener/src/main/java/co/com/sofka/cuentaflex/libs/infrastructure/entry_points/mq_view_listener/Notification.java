@@ -3,13 +3,14 @@ package co.com.sofka.cuentaflex.libs.infrastructure.entry_points.mq_view_listene
 import co.com.sofka.cuentaflex.libs.domain.ports.utils.serializer.EventSerializer;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public final class Notification{
     private final UUID uuid;
     private final String type;
     private final String body;
-    private final Instant when;
+    private final LocalDateTime when;
 
     public Notification() {
         this.uuid = null;
@@ -18,7 +19,7 @@ public final class Notification{
         this.when = null;
     }
 
-    public Notification(UUID uuid, String type, String body, Instant when) {
+    public Notification(UUID uuid, String type, String body, LocalDateTime when) {
         this.uuid = uuid;
         this.type = type;
         this.body = body;
@@ -37,7 +38,7 @@ public final class Notification{
         return body;
     }
 
-    public Instant getWhen() {
+    public LocalDateTime getWhen() {
         return when;
     }
 

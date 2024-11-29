@@ -1,7 +1,7 @@
 package co.com.sofka.cuentaflex.libs.infrastructure.entry_points.accounts_webservice.din_errors;
 
-import co.com.sofka.cuentaflex.libs.infrastructure.entry_points.din.DinError;
-import co.com.sofka.cuentaflex.libs.infrastructure.entry_points.din.DinErrorType;
+import co.com.sofka.cuentaflex.libs.infrastructure.utils.din.DinError;
+import co.com.sofka.cuentaflex.libs.infrastructure.utils.din.DinErrorType;
 
 public final class DinErrors {
     public static DinError withDetail(final DinError error, final String detail) {

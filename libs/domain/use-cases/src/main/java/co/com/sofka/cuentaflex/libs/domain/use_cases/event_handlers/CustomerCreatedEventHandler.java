@@ -2,7 +2,7 @@ package co.com.sofka.cuentaflex.libs.domain.use_cases.event_handlers;
 
 import co.com.sofka.cuentaflex.libs.domain.model.accounts.events.CustomerCreatedEvent;
 import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.ViewRepositoryPort;
-import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.data.CustomerView;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts_views.CustomerView;
 import co.com.sofka.cuentaflex.libs.domain.use_cases.ReactiveEventHandler;
 import reactor.core.publisher.Mono;
 

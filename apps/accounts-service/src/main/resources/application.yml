@@ -28,6 +28,10 @@ cuentaflex:
 
     atm-withdrawal: 1.00
 
+  jwt:
+    secret-key: a6d446e3d4832339ae6b871c5b42d7c67b8b4d0ecd8429c044c1d802d149f3d8
+    expires-in-hours: 12
+
 event-bus:
     encryption:
       symmetric-key: PTivgtCBtJoj5S0eVSQSO1dht05HRPrl

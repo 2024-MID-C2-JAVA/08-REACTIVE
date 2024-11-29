@@ -3,8 +3,8 @@ package co.com.sofka.cuentaflex.libs.infrastructure.entry_points.accounts_webser
 import co.com.sofka.cuentaflex.libs.domain.model.accounts.commands.CreateAccountCommand;
 import co.com.sofka.cuentaflex.libs.domain.use_cases.command_handlers.CreateAccountCommandHandler;
 import co.com.sofka.cuentaflex.libs.infrastructure.entry_points.accounts_webservice.data.CreateAccountRequest;
-import co.com.sofka.cuentaflex.libs.infrastructure.entry_points.din.DinRequest;
-import co.com.sofka.cuentaflex.libs.infrastructure.entry_points.din.DinResponse;
+import co.com.sofka.cuentaflex.libs.infrastructure.utils.din.DinRequest;
+import co.com.sofka.cuentaflex.libs.infrastructure.utils.din.DinResponse;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;

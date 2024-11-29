@@ -5,6 +5,7 @@ import co.com.sofka.cuentaflex.libs.domain.ports.utils.serializer.EventSerialize
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Document(collection = "events")
 public class EventDocument {
@@ -13,12 +14,12 @@ public class EventDocument {
     private String aggregateRootId;
     private String aggregateName;
     private String body;
-    private Instant occurredOn;
+    private LocalDateTime occurredOn;
 
     public EventDocument() {
     }
 
-    public EventDocument(String id, String type, String aggregateRootId, String aggregateName, String body, Instant occurredOn) {
+    public EventDocument(String id, String type, String aggregateRootId, String aggregateName, String body, LocalDateTime occurredOn) {
         this.id = id;
         this.type = type;
         this.aggregateRootId = aggregateRootId;
@@ -67,11 +68,11 @@ public class EventDocument {
         this.body = body;
     }
 
-    public Instant getOccurredOn() {
+    public LocalDateTime getOccurredOn() {
         return occurredOn;
     }
 
-    public void setOccurredOn(Instant occurredOn) {
+    public void setOccurredOn(LocalDateTime occurredOn) {
         this.occurredOn = occurredOn;
     }
 

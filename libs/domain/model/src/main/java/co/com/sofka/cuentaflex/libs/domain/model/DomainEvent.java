@@ -2,10 +2,11 @@ package co.com.sofka.cuentaflex.libs.domain.model;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public abstract class DomainEvent implements Serializable {
-    private final Instant when;
+    private final LocalDateTime when;
     private final UUID uuid;
     private final String type;
     private String aggregateRootId;
@@ -17,7 +18,7 @@ public abstract class DomainEvent implements Serializable {
     }
 
     public DomainEvent(final String type, String aggregateRootId, final String aggregateName) {
-        this.when = Instant.now();
+        this.when = LocalDateTime.now();
         this.uuid = UUID.randomUUID();
         this.type = type;
         this.aggregateRootId = aggregateRootId;
@@ -25,7 +26,7 @@ public abstract class DomainEvent implements Serializable {
         this.version = 1L;
     }
 
-    public Instant getWhen() {
+    public LocalDateTime getWhen() {
         return when;
     }
 

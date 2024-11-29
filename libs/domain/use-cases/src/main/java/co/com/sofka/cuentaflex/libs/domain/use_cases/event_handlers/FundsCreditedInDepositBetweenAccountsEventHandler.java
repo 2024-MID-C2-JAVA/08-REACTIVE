@@ -3,9 +3,9 @@ package co.com.sofka.cuentaflex.libs.domain.use_cases.event_handlers;
 import co.com.sofka.cuentaflex.libs.domain.model.accounts.TransactionType;
 import co.com.sofka.cuentaflex.libs.domain.model.accounts.events.FundsCreditedInDepositBetweenAccountsEvent;
 import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.ViewRepositoryPort;
-import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.data.AccountRole;
-import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.data.AccountTransactionView;
-import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.data.TransactionView;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts_views.AccountRole;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts_views.AccountTransactionView;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts_views.TransactionView;
 import co.com.sofka.cuentaflex.libs.domain.use_cases.ReactiveEventHandler;
 import reactor.core.publisher.Mono;
 
@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-public class FundsCreditedInDepositBetweenAccountsEventHandler implements ReactiveEventHandler<FundsCreditedInDepositBetweenAccountsEvent> {
+public final class FundsCreditedInDepositBetweenAccountsEventHandler implements ReactiveEventHandler<FundsCreditedInDepositBetweenAccountsEvent> {
     private final ViewRepositoryPort viewRepositoryPort;
 
     public FundsCreditedInDepositBetweenAccountsEventHandler(ViewRepositoryPort viewRepositoryPort) {
@@ -29,7 +29,7 @@ public class FundsCreditedInDepositBetweenAccountsEventHandler implements Reacti
                                 event.getAmount(),
                                 event.getFee(),
                                 TransactionType.DEPOSIT_BETWEEN_ACCOUNTS,
-                                LocalDateTime.ofInstant(event.getWhen(), ZoneOffset.UTC)
+                                event.getWhen()
                         ),
                         AccountRole.SUPPLIER
                 )

@@ -1,9 +1,9 @@
 package co.com.sofka.cuentaflex.libs.domain.use_cases.query_handlers;
 
 import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.ViewRepositoryPort;
-import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.data.AccountView;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts_views.AccountView;
 import co.com.sofka.cuentaflex.libs.domain.use_cases.QueryHandler;
-import co.com.sofka.cuentaflex.libs.domain.use_cases.queries.GetCustomerAccountQuery;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts_views.queries.GetCustomerAccountQuery;
 import reactor.core.publisher.Mono;
 
 public final class GetCustomerAccountQueryHandler implements QueryHandler<GetCustomerAccountQuery, Mono<AccountView>> {

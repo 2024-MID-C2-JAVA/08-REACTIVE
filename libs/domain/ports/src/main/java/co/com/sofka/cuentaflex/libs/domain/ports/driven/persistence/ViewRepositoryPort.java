@@ -1,8 +1,8 @@
 package co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence;
 
-import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.data.AccountTransactionView;
-import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.data.AccountView;
-import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.data.CustomerView;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts_views.AccountTransactionView;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts_views.AccountView;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts_views.CustomerView;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;

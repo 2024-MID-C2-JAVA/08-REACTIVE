@@ -1,10 +1,9 @@
 package co.com.sofka.cuentaflex.libs.infrastructure.entry_points.accounts_webservice.handlers;
 
-import co.com.sofka.cuentaflex.libs.domain.model.accounts.commands.CreateCustomerCommand;
 import co.com.sofka.cuentaflex.libs.infrastructure.entry_points.accounts_webservice.din_errors.DinErrors;
-import co.com.sofka.cuentaflex.libs.infrastructure.entry_points.din.DinError;
-import co.com.sofka.cuentaflex.libs.infrastructure.entry_points.din.DinRequest;
-import co.com.sofka.cuentaflex.libs.infrastructure.entry_points.din.DinResponse;
+import co.com.sofka.cuentaflex.libs.infrastructure.utils.din.DinError;
+import co.com.sofka.cuentaflex.libs.infrastructure.utils.din.DinRequest;
+import co.com.sofka.cuentaflex.libs.infrastructure.utils.din.DinResponse;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.server.ServerRequest;

@@ -3,9 +3,9 @@ package co.com.sofka.cuentaflex.libs.domain.use_cases.event_handlers;
 import co.com.sofka.cuentaflex.libs.domain.model.accounts.TransactionType;
 import co.com.sofka.cuentaflex.libs.domain.model.accounts.events.FundsDebitedInDepositBetweenAccountsEvent;
 import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.ViewRepositoryPort;
-import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.data.AccountRole;
-import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.data.AccountTransactionView;
-import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.data.TransactionView;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts_views.AccountRole;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts_views.AccountTransactionView;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts_views.TransactionView;
 import co.com.sofka.cuentaflex.libs.domain.use_cases.ReactiveEventHandler;
 import reactor.core.publisher.Mono;
 
@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-public class FundsDebitedInDepositBetweenAccountsEventHandler implements ReactiveEventHandler<FundsDebitedInDepositBetweenAccountsEvent> {
+public final class FundsDebitedInDepositBetweenAccountsEventHandler implements ReactiveEventHandler<FundsDebitedInDepositBetweenAccountsEvent> {
     private final ViewRepositoryPort viewRepositoryPort;
 
     public FundsDebitedInDepositBetweenAccountsEventHandler(ViewRepositoryPort viewRepositoryPort) {
@@ -29,7 +29,7 @@ public class FundsDebitedInDepositBetweenAccountsEventHandler implements Reactiv
                                 event.getAmount(),
                                 event.getFee(),
                                 TransactionType.DEPOSIT_BETWEEN_ACCOUNTS,
-                                LocalDateTime.ofInstant(event.getWhen(), ZoneOffset.UTC)
+                                event.getWhen()
                         ),
                         AccountRole.PAYROLL
                 )

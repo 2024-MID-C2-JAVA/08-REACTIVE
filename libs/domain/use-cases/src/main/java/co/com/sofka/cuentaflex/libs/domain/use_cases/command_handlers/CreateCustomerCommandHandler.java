@@ -1,6 +1,7 @@
 package co.com.sofka.cuentaflex.libs.domain.use_cases.command_handlers;
 
 import co.com.sofka.cuentaflex.libs.domain.model.accounts.Customer;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts.CustomerId;
 import co.com.sofka.cuentaflex.libs.domain.model.accounts.commands.CreateCustomerCommand;
 import co.com.sofka.cuentaflex.libs.domain.model.accounts.events.CustomerCreatedEvent;
 import co.com.sofka.cuentaflex.libs.domain.ports.driven.messaging.EventBus;
@@ -26,13 +27,11 @@ public final class CreateCustomerCommandHandler implements ReactiveCommandHandle
                         exists ? Mono.error(new CustomerAlreadyExistsException(createCustomerCommand.getCustomerId()))
                                 : Mono.just(createCustomerCommand)
                 )
-                .map(
-                        command -> new CustomerCreatedEvent(
-                                command.getCustomerId(),
-                                command.getFirstName(),
-                                command.getLastName(),
-                                command.getIdentification()
-                        )
+                .flatMapIterable(
+                        command -> {
+                            Customer customer = new Customer(CustomerId.of(command.getCustomerId()), command.getFirstName(), command.getLastName(), command.getIdentification());
+                            return customer.getUncommittedChanges();
+                        }
                 )
                 .map(event -> {
                     this.eventBus.publish(event);

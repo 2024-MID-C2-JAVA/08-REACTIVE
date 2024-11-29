@@ -1,7 +1,7 @@
 dependencies {
     implementation project(":domain.model")
     implementation project(":domain.use-cases")
-    implementation project(":infrastructure.entry-points.din")
+    implementation project(":infrastructure.utils.din")
 
     implementation 'org.springframework.boot:spring-boot-starter-webflux:3.3.5'
 }

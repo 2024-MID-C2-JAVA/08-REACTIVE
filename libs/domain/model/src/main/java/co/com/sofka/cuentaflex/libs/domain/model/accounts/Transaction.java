@@ -1,19 +1,22 @@
 package co.com.sofka.cuentaflex.libs.domain.model.accounts;
 
-import co.com.sofka.cuentaflex.libs.domain.model.BaseAuditableModel;
+import co.com.sofka.cuentaflex.libs.domain.model.Entity;
 
 import java.time.LocalDateTime;
 
-public final class Transaction extends BaseAuditableModel {
-    private Amount amount;
-    private Fee fee;
-    private TransactionType type;
+@SuppressWarnings("ALL")
+public final class Transaction extends Entity<TransactionId> {
+    protected Amount amount;
+    protected Fee fee;
+    protected TransactionType type;
+    protected LocalDateTime createdAt;
 
-    public Transaction(String id, LocalDateTime createdAt, Amount amount, Fee fee, TransactionType type) {
-        super(id, createdAt);
+    public Transaction(TransactionId transactionId, LocalDateTime createdAt, Amount amount, Fee fee, TransactionType type) {
+        super(transactionId);
         this.amount = amount;
         this.fee = fee;
         this.type = type;
+        this.createdAt = createdAt;
     }
 
     public Amount getAmount() {
@@ -26,5 +29,9 @@ public final class Transaction extends BaseAuditableModel {
 
     public TransactionType getType() {
         return this.type;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
     }
 }

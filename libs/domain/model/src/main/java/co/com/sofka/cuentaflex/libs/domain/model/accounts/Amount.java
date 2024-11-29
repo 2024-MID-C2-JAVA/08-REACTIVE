@@ -1,10 +1,12 @@
 package co.com.sofka.cuentaflex.libs.domain.model.accounts;
 
+import co.com.sofka.cuentaflex.libs.domain.model.ValueObject;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
 
-public final class Amount {
+public final class Amount implements ValueObject<BigDecimal> {
 
     private final BigDecimal value;
 
@@ -18,6 +20,7 @@ public final class Amount {
         this.value = value.setScale(2, RoundingMode.HALF_UP);
     }
 
+    @Override
     public BigDecimal getValue() {
         return this.value;
     }
@@ -27,15 +30,11 @@ public final class Amount {
     }
 
     public Amount subtractFee(Fee fee) {
-        try {
-            return new Amount(this.value.subtract(fee.getValue()));
-        } catch (IllegalArgumentException e) {
-            throw new MinimumAmountNotReached(this, new Amount(fee.getValue()));
-        }
+        return new Amount(this.value.subtract(fee.getValue()));
     }
 
     @Override
     public String toString() {
-        return "$" +  String.format("%.2f", this.value);
+        return "$" + String.format("%.2f", this.value);
     }
 }

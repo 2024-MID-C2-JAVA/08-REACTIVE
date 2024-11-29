@@ -2,9 +2,9 @@ package co.com.sofka.cuentaflex.libs.domain.use_cases.event_handlers;
 
 import co.com.sofka.cuentaflex.libs.domain.model.accounts.events.UnidirectionalTransactionPerformedEvent;
 import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.ViewRepositoryPort;
-import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.data.AccountRole;
-import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.data.AccountTransactionView;
-import co.com.sofka.cuentaflex.libs.domain.ports.driven.persistence.data.TransactionView;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts_views.AccountRole;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts_views.AccountTransactionView;
+import co.com.sofka.cuentaflex.libs.domain.model.accounts_views.TransactionView;
 import co.com.sofka.cuentaflex.libs.domain.use_cases.ReactiveEventHandler;
 import reactor.core.publisher.Mono;
 
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-public class UnidirectionalTransactionPerformedEventHandler implements ReactiveEventHandler<UnidirectionalTransactionPerformedEvent> {
+public final class UnidirectionalTransactionPerformedEventHandler implements ReactiveEventHandler<UnidirectionalTransactionPerformedEvent> {
     private final ViewRepositoryPort viewRepositoryPort;
 
     public UnidirectionalTransactionPerformedEventHandler(ViewRepositoryPort viewRepositoryPort) {
@@ -29,7 +29,7 @@ public class UnidirectionalTransactionPerformedEventHandler implements ReactiveE
                                 event.getAmount(),
                                 event.getFee(),
                                 event.getTransactionType(),
-                                LocalDateTime.ofInstant(event.getWhen(), ZoneOffset.UTC)
+                                event.getWhen()
                         ),
                         event.getTransactionType().isDebit() ? AccountRole.PAYROLL : AccountRole.SUPPLIER
                 )
