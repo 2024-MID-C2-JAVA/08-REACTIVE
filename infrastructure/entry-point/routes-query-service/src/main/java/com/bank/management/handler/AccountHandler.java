@@ -31,9 +31,9 @@ public class AccountHandler {
         return request.bodyToMono(new ParameterizedTypeReference<RequestMs<RequestGetBankAccountDTO>>() {})
                 .flatMap(req -> getAccountsByCustomerUseCase.apply(req.getDinBody().getId())
                         .map(account -> new ResponseAllBankAccountByCustomerDTO.Builder()
-                                .number(account.getNumber())
-                                .amount(account.getAmount())
-                                .id(account.getId())
+                                .number(account.getNumber().value())
+                                .amount(account.getAmount().value())
+                                .id(account.getId().value())
                                 .build())
                         .collectList()
                         .flatMap(accounts -> ServerResponse.ok()
@@ -52,8 +52,8 @@ public class AccountHandler {
                 .flatMap(req -> getBankAccountUseCase.apply(req.getDinBody().getId())
                         .flatMap(account -> {
                             BankAccountDTO accountDTO = new BankAccountDTO.Builder()
-                                    .number(account.getNumber())
-                                    .amount(account.getAmount())
+                                    .number(account.getNumber().value())
+                                    .amount(account.getAmount().value())
                                     .build();
                             return ServerResponse.ok()
                                     .bodyValue(Objects.requireNonNull(ResponseBuilder.buildResponse(

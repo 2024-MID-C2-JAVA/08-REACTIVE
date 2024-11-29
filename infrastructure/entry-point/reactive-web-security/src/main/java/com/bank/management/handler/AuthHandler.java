@@ -62,7 +62,7 @@ public class AuthHandler {
                             .flatMap(customer -> {
                                 Map<String, String> responseData = new HashMap<>();
                                 responseData.put("token", token);
-                                responseData.put("customerId", customer.getId());
+                                responseData.put("customerId", customer.getId().value());
 
                                 return ServerResponse.ok().bodyValue(
                                         Objects.requireNonNull(ResponseBuilder.buildResponse(
@@ -112,7 +112,7 @@ public class AuthHandler {
                                                 .flatMap(customerFound -> {
                                                     Map<String, String> responseData = new HashMap<>();
                                                     responseData.put("token", token);
-                                                    responseData.put("customerId", customerFound.getId());
+                                                    responseData.put("customerId", customerFound.getId().value());
 
                                                     return ServerResponse.status(HttpStatus.CREATED).bodyValue(
                                                             Objects.requireNonNull(ResponseBuilder.buildResponse(

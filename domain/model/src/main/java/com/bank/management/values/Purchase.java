@@ -1,23 +1,16 @@
-package com.bank.management.transaction;
+package com.bank.management.values;
 
 import java.math.BigDecimal;
 
-public class Deposit {
-    private final String username;
+public class Purchase {
     private final String accountNumber;
     private final BigDecimal amount;
-    private final String type;
+    private final String type; // "PHYSICAL" or "ONLINE"
 
-    private Deposit(Builder builder) {
-        this.username = builder.username;
+    private Purchase(Builder builder) {
         this.accountNumber = builder.accountNumber;
         this.amount = builder.amount;
         this.type = builder.type;
-    }
-
-    // Getters
-    public String getUsername() {
-        return username;
     }
 
     public String getAccountNumber() {
@@ -33,15 +26,9 @@ public class Deposit {
     }
 
     public static class Builder {
-        private String username;
         private String accountNumber;
         private BigDecimal amount;
-        private String type;
-
-        public Builder username(String username) {
-            this.username = username;
-            return this;
-        }
+        private String type; // "PHYSICAL" or "ONLINE"
 
         public Builder accountNumber(String accountNumber) {
             this.accountNumber = accountNumber;
@@ -58,16 +45,15 @@ public class Deposit {
             return this;
         }
 
-        public Deposit build() {
-            return new Deposit(this);
+        public Purchase build() {
+            return new Purchase(this);
         }
     }
 
     @Override
     public String toString() {
-        return "Deposit{" +
-                "username=" + username +
-                ", accountNumber='" + accountNumber + '\'' +
+        return "Purchase{" +
+                "accountNumber='" + accountNumber + '\'' +
                 ", amount=" + amount +
                 ", type='" + type + '\'' +
                 '}';

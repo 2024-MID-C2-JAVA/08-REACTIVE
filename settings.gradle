@@ -12,6 +12,7 @@ include ':routes-query-service'
 include ':listener-event'
 include ':din'
 include ':aes-encryption'
+include ':serializer'
 include ':jwt'
 
 findProject(':model').projectDir = file('./domain/model')
@@ -26,4 +27,5 @@ findProject(':reactive-web-security').projectDir = file('./infrastructure/entry-
 findProject(':listener-event').projectDir = file('./infrastructure/entry-point/listener-event')
 findProject(':din').projectDir = file('./infrastructure/entry-point/din')
 findProject(':aes-encryption').projectDir = file('./infrastructure/helper/aes-encryption')
+findProject(':serializer').projectDir = file('./infrastructure/helper/serializer')
 findProject(':jwt').projectDir = file('./infrastructure/helper/jwt')

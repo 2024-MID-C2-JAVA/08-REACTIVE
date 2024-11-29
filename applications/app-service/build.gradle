@@ -12,6 +12,7 @@ dependencies {
     implementation project(':rabbitmq-messages')
     implementation project(':reactive-mongo')
     implementation project(':aes-encryption')
+    implementation project(':serializer')
     implementation project(':jwt')
 
     implementation 'org.springframework.boot:spring-boot-starter-security'

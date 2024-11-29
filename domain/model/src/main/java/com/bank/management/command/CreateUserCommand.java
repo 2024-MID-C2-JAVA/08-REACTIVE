@@ -22,6 +22,51 @@ public class CreateUserCommand extends Command {
 
     public CreateUserCommand() {
     }
+    private CreateUserCommand(Builder builder) {
+        this.name = builder.name;
+        this.lastname = builder.lastname;
+        this.username = builder.username;
+        this.password = builder.password;
+        this.roles = builder.roles;
+    }
+
+
+    public static class Builder {
+        private String name;
+        private String lastname;
+        private String username;
+        private String password;
+        private List<String> roles;
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder lastname(String lastname) {
+            this.lastname = lastname;
+            return this;
+        }
+
+        public Builder username(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder roles(List<String> roles) {
+            this.roles = roles;
+            return this;
+        }
+
+        public CreateUserCommand build() {
+            return new CreateUserCommand(this);
+        }
+    }
 
     public String getName() {
         return name;

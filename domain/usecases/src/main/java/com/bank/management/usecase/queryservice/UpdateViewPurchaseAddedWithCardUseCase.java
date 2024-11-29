@@ -1,9 +1,9 @@
 package com.bank.management.usecase.queryservice;
 
 import com.bank.management.command.ProcessPurchaseCommand;
-import com.bank.management.customer.Account;
-import com.bank.management.customer.Customer;
-import com.bank.management.transaction.Transaction;
+import com.bank.management.values.Account;
+import com.bank.management.values.Customer;
+import com.bank.management.values.Transaction;
 import com.bank.management.enums.PurchaseType;
 import com.bank.management.exception.BankAccountNotFoundException;
 import com.bank.management.exception.CustomerNotFoundException;
@@ -49,7 +49,7 @@ public class UpdateViewPurchaseAddedWithCardUseCase {
                     BigDecimal fee = calculatePurchaseFee(purchaseType);
                     BigDecimal totalCharge = amount.add(fee);
 
-                    if (account.getAmount().compareTo(totalCharge) < 0) {
+                    if (account.getAmount().value().compareTo(totalCharge) < 0) {
                         return Mono.error(new InsufficientFundsException());
                     }
 

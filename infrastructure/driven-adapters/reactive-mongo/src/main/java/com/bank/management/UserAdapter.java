@@ -1,7 +1,7 @@
 package com.bank.management;
 
-import com.bank.management.customer.Customer;
-import com.bank.management.customer.User;
+import com.bank.management.values.Customer;
+import com.bank.management.values.User;
 import com.bank.management.data.CustomerDocument;
 import com.bank.management.data.UserDocument;
 import com.bank.management.exception.UserAlreadyExistsException;

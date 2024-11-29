@@ -2,6 +2,7 @@ package com.bank.management;
 
 import com.bank.management.gateway.EventBus;
 import com.bank.management.generic.DomainEvent;
+import com.bank.management.generic.DomainEventAggregateBackup;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

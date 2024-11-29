@@ -10,15 +10,21 @@ import java.util.Objects;
  */
 public class CreateAccountCommand extends Command {
 
-    private String aggregateRootId; // Identificador del agregado raíz
+    private String aggregateRootId;
     private BigDecimal amount;
+    private String accountId;
 
-    public CreateAccountCommand(String aggregateRootId, String customerId, BigDecimal amount) {
+    public CreateAccountCommand(String aggregateRootId, String customerId, BigDecimal amount, String accountId) {
         this.aggregateRootId = Objects.requireNonNull(aggregateRootId, "Aggregate Root ID cannot be null");
         this.amount = Objects.requireNonNull(amount, "Amount cannot be null");
+        this.accountId = Objects.requireNonNull(accountId, "Amount cannot be null");
     }
 
     public CreateAccountCommand() {
+    }
+
+    public String getAccountId() {
+        return accountId;
     }
 
     public String getAggregateRootId() {

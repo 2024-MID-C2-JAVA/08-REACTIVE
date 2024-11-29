@@ -21,18 +21,7 @@ public class ProcessDepositEventUseCase {
     }
 
     public Mono<DomainEvent>apply(ProcessDepositCommand command) {
-        return serializeCommand(command)
-                .map(serializedCommand -> {
-                    DomainEvent event = new DomainEvent("ProcessDepositEvent", serializedCommand);
-                    event.setAggregateRootId(command.getAggregateRootId());
-                    return event;
-                })
-                .flatMap(event -> {
-                    eventBus.depositEvent(event);
-                    return eventRepository.save(event);
-                })
-                .onErrorResume(UserAlreadyExistsException.class, Mono::error)
-                .onErrorResume(Exception.class, Mono::error);
+        return Mono.empty();
     }
 
     public Mono<String> serializeCommand(Command command) {

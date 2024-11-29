@@ -4,4 +4,5 @@ dependencies {
 
     implementation project(':use-cases')
     implementation project(':model')
+    implementation project(':serializer')
 }

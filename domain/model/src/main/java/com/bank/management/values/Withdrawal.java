@@ -1,4 +1,4 @@
-package com.bank.management.transaction;
+package com.bank.management.values;
 
 import java.math.BigDecimal;
 

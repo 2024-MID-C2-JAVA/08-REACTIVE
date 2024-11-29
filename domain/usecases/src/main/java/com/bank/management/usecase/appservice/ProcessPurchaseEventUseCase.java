@@ -1,6 +1,5 @@
 package com.bank.management.usecase.appservice;
 
-import com.bank.management.command.ProcessDepositCommand;
 import com.bank.management.command.ProcessPurchaseCommand;
 import com.bank.management.exception.*;
 import com.bank.management.gateway.*;
@@ -23,18 +22,7 @@ public class ProcessPurchaseEventUseCase {
 
 
     public Mono<DomainEvent>apply(ProcessPurchaseCommand command) {
-        return serializeCommand(command)
-                .map(serializedCommand -> {
-                    DomainEvent event = new DomainEvent("ProcessPurchaseEvent", serializedCommand);
-                    event.setAggregateRootId(command.getAggregateRootId());
-                    return event;
-                })
-                .flatMap(event -> {
-                    eventBus.purchaseEvent(event);
-                    return eventRepository.save(event);
-                })
-                .onErrorResume(UserAlreadyExistsException.class, Mono::error)
-                .onErrorResume(Exception.class, Mono::error);
+        return Mono.empty();
     }
 
     public Mono<String> serializeCommand(Command command) {

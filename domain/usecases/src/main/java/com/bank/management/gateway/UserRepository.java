@@ -1,7 +1,7 @@
 package com.bank.management.gateway;
 
-import com.bank.management.customer.Customer;
-import com.bank.management.customer.User;
+import com.bank.management.values.Customer;
+import com.bank.management.values.User;
 import reactor.core.publisher.Mono;
 
 public interface UserRepository {

@@ -37,7 +37,8 @@ public class AccountHandler {
                 .flatMap(req -> {
                     CreateAccountCommand command = req.getDinBody();
 
-                    return createBankAccountEventUseCase.apply(command)
+                    return createBankAccountEventUseCase.apply(Mono.just(command))
+                            .collectList()
                             .flatMap(accountCreated -> {
                                 Map<String, String> responseData = new HashMap<>();
                                 return ServerResponse.status(HttpStatus.CREATED)

@@ -1,6 +1,5 @@
 package com.bank.management.usecase.appservice;
 
-import com.bank.management.command.ProcessDepositCommand;
 import com.bank.management.command.ProcessWithdrawalCommand;
 import com.bank.management.exception.*;
 import com.bank.management.gateway.*;
@@ -22,18 +21,7 @@ public class ProcessWithdrawEventUseCase {
     }
 
     public Mono<DomainEvent>apply(ProcessWithdrawalCommand command) {
-        return serializeCommand(command)
-                .map(serializedCommand -> {
-                    DomainEvent event = new DomainEvent("ProcessWithdrawalEvent", serializedCommand);
-                    event.setAggregateRootId(command.getAggregateRootId());
-                    return event;
-                })
-                .flatMap(event -> {
-                    eventBus.withdrawEvent(event);
-                    return eventRepository.save(event);
-                })
-                .onErrorResume(UserAlreadyExistsException.class, Mono::error)
-                .onErrorResume(Exception.class, Mono::error);
+        return Mono.empty();
     }
 
     public Mono<String> serializeCommand(Command command) {

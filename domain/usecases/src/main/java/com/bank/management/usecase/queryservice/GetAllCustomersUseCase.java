@@ -1,6 +1,6 @@
 package com.bank.management.usecase.queryservice;
 
-import com.bank.management.customer.Customer;
+import com.bank.management.values.Customer;
 import com.bank.management.gateway.CustomerRepository;
 import reactor.core.publisher.Flux;
 

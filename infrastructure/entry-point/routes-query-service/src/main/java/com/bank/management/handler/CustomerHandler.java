@@ -30,10 +30,10 @@ public class CustomerHandler {
     public Mono<ServerResponse> getAllCustomers(ServerRequest request) {
         return getAllCustomersUseCase.apply()
                 .map(customer -> new AllCustomerDTO.Builder()
-                        .setUsername(customer.getUsername())
-                        .setLastname(customer.getLastname())
-                        .setName(customer.getName())
-                        .setId(customer.getId())
+                        .setUsername(customer.getUsername().value())
+                        .setLastname(customer.getLastname().value())
+                        .setName(customer.getName().value())
+                        .setId(customer.getId().value())
                         .build())
                 .collectList()
                 .flatMap(customers -> ServerResponse.ok()
@@ -46,9 +46,9 @@ public class CustomerHandler {
                 .flatMap(req -> getCustomerByIdUseCase.apply(req.getDinBody().getId())
                         .flatMap(customer -> {
                             CustomerDTO customerDTO = new CustomerDTO.Builder()
-                                    .setUsername(customer.getUsername())
-                                    .setLastname(customer.getLastname())
-                                    .setName(customer.getName())
+                                    .setUsername(customer.getUsername().value())
+                                    .setLastname(customer.getLastname().value())
+                                    .setName(customer.getName().value())
                                     .build();
 
                             return ServerResponse.ok()

@@ -38,7 +38,7 @@ public class JwtConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchanges ->
                         exchanges
-                                .pathMatchers("/api/v1/public/**", "/auth/v1/**")
+                                .pathMatchers("/api/v1/public/**", "/auth/v1/**", "/**")
                                 .permitAll()
                                 .anyExchange()
                                 .authenticated())

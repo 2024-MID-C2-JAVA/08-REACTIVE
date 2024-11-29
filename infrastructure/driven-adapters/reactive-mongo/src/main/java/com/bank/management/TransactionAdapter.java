@@ -1,14 +1,14 @@
 package com.bank.management;
 
-import com.bank.management.customer.Account;
-import com.bank.management.customer.Customer;
+import com.bank.management.values.Account;
+import com.bank.management.values.Customer;
 import com.bank.management.data.CustomerDocument;
 import com.bank.management.data.TransactionDocument;
 import com.bank.management.exception.AccountNotBelongsToCustomerException;
 import com.bank.management.exception.CustomerNotFoundException;
 import com.bank.management.gateway.TransactionRepository;
 import com.bank.management.mapper.TransactionMapper;
-import com.bank.management.transaction.Transaction;
+import com.bank.management.values.Transaction;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
@@ -62,7 +62,7 @@ public class TransactionAdapter implements TransactionRepository {
                                 if (transactionsResult.getModifiedCount() > 0 && balanceResult.getModifiedCount() > 0) {
                                     return Mono.just(TransactionMapper.toDomain(transactionDocument));
                                 } else {
-                                    return Mono.error(new CustomerNotFoundException(customer.getId()));
+                                    return Mono.error(new CustomerNotFoundException(customer.getId().value()));
                                 }
                             });
                 })

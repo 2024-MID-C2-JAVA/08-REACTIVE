@@ -1,8 +1,8 @@
 package com.bank.management.usecase.queryservice;
 
 import com.bank.management.command.ProcessWithdrawalCommand;
-import com.bank.management.customer.Account;
-import com.bank.management.customer.Customer;
+import com.bank.management.values.Account;
+import com.bank.management.values.Customer;
 import com.bank.management.exception.BankAccountNotFoundException;
 import com.bank.management.exception.CustomerNotFoundException;
 import com.bank.management.exception.InsufficientFundsException;
@@ -10,7 +10,7 @@ import com.bank.management.exception.InvalidAmountException;
 import com.bank.management.gateway.AccountRepository;
 import com.bank.management.gateway.CustomerRepository;
 import com.bank.management.gateway.TransactionRepository;
-import com.bank.management.transaction.Transaction;
+import com.bank.management.values.Transaction;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
@@ -41,7 +41,7 @@ public class UpdateViewWithdrawAddedUseCase {
                     BigDecimal transactionFee = new BigDecimal("1.00");
                     BigDecimal totalCharge = command.getAmount().add(transactionFee);
 
-                    if (account.getAmount().compareTo(totalCharge) < 0) {
+                    if (account.getAmount().value().compareTo(totalCharge) < 0) {
                         return Mono.error(new InsufficientFundsException());
                     }
 

@@ -1,6 +1,7 @@
 package com.bank.management.gateway;
 
 import com.bank.management.generic.DomainEvent;
+import com.bank.management.generic.DomainEventAggregateBackup;
 
 public interface EventBus {
     void createUserEvent(DomainEvent event);

@@ -8,6 +8,7 @@ dependencies {
     implementation project(':listener-event')
     implementation project(':reactive-mongo')
     implementation project(':routes-query-service')
+    implementation project(':serializer')
     implementation project(':jwt')
 
     implementation 'org.springframework.boot:spring-boot-starter-security'

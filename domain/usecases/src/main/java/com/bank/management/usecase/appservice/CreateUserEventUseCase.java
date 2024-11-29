@@ -22,19 +22,7 @@ public class CreateUserEventUseCase {
     }
 
     public Mono<DomainEvent> apply(CreateUserCommand command) {
-
-        return serializeCommand(command)
-                .map(serializedCommand -> {
-                    DomainEvent event = new DomainEvent("UserCreatedEvent", serializedCommand);
-                    event.setAggregateRootId(command.getUsername());
-                    return event;
-                })
-                .flatMap(event -> {
-                    eventBus.createUserEvent(event);
-                    return eventRepository.save(event);
-                })
-                .onErrorResume(UserAlreadyExistsException.class, Mono::error)
-                .onErrorResume(Exception.class, Mono::error);
+        return Mono.empty();
     }
 
     public Mono<String> serializeCommand(Command command) {

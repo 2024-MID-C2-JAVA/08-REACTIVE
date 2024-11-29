@@ -1,6 +1,6 @@
 package com.bank.management.gateway;
 
-import com.bank.management.customer.Account;
+import com.bank.management.values.Account;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

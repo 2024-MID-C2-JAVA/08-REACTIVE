@@ -13,6 +13,7 @@ public class CustomerDocument {
     @Id
     private String id;
 
+    private String aggregateRootId;
     private String username;
     private String name;
     private String lastname;
@@ -31,7 +32,8 @@ public class CustomerDocument {
 
     public CustomerDocument() {}
 
-    public CustomerDocument(String username, List<AccountDocument> accounts, UserDocument user) {
+    public CustomerDocument(String username, List<AccountDocument> accounts, UserDocument user, String agregateRootId) {
+        this.aggregateRootId = agregateRootId;
         this.username = username;
         this.accounts = accounts;
         this.user = user;
@@ -40,6 +42,14 @@ public class CustomerDocument {
 
     // Getters y Setters
 
+
+    public String getAggregateRootId() {
+        return aggregateRootId;
+    }
+
+    public void setAggregateRootId(String aggregateRootId) {
+        this.aggregateRootId = aggregateRootId;
+    }
 
     public UserDocument getUser() {
         return user;

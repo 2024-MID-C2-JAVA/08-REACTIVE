@@ -1,7 +1,7 @@
 package com.bank.management.usecase.queryservice;
 
-import com.bank.management.customer.Account;
-import com.bank.management.customer.Customer;
+import com.bank.management.values.Account;
+import com.bank.management.values.Customer;
 import com.bank.management.exception.AccountCreationException;
 import com.bank.management.exception.CustomerNotFoundException;
 import com.bank.management.gateway.AccountRepository;
@@ -25,11 +25,11 @@ public class UpdateViewAccountAddedUseCase {
 
 
     public Mono<Account>  apply(Account account, Customer customer) {
-        return customerRepository.findById(customer.getId())
+        return customerRepository.findById(customer.getId().value())
                 .switchIfEmpty(Mono.error(new CustomerNotFoundException("Customer not found with ID: " + customer.getId())))
                 .flatMap(customerFound -> {
                     Account accountToCreate = new Account.Builder()
-                            .number(generateAccountNumber())
+                            .number(account.getNumber())
                             .amount(account.getAmount())
                             .build();
 
@@ -40,9 +40,4 @@ public class UpdateViewAccountAddedUseCase {
                 });
     }
 
-    private String generateAccountNumber() {
-        return IntStream.range(0, 10)
-                .mapToObj(i -> String.valueOf(new Random().nextInt(10)))
-                .collect(Collectors.joining());
-    }
 }

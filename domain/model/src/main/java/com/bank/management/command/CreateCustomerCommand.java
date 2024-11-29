@@ -6,13 +6,13 @@ import java.util.Objects;
 
 public class CreateCustomerCommand extends Command {
 
-    private String aggregateRootId;
+    private String id;
     private String username;
     private String name;
     private String lastname;
 
     public CreateCustomerCommand(String aggregateRootId, String username, String name, String lastname) {
-        this.aggregateRootId = Objects.requireNonNull(aggregateRootId, "AggregateRootId cannot be null");
+        this.id = Objects.requireNonNull(aggregateRootId, "AggregateRootId cannot be null");
         this.username = Objects.requireNonNull(username, "Username cannot be null");
         this.name = Objects.requireNonNull(name, "Name cannot be null");
         this.lastname = Objects.requireNonNull(lastname, "Lastname cannot be null");
@@ -20,8 +20,8 @@ public class CreateCustomerCommand extends Command {
 
     public CreateCustomerCommand() {
     }
-    public String getAggregateRootId() {
-        return aggregateRootId;
+    public String getId() {
+        return id;
     }
 
     public String getUsername() {
@@ -39,7 +39,7 @@ public class CreateCustomerCommand extends Command {
     @Override
     public String toString() {
         return "CreateCustomerCommand{" +
-                "aggregateRootId='" + aggregateRootId + '\'' +
+                "aggregateRootId='" + id + '\'' +
                 ", username='" + username + '\'' +
                 ", name='" + name + '\'' +
                 ", lastname='" + lastname + '\'' +

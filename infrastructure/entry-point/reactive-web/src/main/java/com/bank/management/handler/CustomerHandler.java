@@ -2,7 +2,6 @@ package com.bank.management.handler;
 
 import com.bank.management.command.CreateCustomerCommand;
 import com.bank.management.command.DeleteCustomerCommand;
-import com.bank.management.customer.Customer;
 import com.bank.management.ResponseBuilder;
 import com.bank.management.data.*;
 import com.bank.management.enums.DinErrorCode;
@@ -39,7 +38,8 @@ public class CustomerHandler {
                     DinHeader dinHeader = req.getDinHeader();
                     CreateCustomerCommand command = req.getDinBody();
 
-                    return createCustomerEventUseCase.apply(command)
+                    return createCustomerEventUseCase.apply(Mono.just(command))
+                            .collectList()
                             .flatMap(customerCreated -> {
                                 Map<String, String> responseData = new HashMap<>();
                                 return ServerResponse.status(HttpStatus.CREATED)

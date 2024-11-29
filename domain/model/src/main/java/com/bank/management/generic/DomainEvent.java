@@ -5,33 +5,30 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-public class DomainEvent implements Serializable {
+public abstract class DomainEvent implements Serializable {
 
-    private Instant when;
-    private UUID uuid;
-    private String type;
+    public Instant when;
+    public UUID uuid;
+    public String type;
     private String aggregateRootId;
     private String aggregate;
     private Long versionType;
-    private String body;
 
-    public DomainEvent(final String type, final String body) {
+    public DomainEvent(final String type) {
         this.type = type;
         this.aggregate = "default";
         this.when = Instant.now();
         this.uuid = UUID.randomUUID();
         this.versionType = 1L;
-        this.body = body;
     }
 
-    public DomainEvent(Instant when, UUID uuid, String type, String aggregateRootId, String aggregate, Long versionType, String body) {
+    public DomainEvent(Instant when, UUID uuid, String type, String aggregateRootId, String aggregate, Long versionType) {
         this.when = when;
         this.uuid = uuid;
         this.type = type;
         this.aggregateRootId = aggregateRootId;
         this.aggregate = aggregate;
         this.versionType = versionType;
-        this.body = body;
     }
 
     public DomainEvent() {
@@ -59,10 +56,6 @@ public class DomainEvent implements Serializable {
 
     public void setAggregate(String aggregate) {
         this.aggregate = aggregate;
-    }
-
-    public String getBody() {
-        return body;
     }
 
     public Long getVersionType() {
@@ -104,8 +97,5 @@ public class DomainEvent implements Serializable {
     public String type() {
         return type;
     }
-
-    public String body() {
-        return body;
-    }
 }
+

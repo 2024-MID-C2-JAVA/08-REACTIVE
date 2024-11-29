@@ -1,8 +1,8 @@
 package com.bank.management.gateway;
 
-import com.bank.management.customer.Account;
-import com.bank.management.customer.Customer;
-import com.bank.management.transaction.Transaction;
+import com.bank.management.values.Account;
+import com.bank.management.values.Customer;
+import com.bank.management.values.Transaction;
 import reactor.core.publisher.Mono;
 
 

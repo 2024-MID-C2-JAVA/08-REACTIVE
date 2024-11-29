@@ -1,4 +1,4 @@
-package com.bank.management.customer;
+package com.bank.management.values;
 
 import java.util.List;
 

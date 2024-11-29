@@ -1,10 +1,17 @@
 package com.bank.management.mapper;
 
-import com.bank.management.customer.Account;
-import com.bank.management.customer.Customer;
+import com.bank.management.values.Account;
+import com.bank.management.values.Customer;
 import com.bank.management.data.AccountDocument;
 import com.bank.management.data.CustomerDocument;
+import com.bank.management.values.customer.CustomerId;
+import com.bank.management.values.customer.Lastname;
+import com.bank.management.values.customer.Name;
+import com.bank.management.values.customer.Username;
+import com.bank.management.values.generic.CreatedAt;
+import com.bank.management.values.generic.IsDeleted;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,12 +19,12 @@ public class CustomerMapper {
 
     public static CustomerDocument toDocument(Customer customer) {
         CustomerDocument document = new CustomerDocument();
-        document.setId(customer.getId() != null ? customer.getId() : null);
-        document.setUsername(customer.getUsername());
-        document.setName(customer.getName());
-        document.setLastname(customer.getLastname());
-        document.setDeleted(customer.isDeleted());
-        document.setCreatedAt(customer.getCreatedAt());
+        document.setId(customer.getId() != null ? customer.getId().value() : null);
+        document.setUsername(customer.getUsername()!= null ? customer.getUsername().value() : null);
+        document.setName(customer.getName() != null ? customer.getName().value() : null);
+        document.setLastname(customer.getLastname() != null ? customer.getLastname().value() : null);
+        document.setDeleted(customer.isDeleted() != null ? customer.isDeleted().value() : false);
+        document.setCreatedAt(customer.getCreatedAt() != null ? customer.getCreatedAt().value() : null);
 
         if (customer.getAccounts() != null) {
             List<AccountDocument> accountDocuments = customer.getAccounts().stream()
@@ -27,26 +34,27 @@ public class CustomerMapper {
 
             return document;
         }
+        document.setAggregateRootId(customer.getId().value());
         return document;
     }
 
     public static Customer toDomain(CustomerDocument document) {
-        Customer.Builder builder = new Customer.Builder();
 
-        builder.id(document.getId() != null ? document.getId(): null)
-                .username(document.getUsername())
-                .name(document.getName())
-                .lastname(document.getLastname())
-                .isDeleted(document.isDeleted())
-                .createdAt(document.getCreatedAt());
+        Customer customer = new Customer.Builder().id(document.getId() != null ? CustomerId.of(document.getId()): null)
+                .username(Username.of(document.getUsername()))
+                .name(Name.of(document.getName()))
+                .lastname(Lastname.of(document.getLastname()))
+                .isDeleted(IsDeleted.of(document.isDeleted()))
+                .createdAt(document.getCreatedAt() != null ? CreatedAt.of(document.getCreatedAt()) : CreatedAt.of(new Date()))
+                .build();
 
             if (document.getAccounts() != null) {
                 List<Account> accounts = document.getAccounts().stream()
                         .map(AccountMapper::toDomain)
                         .collect(Collectors.toList());
-                builder.accounts(accounts);
+                customer.setAccounts(accounts);
             }
 
-        return builder.build();
+        return customer;
     }
 }

@@ -1,7 +1,5 @@
 package com.bank.management.usecase.appservice;
 
-import com.bank.management.command.CreateAccountCommand;
-import com.bank.management.command.CreateCustomerCommand;
 import com.bank.management.command.DeleteCustomerCommand;
 import com.bank.management.exception.UserAlreadyExistsException;
 import com.bank.management.gateway.EventBus;
@@ -26,18 +24,7 @@ public class DeleteCustomerEventUseCase {
 
 
     public Mono<DomainEvent>apply(DeleteCustomerCommand command) {
-        return serializeCommand(command)
-                .map(serializedCommand -> {
-                    DomainEvent event = new DomainEvent("DeleteCustomerEvent", serializedCommand);
-                    event.setAggregateRootId(command.getAggregateRootId());
-                    return event;
-                })
-                .flatMap(event -> {
-                    eventBus.deleteCustomerEvent(event);
-                    return eventRepository.save(event);
-                })
-                .onErrorResume(UserAlreadyExistsException.class, Mono::error)
-                .onErrorResume(Exception.class, Mono::error);
+        return Mono.empty();
     }
 
     public Mono<String> serializeCommand(Command command) {

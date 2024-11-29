@@ -1,6 +1,4 @@
-package com.bank.management.transaction;
-
-import com.bank.management.customer.Account;
+package com.bank.management.values;
 
 public class TransactionAccountDetail {
 

@@ -1,6 +1,6 @@
 package com.bank.management.mapper;
 
-import com.bank.management.transaction.Transaction;
+import com.bank.management.values.Transaction;
 import com.bank.management.data.TransactionDocument;
 
 public class TransactionMapper {

@@ -1,7 +1,7 @@
 package com.bank.management;
 
-import com.bank.management.customer.Account;
-import com.bank.management.customer.Customer;
+import com.bank.management.values.Account;
+import com.bank.management.values.Customer;
 import com.bank.management.data.AccountDocument;
 import com.bank.management.data.CustomerDocument;
 import com.bank.management.exception.BankAccountNotFoundException;
@@ -103,12 +103,12 @@ public class BankAccountAdapter implements AccountRepository {
 
         Customer customer = account.getCustomer();
 
-        Query query = new Query(Criteria.where("_id").is(customer.getId())
+        Query query = new Query(Criteria.where("_id").is(customer.getId().value())
                 .and("accounts._id").is(accountDocument.getId()));
 
         return reactiveMongoTemplate.exists(query, CustomerDocument.class)
                 .flatMap(exists -> {
-                    Query customerQuery = new Query(Criteria.where("_id").is(customer.getId()));
+                    Query customerQuery = new Query(Criteria.where("_id").is(customer.getId().value()));
                     Update update;
 
                     if (exists) {

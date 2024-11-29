@@ -1,6 +1,6 @@
 package com.bank.management;
 
-import com.bank.management.customer.Customer;
+import com.bank.management.values.Customer;
 import com.bank.management.data.CustomerDocument;
 import com.bank.management.exception.CustomerNotFoundException;
 import com.bank.management.gateway.CustomerRepository;
@@ -60,7 +60,7 @@ public class CustomerAdapter implements CustomerRepository {
                     if (result.getModifiedCount() > 0) {
                         return Mono.just(true);
                     } else {
-                        return Mono.error(new CustomerNotFoundException(customer.getId()));
+                        return Mono.error(new CustomerNotFoundException(customer.getId().value()));
                     }
                 });
     }
