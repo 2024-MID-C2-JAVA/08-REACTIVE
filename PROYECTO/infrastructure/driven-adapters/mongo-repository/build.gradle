@@ -1,0 +1,26 @@
+dependencies {
+    implementation project(':use-cases')
+    implementation project(':model')
+    implementation project(':utils')
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+    implementation 'org.mongodb:mongodb-driver-reactivestreams:4.4.0'
+    implementation('org.springframework.boot:spring-boot-starter-webflux')
+
+    implementation 'org.projectlombok:lombok:1.18.30'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // a dependency on Jackson Databind
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.8.9'
+
+    // and a dependency on vert.x
+    implementation 'io.vertx:vertx-core:3.5.3'
+
+    implementation 'org.reactivecommons.utils:object-mapper-api:0.1.0'
+
+
+}
