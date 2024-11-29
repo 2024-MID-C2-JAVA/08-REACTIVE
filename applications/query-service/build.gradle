@@ -1,0 +1,18 @@
+bootJar {
+    enabled = true
+    mainClass = 'com.bank.management.AppApplication'
+}
+dependencies {
+    implementation project(':model')
+    implementation project(':use-cases')
+    implementation project(':listener-event')
+    implementation project(':reactive-mongo')
+    implementation project(':routes-query-service')
+    implementation project(':serializer')
+    implementation project(':jwt')
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-amqp', version: '3.3.5'
+
+}
