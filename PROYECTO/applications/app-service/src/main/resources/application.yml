@@ -76,14 +76,14 @@ general:
   config:
     rabbitmq:
       exchange: "bankExchange"
-      queue: "bankQueue"
+      queue: "AccountQueue"
       queueCustomer: "CustomerQueue"
       queueTransactionDepositSucursal: "TransactionDepositSucursal"
       queueTransactionDepositCajero: "TransactionDepositCajero"
       queueTransactionDepositTransferencia: "TransactionDepositTransferencia"
       queueTransactionRetiroCajero: "TransactionRetiroCajero"
       queueTransactionCompra: "TransactionCompra"
-      routingKey: "bankRoutingKey"
+      routingKey: "AccountRoutingKey"
       routingCustomerKey: "CustomerRoutingKey"
       routingTransactionDepositSucursalKey: "TransactionDepositSucursalKey"
       routingTransactionDepositCajeroKey: "TransactionDepositCajeroKey"

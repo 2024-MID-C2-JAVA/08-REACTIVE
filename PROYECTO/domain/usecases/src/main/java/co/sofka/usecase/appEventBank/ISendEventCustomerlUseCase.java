@@ -3,6 +3,7 @@ package co.sofka.usecase.appEventBank;
 
 import co.sofka.Event;
 import co.sofka.gateway.IRabbitBus;
+import co.sofka.generic.DomainEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +19,7 @@ public class ISendEventCustomerlUseCase implements ISendEventCustomerDetailServi
     }
 
 
-    public void save(Event item) {
+    public void save(DomainEvent item) {
         rabbitBus.send(item);
     }
 

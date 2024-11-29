@@ -4,7 +4,7 @@ import co.sofka.Transaction;
 import co.sofka.TransactionAccountDetail;
 import co.sofka.config.EncryptionAndDescryption;
 import co.sofka.config.TokenByDinHeaders;
-import co.sofka.dto.BankTransactionDepositTransfer;
+import co.sofka.commands.request.BankTransactionDepositTransfer;
 import co.sofka.middleware.ErrorDecryptingDataException;
 import co.sofka.usecase.appBank.IGetCustomerByIdService;
 import co.sofka.usecase.appBank.ISaveCustomerService;

@@ -26,6 +26,11 @@ public class RouterRest {
                 POST("/api/v1/CreateCustomer"),
                 handler::SaveCustomerUseCase
         )
+
+                .andRoute(
+                POST("/api/v1/account/CreatedAccount"),
+                handler::SaveCustomerAccountUseCase
+        )
                 .andRoute(
                 POST("/api/v1/transaction/depositSucursal"),
                 handler::SaveDepositarSucursalUseCase

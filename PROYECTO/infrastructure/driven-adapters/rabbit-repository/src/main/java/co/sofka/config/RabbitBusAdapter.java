@@ -1,10 +1,11 @@
 package co.sofka.config;
 
 
-import co.sofka.Event;
-import co.sofka.LogEvent;
 import co.sofka.event.Notification;
+import co.sofka.event.TransactionAdd;
 import co.sofka.gateway.IRabbitBus;
+import co.sofka.generic.DomainEvent;
+import co.sofka.serializer.JSONMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -24,6 +25,12 @@ public class RabbitBusAdapter implements IRabbitBus {
 
     @Value("${general.config.rabbitmq.routingCustomerKey}")
     private String routingkey;
+
+    @Value("${general.config.rabbitmq.queue}")
+    private String queueAccount;
+
+    @Value("${general.config.rabbitmq.routingKey}")
+    private String routingAccountkey;
 
 
 
@@ -70,45 +77,62 @@ public class RabbitBusAdapter implements IRabbitBus {
 
     private final RabbitTemplate rabbitTemplate;
 
+    private final TokenByDinHeaders tokenByDinHeaders;
+
+    private final JSONMapper eventSerializer;
+
     private static final Logger logger = LoggerFactory.getLogger(RabbitBusAdapter.class);
 
-    public RabbitBusAdapter(RabbitTemplate rabbitTemplate) {
+    public RabbitBusAdapter(JSONMapper eventSerializer,TokenByDinHeaders tokenByDinHeaders,RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
+        this.tokenByDinHeaders = tokenByDinHeaders;
+        this.eventSerializer = eventSerializer;
     }
 
     @Override
-    public void send(Event event) {
+    public void send(DomainEvent event) {
+
+        logger.info("Sending notification to RabbitMQ: {}",event);
 
         Notification notification = new Notification();
-        notification.setMessage(event.getBody());
+        notification.setMessage(wrapEvent(event,eventSerializer));
+        //notification.setMessage(tokenByDinHeaders.encode(event.getBody()));
         notification.setWhen(Instant.now());
-        notification.setType(event.getType());
-        notification.setUuid(event.getParentId());
+        notification.setType(event.type);
+        notification.setUuid(event.aggregateRootId());
 
-        logger.info("Sending notification to RabbitMQ: {} {}",notification.getType(), notification);
+
         switch (notification.getType()) {
-            case "Customer Created":
+            case "CreateCustomer":
                 rabbitTemplate.convertAndSend(exchange, routingkey, notification);
                 break;
-            case "TransactionDepositSucursal":
-                rabbitTemplate.convertAndSend(exchange, routingTransactionDepositSucursalKey, notification);
+            case "CreateAccount":
+                rabbitTemplate.convertAndSend(exchange, routingAccountkey, notification);
                 break;
-            case "TransactionDepositCajero":
-                rabbitTemplate.convertAndSend(exchange, routingTransactionDepositCajeroKey, notification);
-                break;
-            case "TransactionDepositTransferencia":
-                rabbitTemplate.convertAndSend(exchange, routingTransactionDepositTransferenciaKey, notification);
-                break;
-            case "TransactionRetiroCajero":
-                rabbitTemplate.convertAndSend(exchange, routingTransactionRetiroCajeroKey, notification);
-                break;
-            case "TransactionCompra":
-                rabbitTemplate.convertAndSend(exchange, routingTransactionCompraKey, notification);
+            case "CreateTransaction":
+                TransactionAdd event1 = (TransactionAdd) event;
+                logger.info("Sending notification to RabbitMQ: {} {}",notification.getType(), event1.getTypeTransaction());
+                if (event1.getTypeTransaction().equals("TransactionDepositSucursal")) {
+                    rabbitTemplate.convertAndSend(exchange, routingTransactionDepositSucursalKey, notification);
+                } else if (event1.getTypeTransaction().equals("TransactionDepositCajero")) {
+                    rabbitTemplate.convertAndSend(exchange, routingTransactionDepositCajeroKey, notification);
+                } else if (event1.getTypeTransaction().equals("TransactionDepositTransferencia")) {
+                    rabbitTemplate.convertAndSend(exchange, routingTransactionDepositTransferenciaKey, notification);
+                } else if (event1.getTypeTransaction().equals("TransactionRetiroCajero")) {
+                    rabbitTemplate.convertAndSend(exchange, routingTransactionRetiroCajeroKey, notification);
+                } else if (event1.getTypeTransaction().equals("TransactionCompra")) {
+                    rabbitTemplate.convertAndSend(exchange, routingTransactionCompraKey, notification);
+                }
                 break;
             default:
                 logger.info("No se ha encontrado el tipo de evento");
                 break;
         }
 
+    }
+
+
+    public static String wrapEvent(DomainEvent domainEvent, JSONMapper eventSerializer){
+        return eventSerializer.writeToJson(domainEvent);
     }
 }

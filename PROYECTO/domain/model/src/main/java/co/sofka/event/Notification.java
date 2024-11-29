@@ -1,5 +1,7 @@
 package co.sofka.event;
 
+import co.sofka.generic.DomainEvent;
+
 import java.time.Instant;
 
 public class Notification {
@@ -44,4 +46,6 @@ public class Notification {
     public void setWhen(Instant when) {
         this.when = when;
     }
+
+
 }

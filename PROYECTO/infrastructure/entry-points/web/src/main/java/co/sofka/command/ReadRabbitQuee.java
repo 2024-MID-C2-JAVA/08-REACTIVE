@@ -2,7 +2,8 @@ package co.sofka.command;
 
 import co.sofka.command.create.*;
 import co.sofka.command.dto.request.CustomerSaveDTO;
-import co.sofka.dto.*;
+import co.sofka.commands.request.*;
+import co.sofka.config.TokenByDinHeaders;
 import co.sofka.event.Notification;
 import co.sofka.utils.JsonToObjectConverter;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -33,10 +34,14 @@ public class ReadRabbitQuee {
 
    private final RegisterTransactionCompraHandler registerTransactionCompraHandler;
 
+    private final TokenByDinHeaders tokenByDinHeaders;
+
 @SneakyThrows
 @RabbitListener(queues = "${general.config.rabbitmq.queueCustomer}")
 public void readLog(Notification message) throws JsonProcessingException {
     logger.info("Mensaje recibido: " + message);
+
+//    String item = tokenByDinHeaders.decode(message.getMessage()) ;
 
     String item = message.getMessage();
 
@@ -54,6 +59,8 @@ public void readLog(Notification message) throws JsonProcessingException {
     public void readRegisterTransactionDepositSucursal(Notification message) throws JsonProcessingException {
         logger.info("Mensaje recibido: " + message);
 
+        //    String item = tokenByDinHeaders.decode(message.getMessage()) ;
+
         String item = message.getMessage();
 
         logger.info("Mensaje recibido: " + item);
@@ -68,6 +75,7 @@ public void readLog(Notification message) throws JsonProcessingException {
     @RabbitListener(queues = "${general.config.rabbitmq.queueTransactionDepositCajero}")
     public void readRegisterTransactionDepositCajero(Notification message) throws JsonProcessingException {
         logger.info("Mensaje recibido: " + message);
+//    String item = tokenByDinHeaders.decode(message.getMessage()) ;
 
         String item = message.getMessage();
 
@@ -83,6 +91,7 @@ public void readLog(Notification message) throws JsonProcessingException {
     @RabbitListener(queues = "${general.config.rabbitmq.queueTransactionDepositTransferencia}")
     public void readRegisterTransactionDepositTransferencia(Notification message) throws JsonProcessingException {
         logger.info("Mensaje recibido: " + message);
+//    String item = tokenByDinHeaders.decode(message.getMessage()) ;
 
         String item = message.getMessage();
 
@@ -101,6 +110,7 @@ public void readLog(Notification message) throws JsonProcessingException {
     public void readRegisterTransactionRetiroCajero(Notification message) throws JsonProcessingException {
         logger.info("Mensaje recibido: " + message);
 
+//    String item = tokenByDinHeaders.decode(message.getMessage()) ;
         String item = message.getMessage();
 
         logger.info("Mensaje recibido: " + item);
@@ -115,6 +125,7 @@ public void readLog(Notification message) throws JsonProcessingException {
     @RabbitListener(queues = "${general.config.rabbitmq.queueTransactionCompra}")
     public void readRegisterTransactionCompra(Notification message) throws JsonProcessingException {
         logger.info("Mensaje recibido: " + message);
+//    String item = tokenByDinHeaders.decode(message.getMessage()) ;
 
         String item = message.getMessage();
 
