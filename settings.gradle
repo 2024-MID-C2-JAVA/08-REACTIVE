@@ -1,1 +1,33 @@
-rootProject.name = 'reactiveexample'
+rootProject.name = 'sofka'
+
+include ':model'
+include ':jwt-model'
+include ':ports'
+include ':usescases'
+include ':app-service'
+include ':mongo-repository'
+include ':web-security'
+include ':web'
+include ':web-security-entry-point'
+include ':din'
+include ':event-bus'
+include ':entry-point-event-listener'
+include ':app-views'
+include ':mongo-views-repository'
+include ':web-query'
+
+findProject(':model').projectDir=file('./domain/model')
+findProject(':jwt-model').projectDir=file('./domain/jwt-model')
+findProject(':ports').projectDir=file('./domain/ports')
+findProject(':usescases').projectDir=file('./domain/usescases')
+findProject(':app-service').projectDir=file('./applications/app-service')
+findProject(':mongo-repository').projectDir=file('./infrastructure/driven-adapters/mongo-repository')
+findProject(':web-security').projectDir=file('./infrastructure/helpers/web-security')
+findProject(':web').projectDir=file('./infrastructure/entry-points/web')
+findProject(':web-security-entry-point').projectDir=file('./infrastructure/entry-points/web-security-entry-point')
+findProject(':din').projectDir=file('./infrastructure/helpers/din')
+findProject(':event-bus').projectDir=file('./infrastructure/driven-adapters/event-bus')
+findProject(':entry-point-event-listener').projectDir=file('./infrastructure/entry-points/entry-point-event-listener')
+findProject(':app-views').projectDir=file('./applications/app-views')
+findProject(':mongo-views-repository').projectDir=file('./infrastructure/driven-adapters/mongo-views-repository')
+findProject(':web-query').projectDir=file('./infrastructure/entry-points/web-query')
