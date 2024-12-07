@@ -1,0 +1,4 @@
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.3.5'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive:3.3.5'
+}

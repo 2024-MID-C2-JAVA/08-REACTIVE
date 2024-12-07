@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: accounts-service
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: accounts-events
+
+  webflux:
+    base-path: /api
+
+  rabbitmq:
+    host: localhost
+    virtual-host: /
+    port: 5672
+    username: guest
+    password: guest
+
+cuentaflex:
+  fees:
+    branch-deposit: 0.00
+    atm-deposit: 2.00
+    between-accounts-deposit: 1.50
+
+    online-purchase: 5.00
+    in-store-purchase: 0.00
+
+    atm-withdrawal: 1.00
+
+  jwt:
+    secret-key: a6d446e3d4832339ae6b871c5b42d7c67b8b4d0ecd8429c044c1d802d149f3d8
+    expires-in-hours: 12
+
+event-bus:
+    encryption:
+      symmetric-key: PTivgtCBtJoj5S0eVSQSO1dht05HRPrl
+    queue:
+      exchange: events.exchange
+      name: events.queue
+      routing-key: events.routing-key

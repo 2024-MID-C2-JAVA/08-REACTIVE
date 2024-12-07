@@ -24,8 +24,8 @@ project(":infrastructure.entry-points.accounts-webservice").projectDir = file("l
 include(":infrastructure.entry-points.accounts-views-webservice")
 project(":infrastructure.entry-points.accounts-views-webservice").projectDir = file("libs/infrastructure/entry-points/accounts-views-webservice")
 
-include(":infrastructure.utils.din")
-project(":infrastructure.utils.din").projectDir = file("libs/infrastructure/utils/din")
+include(":infrastructure.entry-points.din")
+project(":infrastructure.entry-points.din").projectDir = file("libs/infrastructure/entry-points/din")
 
 include(":infrastructure.utils.encryption")
 project(":infrastructure.utils.encryption").projectDir = file("libs/infrastructure/utils/encryption")

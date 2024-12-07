@@ -1,0 +1,19 @@
+dependencies {
+    implementation project(":domain.use-cases")
+
+    implementation project(":infrastructure.utils.encryption")
+    implementation project(":infrastructure.utils.serializer")
+    implementation project(":infrastructure.utils.jwt")
+
+    implementation project(":infrastructure.driven-adapters.mongo-events-repository")
+    implementation project(":infrastructure.driven-adapters.mongo-users-repository")
+    implementation project(":infrastructure.driven-adapters.properties-fee-provider")
+    implementation project(":infrastructure.driven-adapters.rabbitmq-event-bus")
+
+    implementation project(":infrastructure.entry-points.accounts-webservice")
+    implementation project(":infrastructure.entry-points.auth-webservice")
+
+    implementation 'org.springframework.boot:spring-boot-starter:3.3.5'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp:3.3.5'
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.3.5'
+}

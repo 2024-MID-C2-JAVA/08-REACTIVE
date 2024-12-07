@@ -1,0 +1,9 @@
+package co.com.sofka.cuentaflex.libs.domain.ports.utils.encryption;
+
+import co.com.sofka.cuentaflex.libs.infrastructure.utils.encryption.exceptions.FailedDecryptionException;
+import co.com.sofka.cuentaflex.libs.infrastructure.utils.encryption.exceptions.FailedEncryptionException;
+
+public interface AESCipher {
+    String encrypt(String plainText, String symmetricKey, String initializationVector) throws FailedEncryptionException;
+    String decrypt(String cipherText, String symmetricKey, String initializationVector) throws FailedDecryptionException;
+}
